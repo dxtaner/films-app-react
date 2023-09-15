@@ -27,7 +27,7 @@ const Favorites = () => {
       p={[2, 4, 6, 8]}>
       {!token && <Navigate replace to="/auth/login" />}
       <Box>
-        <Title text="Tus películas favoritas">
+        <Title text="Favori Filmlerim">
           Buradaki filmlerin tümü hesabınızla ilişkili favori filmlerinizdir
         </Title>
       </Box>
