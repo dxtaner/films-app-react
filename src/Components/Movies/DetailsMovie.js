@@ -34,13 +34,15 @@ const Details = () => {
   useEffect(() => {
     dispatch(getDetails(location.state.id));
     dispatch(getTrailer(location.state.id));
-  }, [dispatch, location.state.id]); // location.state.id bağımlılık dizisine eklenmiş
+  }, [dispatch, location.state.id]);
 
   return (
     <>
       <Box>
         <Image
           src={`https://image.tmdb.org/t/p/original${movieDetails.backdrop_path}`}
+          alt={movieDetails.original_title}
+          cursor="pointer"
         />
       </Box>
       <VStack
@@ -50,15 +52,45 @@ const Details = () => {
         textAlign="center">
         <HStack>
           {movieDetails?.genres?.map((gen, index) => (
-            <Tag key={index} colorScheme="blue">
+            <Tag
+              key={index}
+              colorScheme="red"
+              bg="gray.300"
+              borderRadius="lg"
+              p={[1, 1, 2, 2]}>
               {gen.name}
             </Tag>
           ))}
         </HStack>
 
-        <Box>
-          <Heading>{movieDetails.original_title}</Heading>
-          <Text>{movieDetails.overview}</Text>
+        <Box
+          textAlign="center"
+          p={6}
+          boxShadow="lg"
+          borderRadius="lg"
+          bg="gray.300">
+          <Heading fontSize="2xl" mb={4}>
+            {movieDetails.original_title}
+          </Heading>
+
+          <Text fontSize="lg" mb={4}>
+            {movieDetails.overview}
+          </Text>
+
+          <HStack spacing={4} justifyContent="center">
+            <Text fontSize="md">
+              <strong>Beğeni Sayısı:</strong> {movieDetails.vote_count}
+            </Text>
+            <Text fontSize="md">
+              <strong>Oy Ortalaması:</strong> {movieDetails.vote_average}
+            </Text>
+          </HStack>
+
+          <HStack spacing={4} mt={4} justifyContent="center">
+            <Text fontSize="md">
+              <strong>Çıkış Tarihi:</strong> {movieDetails.release_date}
+            </Text>
+          </HStack>
         </Box>
 
         {isAuth && (
@@ -67,7 +99,7 @@ const Details = () => {
               leftIcon={<AiOutlineHeart />}
               colorScheme="red"
               onClick={() => dispatch(addToFavorites(location.state.id, true))}>
-              Favori
+              Favori Filmlere Ekle
             </Button>
           </Box>
         )}
@@ -77,11 +109,12 @@ const Details = () => {
           {movieTrailer.length > 0 ? (
             <YoutubeEmbed embedId={movieTrailer[0].key} />
           ) : (
-            <Text>Bu filmin fragmanı yok</Text>
+            <Text fontSize="lg">Bu filmin fragmanı yok</Text>
           )}
         </Box>
       </VStack>
     </>
   );
 };
+
 export default Details;
