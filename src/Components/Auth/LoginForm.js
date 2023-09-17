@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Flex,
@@ -89,7 +90,7 @@ const LoginForm = () => {
               <Text fontSize="md">
                 Şifreni mi unuttun?{" "}
                 <Link
-                  to="https://www.themoviedb.org/reset-password"
+                  href="https://www.themoviedb.org/reset-password"
                   isExternal
                   color="blue.400">
                   Şifremi Sıfırla
