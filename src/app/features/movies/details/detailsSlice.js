@@ -7,7 +7,7 @@ import { getAccountDetails } from "../../../../Components/Services/auth.js";
 
 const initialState = {
   details: {},
-  status: "boşta",
+  status: "idle",
 };
 
 export const getDetails = createAsyncThunk(
@@ -39,7 +39,7 @@ export const addToFavorites = createAsyncThunk(
 );
 
 export const detailsSlice = createSlice({
-  name: "datails",
+  name: "details",
   initialState,
   extraReducers: (builder) => {
     builder
