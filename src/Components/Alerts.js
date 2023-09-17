@@ -11,7 +11,7 @@ export const showErrorMessage = (message) => {
 export const showSuccessMessage = (message) => {
   Swal.fire({
     icon: "success",
-    title: "Başaralı",
+    title: "Başarılı",
     text: message,
   });
 };
