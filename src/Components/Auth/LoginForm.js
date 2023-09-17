@@ -6,8 +6,9 @@ import {
   FormLabel,
   Heading,
   Input,
-  VStack,
+  Link,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { Formik } from "formik";
 import {
@@ -28,10 +29,10 @@ const LoginForm = () => {
         validate={(values) => {
           const errors = {};
           if (!values.username) {
-            errors.username = "Bu alan gereklidir.";
+            errors.username = "Kullanıcı adı gereklidir.";
           }
           if (!values.password) {
-            errors.password = "Bu alan gereklidir.";
+            errors.password = "Şifre gereklidir.";
           }
           return errors;
         }}
@@ -50,11 +51,11 @@ const LoginForm = () => {
           }
         }}>
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-          <Flex justifyContent="center" alignItems="center" height="100vh">
-            <VStack spacing={4} padding="4" boxShadow="lg">
-              <Heading size="lg">Login</Heading>
-              <Text fontSize="sm">
-                Oturum açmak için bir TMDB hesabınızın olması gerekir.
+          <Flex justifyContent="center" alignItems="center" height="90vh">
+            <VStack spacing={5} padding="5" boxShadow="lg">
+              <Heading size="lg">Giriş Ekranı</Heading>
+              <Text fontSize="md">
+                Oturum açmak için bir TMDB hesabınızın olması gereklidir.
               </Text>
               <FormControl isInvalid={errors.username}>
                 <FormLabel>Kullanıcı Adı</FormLabel>
@@ -65,12 +66,10 @@ const LoginForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.username && (
-                  <FormErrorMessage>{errors.username}</FormErrorMessage>
-                )}
+                <FormErrorMessage>{errors.username}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={errors.password}>
-                <FormLabel>Şifre Alanı</FormLabel>
+                <FormLabel>Şifre</FormLabel>
                 <Input
                   name="password"
                   value={values.password}
@@ -78,17 +77,24 @@ const LoginForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.password && (
-                  <FormErrorMessage>{errors.password}</FormErrorMessage>
-                )}
+                <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
               <Button
-                bg="red.600"
-                _hover={{ bg: "red.700" }}
+                bg="blue.400"
                 color="white"
+                _hover={{ bg: "blue.500" }}
                 onClick={handleSubmit}>
                 Giriş Yap
               </Button>
+              <Text fontSize="md">
+                Şifreni mi unuttun?{" "}
+                <Link
+                  to="https://www.themoviedb.org/reset-password"
+                  isExternal
+                  color="blue.400">
+                  Şifremi Sıfırla
+                </Link>
+              </Text>
             </VStack>
           </Flex>
         )}
@@ -96,4 +102,5 @@ const LoginForm = () => {
     </>
   );
 };
+
 export default LoginForm;
