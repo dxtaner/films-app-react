@@ -3,7 +3,7 @@ import { getAccountDetails } from "../../../Components/Services/auth.js";
 
 const initialState = {
   account: {},
-  status: "boşta",
+  status: "idle",
 };
 
 export const getAccountInfo = createAsyncThunk(
