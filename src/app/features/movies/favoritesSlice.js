@@ -2,9 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAccountDetails } from "../../../Components/Services/auth.js";
 import { getFavoritesMovies } from "../../../Components/Services/movies.js";
 
+export const favoritesLoading = (state) => state.favorites.loading;
+
 const initialState = {
   favorites: [],
-  status: "boşta",
+  status: "idle",
 };
 
 export const getFavorites = createAsyncThunk(
