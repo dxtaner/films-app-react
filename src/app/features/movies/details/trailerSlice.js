@@ -3,7 +3,7 @@ import { getMoviesTrailer } from "../../../../Components/Services/movies.js";
 
 const initialState = {
   trailer: [],
-  status: "boşta",
+  status: "idle",
 };
 
 export const getTrailer = createAsyncThunk(
