@@ -3,7 +3,7 @@ import { getPopularMovies } from "../../../Components/Services/movies.js";
 
 const initialState = {
   popular: [],
-  status: "Boşta",
+  status: "idle",
 };
 
 export const getPopular = createAsyncThunk(
