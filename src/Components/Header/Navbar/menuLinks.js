@@ -14,12 +14,18 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
         align="center"
         justify={["center", "space-between", "flex-end", "flex-end"]}
         direction={["column", "row", "row", "row"]}
-        pt={[4, 4, 0, 0]}>
-        <MenuItems to="/">
-          <Text>Films</Text>
+        pt={[6, 6, 0, 0]}>
+        <MenuItems to="/about">
+          <Text>Site Hakkında...</Text>
         </MenuItems>
-        <MenuItems to="/films">
-          <Text>Films</Text>
+        <MenuItems to="/popularPersons">
+          <Text>Popüler Oyuncular</Text>
+        </MenuItems>
+        <MenuItems to="/">
+          <Text>En Yüksek Puan Alan Filmler</Text>
+        </MenuItems>
+        <MenuItems to="/upComingMovies">
+          <Text> Yaklaşan Filmler</Text>
         </MenuItems>
         {isAuth ? (
           <>
@@ -29,16 +35,16 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
             <Image
               borderRadius="full"
               src={`https://image.tmdb.org/t/p/original${accountInfo?.avatar_path}`}
-              boxSize="36px"
+              boxSize="40px"
             />
           </>
         ) : (
           <Button
             onClick={() => navigate("/auth/login")}
             size="sm"
-            bg="red.600"
-            _hover={{ bg: "red.700" }}>
-            Login
+            bg="gray.100"
+            _hover={{ bg: "gray.300" }}>
+            Giriş Yap
           </Button>
         )}
       </Stack>
