@@ -31,10 +31,21 @@ export const getUpcomingMovies = () => {
 };
 
 export const getMoviesDetails = (id) => {
+  console.log(id);
+  const requestURL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`;
+
+  console.log("Request URL:", requestURL); // URL'yi konsola yazdır
+
   return axios
-    .get(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`)
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
+    .get(requestURL)
+    .then((res) => {
+      // console.log("Response Data:", res.data); // Veriyi konsola yazdır
+      return res.data; // Veriyi geri döndür
+    })
+    .catch((err) => {
+      console.error("Error:", err);
+      throw err;
+    });
 };
 
 export const getMoviesTrailer = (id) => {
@@ -63,4 +74,16 @@ export const getFavoritesMovies = (account_id) => {
     )
     .then((res) => res.data)
     .catch((error) => console.log(error));
+};
+
+export const getMoviesCredit = (id) => {
+  return axios
+    .get(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`)
+    .then((res) => {
+      // console.log("Response Data:", res.data); // Response verisini logla
+      return res.data;
+    })
+    .catch((error) => {
+      console.error("Error:", error); // Hata durumunda hata mesajını logla
+    });
 };
