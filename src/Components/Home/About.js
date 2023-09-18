@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  Divider,
-  Icon,
-  Text,
-  VStack,
-  Heading,
-} from "@chakra-ui/react";
+import { Box, Center, Divider, Icon, Text, VStack } from "@chakra-ui/react";
 import { FaFilm } from "react-icons/fa";
 import MovieImage from "./MovieImage";
 import AboutHeader from "./AboutHeader";
