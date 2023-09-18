@@ -7,11 +7,11 @@ export const NavContainer = ({ children }) => {
       justify="space-between"
       wrap="wrap"
       w="100%"
-      p="4"
-      bg="black"
+      p="5"
+      bg="gray.800"
       color="white"
-      borderBottom="2px"
-      borderColor="red.600">
+      borderBottom="5px"
+      borderColor="red.800">
       {children}
     </Flex>
   );
