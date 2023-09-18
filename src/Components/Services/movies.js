@@ -31,10 +31,10 @@ export const getUpcomingMovies = () => {
 };
 
 export const getMoviesDetails = (id) => {
-  console.log(id);
+  // console.log(id);
   const requestURL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`;
 
-  console.log("Request URL:", requestURL); // URL'yi konsola yazdır
+  // console.log("Request URL:", requestURL); // URL'yi konsola yazdır
 
   return axios
     .get(requestURL)
@@ -85,5 +85,19 @@ export const getMoviesCredit = (id) => {
     })
     .catch((error) => {
       console.error("Error:", error); // Hata durumunda hata mesajını logla
+    });
+};
+
+export const getMovieExternalIds = (movieId) => {
+  return axios
+    .get(
+      `${BASE_URL}/movie/${movieId}/external_ids?api_key=${API_KEY}&language=en-US`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Film dış kimlikleri alınamadı: ", error);
+      throw error;
     });
 };
