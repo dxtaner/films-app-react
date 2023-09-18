@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUpcomingMovies } from "../../../Components/Services/movies.js";
 
+export const upcomingLoading = (state) => state.upcoming.loading;
+
 const initialState = {
   upcoming: [],
-  status: "boşta",
+  status: "idle",
 };
 
 export const getUpcoming = createAsyncThunk(
