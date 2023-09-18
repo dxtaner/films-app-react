@@ -7,7 +7,7 @@ export const Logo = () => {
   return (
     <Box cursor="pointer" onClick={() => navigate("/")}>
       <Text fontSize="lg" fontWeight="bold">
-        Films
+        TMDB Filmleri
       </Text>
     </Box>
   );
