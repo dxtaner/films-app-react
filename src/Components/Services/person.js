@@ -42,3 +42,17 @@ export const getPersonMovieCredits = (personId) => {
       throw error;
     });
 };
+
+export const getPersonExternalIds = (personId) => {
+  return axios
+    .get(
+      `${BASE_URL}/person/${personId}/external_ids?api_key=${API_KEY}&language=en-US`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Kişi dış kimlikleri alınamadı: ", error);
+      throw error;
+    });
+};
