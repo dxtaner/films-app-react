@@ -11,6 +11,7 @@ import personReducer from "./features/actors/personSlice.js";
 import personMoviesReducer from "./features/actors/personMoviesSlice.js";
 import personPopularReducer from "./features/actors/personPopularSlice.js";
 import personExternalIdsReducer from "./features/actors/personExternalIdsSlice.js";
+import movieExternalIdsReducer from "./features/movies/details/movieExternalIdsSlice.js";
 
 export default configureStore({
   reducer: {
@@ -26,5 +27,6 @@ export default configureStore({
     personMovies: personMoviesReducer,
     popularPersons: personPopularReducer,
     personExternalIds: personExternalIdsReducer,
+    movieExternalIds: movieExternalIdsReducer,
   },
 });
