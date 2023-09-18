@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./Components/Home/Home.js";
 import About from "./Components/Home/About.js";
-import MovieDetails from "./Components/Movies/DetailsMovie.js";
+import MovieDetails from "./Components/Movies/Details.js";
 import LoginForm from "./Components/Auth/LoginForm.js";
 import Favorites from "./Components/Movies/FavoriteMovies.js";
 import UpcomingMovies from "./Components/Movies/UpcomingMovies.js";
