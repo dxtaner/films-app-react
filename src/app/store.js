@@ -10,6 +10,7 @@ import creditReducer from "./features/movies/details/creditSlice.js";
 import personReducer from "./features/actors/personSlice.js";
 import personMoviesReducer from "./features/actors/personMoviesSlice.js";
 import personPopularReducer from "./features/actors/personPopularSlice.js";
+import personExternalIdsReducer from "./features/actors/personExternalIdsSlice.js";
 
 export default configureStore({
   reducer: {
@@ -24,5 +25,6 @@ export default configureStore({
     person: personReducer,
     personMovies: personMoviesReducer,
     popularPersons: personPopularReducer,
+    personExternalIds: personExternalIdsReducer,
   },
 });
