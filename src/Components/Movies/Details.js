@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { VStack, Box, HStack } from "@chakra-ui/react";
+import { VStack, Box, HStack, Text } from "@chakra-ui/react";
 import {
   addToFavorites,
   addToWatchList,
@@ -12,17 +12,22 @@ import MovieCredits from "./MovieCredits";
 import MovieDetails from "./MovieDetails";
 import Title from "../Title/titles.js";
 import YoutubeEmbed from "../Youtube/YoutubeEmbed.js";
+import SimiliarMovies from "./SimiliarMovies.js";
 import {
   getTrailer,
   trailerList,
 } from "../../app/features/movies/details/trailerSlice.js";
 import {
+  fetchSimilarMovies,
+  selectSimilarMovies,
+} from "../../app/features/movies/details/similarSlice.js";
+import {
   creditList,
   getCredit,
 } from "../../app/features/movies/details/creditSlice.js";
 import {
-  fetchMovieExternalIds, // Dış kimlik bilgilerini alma işlemi
-  selectMovieExternalIds, // Dış kimlik bilgilerini seçmek için selektör
+  fetchMovieExternalIds,
+  selectMovieExternalIds,
 } from "../../app/features/movies/details/movieExternalIdsSlice.js"; //
 import PagePopularMovies from "./PopularMovies.js";
 
@@ -31,6 +36,7 @@ const Details = () => {
   const movieDetails = useSelector(detailsList);
   const movieTrailer = useSelector(trailerList);
   const movieCredits = useSelector(creditList);
+  const movieSimilar = useSelector(selectSimilarMovies);
   const movieExternalIds = useSelector(selectMovieExternalIds);
   const location = useLocation();
   const isAuth = sessionStorage.getItem("session_id");
@@ -40,6 +46,7 @@ const Details = () => {
     dispatch(getTrailer(location.state.id));
     dispatch(getCredit(location.state.id));
     dispatch(fetchMovieExternalIds(location.state.id));
+    dispatch(fetchSimilarMovies(location.state.id));
   }, [dispatch, location.state.id]);
 
   const handleFavoriteClick = () => {
@@ -53,6 +60,7 @@ const Details = () => {
   // console.log("movieExternalIds", movieExternalIds);
   // console.log("movieTrailer", movieTrailer);
   // console.log("movieDetails", movieDetails);
+  // console.log("movieSimilar", movieSimilar);
 
   return (
     <HStack
@@ -80,22 +88,34 @@ const Details = () => {
         w={["100%", "100%", "80%", "80%"]}
         ml={[0, 0, 50, 50]}
         mr={[0, 0, -50, -50]}>
-        <MovieDetails
-          movieDetails={movieDetails}
-          isAuth={isAuth}
-          movieExternalIds={movieExternalIds}
-          handleFavoriteClick={handleFavoriteClick}
-          handleWatchListClick={handleWatchListClick} // İzleme listesine ekleme işlevini iletiyoruz
-        />
-        <MovieCredits credits={movieCredits} />
-        <Box width="full">
-          <Title text="Trailer" />
-          {movieTrailer.length > 0 ? (
-            <YoutubeEmbed embedId={movieTrailer[0].key} />
-          ) : (
-            <Box fontSize="lg">Bu filmin fragmanı yok</Box>
-          )}
-        </Box>
+        {movieDetails ? (
+          <>
+            <MovieDetails
+              movieDetails={movieDetails}
+              isAuth={isAuth}
+              movieExternalIds={movieExternalIds}
+              handleFavoriteClick={handleFavoriteClick}
+              handleWatchListClick={handleWatchListClick}
+            />
+            <MovieCredits credits={movieCredits} />
+            <Box width="full">
+              <Title text="Trailer" />
+              {movieTrailer.length > 0 ? (
+                <YoutubeEmbed embedId={movieTrailer[0].key} />
+              ) : (
+                <Box fontSize="lg">Bu filmin fragmanı yok</Box>
+              )}
+            </Box>
+
+            {movieSimilar.length > 0 ? (
+              <SimiliarMovies movieSimilar={movieSimilar} />
+            ) : (
+              <Text fontWeight="bold">Benzer filmler bulunamadı.</Text>
+            )}
+          </>
+        ) : (
+          <Text fontSize="lg">Veriler yükleniyor...</Text>
+        )}
       </VStack>
     </HStack>
   );
