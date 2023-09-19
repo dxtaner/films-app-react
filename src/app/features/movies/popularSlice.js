@@ -13,7 +13,8 @@ export const getPopular = createAsyncThunk(
       const popularMovies = await getPopularMovies();
       return popularMovies;
     } catch (error) {
-      console.log(error);
+      console.error("An error occurred while fetching popular movies:", error);
+      throw error;
     }
   }
 );
@@ -21,14 +22,19 @@ export const getPopular = createAsyncThunk(
 export const popularSlice = createSlice({
   name: "popular",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getPopular.pending, (state) => {
-        state.status = "pending";
+        state.status = "loading";
       })
       .addCase(getPopular.fulfilled, (state, action) => {
         state.popular = action.payload;
-        state.status = "success";
+        state.status = "succeeded";
+      })
+      .addCase(getPopular.rejected, (state, action) => {
+        state.status = "failed";
+        console.error("Failed to fetch popular movies:", action.error);
       });
   },
 });
