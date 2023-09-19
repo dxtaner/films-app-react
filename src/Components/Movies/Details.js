@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { VStack, Box, HStack, Text } from "@chakra-ui/react";
+import { Box, Text, VStack, Heading } from "@chakra-ui/react";
 import {
   addToFavorites,
   addToWatchList,
@@ -28,7 +28,7 @@ import {
 import {
   fetchMovieExternalIds,
   selectMovieExternalIds,
-} from "../../app/features/movies/details/movieExternalIdsSlice.js"; //
+} from "../../app/features/movies/details/movieExternalIdsSlice.js";
 import PagePopularMovies from "./PopularMovies.js";
 
 const Details = () => {
@@ -57,37 +57,25 @@ const Details = () => {
     dispatch(addToWatchList(location.state.id, true));
   };
 
-  // console.log("movieExternalIds", movieExternalIds);
-  // console.log("movieTrailer", movieTrailer);
-  // console.log("movieDetails", movieDetails);
-  // console.log("movieSimilar", movieSimilar);
-
   return (
-    <HStack
+    <VStack
       spacing={4}
       p={["4", "4", "6", "6"]}
       fontSize={["md", "lg", "xl", "2xl"]}
       textAlign="center"
       maxW="1200px"
       mx="auto"
-      alignItems="stretch"
-      flexDirection={["column", "column", "row", "row"]} // Düzeni ayarla
-    >
-      {/* Sol Taraf */}
-      <VStack
-        spacing={4}
-        w={["100%", "100%", "20%", "20%"]}
-        mr={[0, 0, 20, 20]}
-        ml={[0, 0, -20, -20]}>
+      alignItems="stretch">
+      {/* Üst Taraf: Popüler Filmler */}
+      <VStack spacing={4} w="100%">
+        <Heading as="h2" fontSize="2xl">
+          Popüler Filmler
+        </Heading>
         <PagePopularMovies />
       </VStack>
 
-      {/* Sağ Taraf */}
-      <VStack
-        spacing={4}
-        w={["100%", "100%", "80%", "80%"]}
-        ml={[0, 0, 50, 50]}
-        mr={[0, 0, -50, -50]}>
+      {/* Alt Taraf: Film Detayları */}
+      <VStack spacing={4} w="100%">
         {movieDetails ? (
           <>
             <MovieDetails
@@ -117,7 +105,7 @@ const Details = () => {
           <Text fontSize="lg">Veriler yükleniyor...</Text>
         )}
       </VStack>
-    </HStack>
+    </VStack>
   );
 };
 

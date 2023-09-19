@@ -47,7 +47,7 @@ const MovieDetails = ({
       p={[4, 4, 6, 6]}
       fontSize={["md", "lg", "xl", "2xl"]}
       textAlign="center"
-      maxW="1800px"
+      maxW="1820px"
       mx="auto"
       alignItems="stretch">
       <MovieImage imageUrl={backdropImageUrl} altText={original_title} />
