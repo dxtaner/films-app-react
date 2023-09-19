@@ -20,7 +20,7 @@ export const getPersonInfo = (id) => {
   return axios
     .get(requestURL)
     .then((response) => {
-      console.log("Response Data:", response.data); // API yanıtını konsola yazdır
+      // console.log("Response Data:", response.data); // API yanıtını konsola yazdır
       return response.data;
     })
     .catch((error) => {
