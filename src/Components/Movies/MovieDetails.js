@@ -1,6 +1,7 @@
 import React from "react";
 import { VStack, Button, Text } from "@chakra-ui/react";
 import { AiOutlineHeart } from "react-icons/ai";
+import { MdPlaylistAdd } from "react-icons/md"; // İzleme listesine eklemek için
 import MovieImage from "./MovieImage";
 import MovieGenres from "./MovieGenres";
 import MovieOverview from "./MovieOverview";
@@ -10,7 +11,7 @@ const MovieDetails = ({
   movieDetails,
   isAuth,
   handleFavoriteClick,
-  handleWatchListClick,
+  handleWatchListClick, // İzleme listesine ekleme işlevi
   movieExternalIds,
 }) => {
   if (!movieDetails || !movieDetails.imdb_id) {
@@ -52,34 +53,36 @@ const MovieDetails = ({
       />
 
       {isAuth && (
-        <Button
-          leftIcon={<AiOutlineHeart />}
-          colorScheme="red"
-          size="lg"
-          onClick={handleFavoriteClick}
-          width="100%"
-          borderRadius="md"
-          _hover={{
-            bgColor: "red.600",
-            color: "white",
-          }}>
-          Favori Filmlere Ekle
-        </Button>
-      )}
-      {isAuth && (
-        <Button
-          leftIcon={<AiOutlineHeart />}
-          colorScheme="red"
-          size="lg"
-          onClick={handleWatchListClick}
-          width="100%"
-          borderRadius="md"
-          _hover={{
-            bgColor: "red.600",
-            color: "white",
-          }}>
-          İzleme Listeme Ekle
-        </Button>
+        <>
+          <Button
+            leftIcon={<AiOutlineHeart />}
+            colorScheme="red"
+            size="lg"
+            onClick={handleFavoriteClick}
+            width="100%"
+            borderRadius="md"
+            _hover={{
+              bgColor: "red.600",
+              color: "white",
+            }}
+            mb={4}>
+            Favori Filmlere Ekle
+          </Button>
+
+          <Button
+            leftIcon={<MdPlaylistAdd />}
+            colorScheme="blue"
+            size="lg"
+            onClick={handleWatchListClick} // İzleme listesine ekleme işlevi
+            width="100%"
+            borderRadius="md"
+            _hover={{
+              bgColor: "blue.600",
+              color: "white",
+            }}>
+            İzleme Listeme Ekle
+          </Button>
+        </>
       )}
     </VStack>
   );
