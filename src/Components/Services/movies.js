@@ -67,6 +67,18 @@ export const addMovieToFavorite = (account_id, values) => {
     .catch((error) => console.log(error));
 };
 
+export const addMovieToWatchList = (account_id, values) => {
+  return axios
+    .post(
+      `${BASE_URL}/account/${account_id}/watchlist?api_key=${API_KEY}&session_id=${getSessionId()}`,
+      values
+    )
+    .then((res) => {
+      res.data.success && showSuccessMessage(res.data.status_message);
+    })
+    .catch((error) => console.log(error));
+};
+
 export const getFavoritesMovies = (account_id) => {
   return axios
     .get(
@@ -74,6 +86,22 @@ export const getFavoritesMovies = (account_id) => {
     )
     .then((res) => res.data)
     .catch((error) => console.log(error));
+};
+
+export const getWatchListMovies = (account_id) => {
+  return axios
+    .get(
+      `${BASE_URL}/account/${account_id}/watchlist/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=en-US&sort_by=created_at.asc&page=1`
+    )
+    .then((res) => {
+      const data = res.data.results;
+      console.log("Watch List Movies Data:", data); // Veriyi logla
+      return data;
+    })
+    .catch((error) => {
+      console.error("getWatchListMovies Hatası:", error);
+      throw error;
+    });
 };
 
 export const getMoviesCredit = (id) => {
@@ -94,10 +122,25 @@ export const getMovieExternalIds = (movieId) => {
       `${BASE_URL}/movie/${movieId}/external_ids?api_key=${API_KEY}&language=en-US`
     )
     .then((response) => {
+      // console.log("Response Data:", response.data); // Response verisini logla
       return response.data;
     })
     .catch((error) => {
       console.error("Film dış kimlikleri alınamadı: ", error);
+      throw error;
+    });
+};
+export const getSimilarMovies = (movieId) => {
+  return axios
+    .get(
+      `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US`
+    )
+    .then((response) => {
+      // console.log("Similar Movies Data:", response.data); // Gelen veriyi logla
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Hata:", error);
       throw error;
     });
 };
