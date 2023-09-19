@@ -17,7 +17,6 @@ const MovieCard = ({ movie }) => {
       m={3}
       p={3}
       width={{ base: "200px", md: "250px" }}
-      padding={4}
       onClick={showDetails}
       borderRadius="lg"
       boxShadow="lg"
