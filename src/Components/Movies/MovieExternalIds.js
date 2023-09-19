@@ -19,26 +19,26 @@ const MovieExternalIds = ({ imdbId, wikidataId }) => {
       <Heading fontSize="2xl" mb={4}>
         Dış Film Bilgileri
       </Heading>
-      <Text fontSize="lg">
-        IMDb{" "}
+      <Text fontSize="lg" mb={2}>
+        IMDb bilgileri için tıklayın:{" "}
         <Link
           href={`https://www.imdb.com/title/${imdbId}`}
           target="_blank"
           rel="noopener noreferrer"
           color="teal.600"
           textDecoration="underline">
-          bilgileri için tıklayın..
+          IMDb
         </Link>
       </Text>
       <Text fontSize="lg">
-        WikiData{" "}
+        WikiData bilgileri için tıklayın:{" "}
         <Link
           href={`https://www.wikidata.org/wiki/${wikidataId}`}
           target="_blank"
           rel="noopener noreferrer"
           color="teal.600"
           textDecoration="underline">
-          bilgileri için tıklayın..
+          WikiData
         </Link>
       </Text>
     </Box>
