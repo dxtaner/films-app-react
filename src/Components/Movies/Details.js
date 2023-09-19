@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { VStack, Box, HStack } from "@chakra-ui/react";
 import {
   addToFavorites,
+  addToWatchList,
   detailsList,
   getDetails,
 } from "../../app/features/movies/details/detailsSlice.js";
@@ -45,7 +46,11 @@ const Details = () => {
     dispatch(addToFavorites(location.state.id, true));
   };
 
-  console.log("movieExternalIds", movieExternalIds);
+  const handleWatchListClick = () => {
+    dispatch(addToWatchList(location.state.id, true));
+  };
+
+  // console.log("movieExternalIds", movieExternalIds);
   // console.log("movieTrailer", movieTrailer);
   // console.log("movieDetails", movieDetails);
 
@@ -80,6 +85,7 @@ const Details = () => {
           isAuth={isAuth}
           movieExternalIds={movieExternalIds}
           handleFavoriteClick={handleFavoriteClick}
+          handleWatchListClick={handleWatchListClick} // İzleme listesine ekleme işlevini iletiyoruz
         />
         <MovieCredits credits={movieCredits} />
         <Box width="full">
