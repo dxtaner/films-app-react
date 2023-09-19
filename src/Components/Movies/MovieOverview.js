@@ -75,11 +75,11 @@ const MovieOverview = ({ movieDetails }) => {
         </Flex>
         <Flex justify="space-between" w="100%">
           <Text fontWeight="bold">Üretim Ülkeleri:</Text>
-          <Badge>{formattedProductionCountries}</Badge>
+          <Badge p={3}>{formattedProductionCountries}</Badge>
         </Flex>
         <Flex justify="space-between" w="100%">
           <Text fontWeight="bold">Konuşulan Diller:</Text>
-          <Badge>{formattedSpokenLanguages}</Badge>
+          <Badge p={3}>{formattedSpokenLanguages}</Badge>
         </Flex>
       </VStack>
     </Box>
