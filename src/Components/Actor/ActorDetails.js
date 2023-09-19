@@ -64,12 +64,12 @@ const ActorDetails = () => {
 
   return (
     <Box
-      p={3}
-      m={2}
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="md"
-      borderColor="teal.300"
+      p={["2", "2", "3", "3", "4"]}
+      m={["1", "1", "2", "2", "3"]}
+      borderWidth={["1px", "1px", "2px", "2px", "3px"]}
+      borderRadius={["md", "md", "lg", "lg", "xl"]}
+      boxShadow={["sm", "sm", "md", "md", "lg"]}
+      borderColor="teal.400"
       bgColor="white">
       {/* <LeftArrow prevId={actorId - 1} />
       <RightArrow nextId={actorId + 1} /> */}
