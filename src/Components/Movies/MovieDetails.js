@@ -14,8 +14,13 @@ const MovieDetails = ({
   handleWatchListClick,
   movieExternalIds,
 }) => {
-  if (!movieDetails || !movieDetails.imdb_id) {
-    console.error("movieDetails veya imdb_id eksik.");
+  if (!movieDetails) {
+    console.error("movieDetails eksik.");
+    return null;
+  }
+
+  if (!movieDetails.imdb_id) {
+    console.error("imdb_id eksik.");
     return null;
   }
 
@@ -74,7 +79,7 @@ const MovieDetails = ({
             leftIcon={<MdPlaylistAdd />}
             colorScheme="blue"
             size="lg"
-            onClick={handleWatchListClick} // İzleme listesine ekleme işlevi
+            onClick={handleWatchListClick}
             width="100%"
             borderRadius="md"
             _hover={{
