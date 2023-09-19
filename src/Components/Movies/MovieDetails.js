@@ -11,7 +11,7 @@ const MovieDetails = ({
   movieDetails,
   isAuth,
   handleFavoriteClick,
-  handleWatchListClick, // İzleme listesine ekleme işlevi
+  handleWatchListClick,
   movieExternalIds,
 }) => {
   if (!movieDetails || !movieDetails.imdb_id) {
