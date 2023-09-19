@@ -5,8 +5,13 @@ import { getMovieExternalIds } from "../../../../Components/Services/movies.js";
 export const fetchMovieExternalIds = createAsyncThunk(
   "movieExternalIds/fetchMovieExternalIds",
   async (movieId) => {
-    const response = await getMovieExternalIds(movieId);
-    return response;
+    try {
+      const response = await getMovieExternalIds(movieId);
+      // console.log("Response Data:", response); // Response verisini logla
+      return response;
+    } catch (error) {
+      throw error; // Hata durumunda hata fırlatılır
+    }
   }
 );
 
@@ -23,6 +28,7 @@ const movieExternalIdsSlice = createSlice({
     builder
       .addCase(fetchMovieExternalIds.pending, (state) => {
         state.status = "loading";
+        state.error = null; // Yeni bir istek başladığında önceki hata temizlenir
       })
       .addCase(fetchMovieExternalIds.fulfilled, (state, action) => {
         state.status = "succeeded";
