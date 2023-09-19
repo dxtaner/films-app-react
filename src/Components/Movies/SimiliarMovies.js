@@ -4,7 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import MovieCard from "../Cards/MovieCards";
 
 const SimilarMovies = ({ movieSimilar }) => {
-  const moviesPerPage = 3; // Sayfa başına gösterilen film sayısı
+  const moviesPerPage = 4; // Sayfa başına gösterilen film sayısı
   const [currentPage, setCurrentPage] = useState(0);
 
   // Mevcut sayfadaki filmleri hesapla
@@ -28,7 +28,7 @@ const SimilarMovies = ({ movieSimilar }) => {
   return (
     <VStack spacing={4} align="left">
       <Text fontWeight="bold">Benzer Filmler:</Text>
-      <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+      <SimpleGrid columns={[1, 2, 3, 4]} spacing={4}>
         {currentMovies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
