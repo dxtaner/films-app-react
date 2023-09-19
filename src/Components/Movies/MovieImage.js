@@ -6,7 +6,8 @@ const MovieImage = ({ imageUrl, altText }) => {
     <Box
       cursor="pointer"
       w="100%"
-      maxW="800px"
+      maxW="880px"
+      minW={"auto"}
       mx="auto"
       m={2}
       borderRadius="lg"
