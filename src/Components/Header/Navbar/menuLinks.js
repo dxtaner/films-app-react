@@ -1,9 +1,19 @@
 import { Box, Button, Image, Stack, Text } from "@chakra-ui/react";
 import { MenuItems } from "./menuItems.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <Box
@@ -28,16 +38,52 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
           <Text> Yaklaşan Filmler</Text>
         </MenuItems>
         {isAuth ? (
-          <>
-            <MenuItems to="/favorites">
-              <Text>Favori Filmlerim</Text>
-            </MenuItems>
+          <div style={{ position: "relative" }}>
             <Image
               borderRadius="full"
               src={`https://image.tmdb.org/t/p/original${accountInfo?.avatar_path}`}
               boxSize="40px"
+              cursor="pointer"
+              onClick={toggleMenu}
             />
-          </>
+            {isMenuOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "60px",
+                  right: "0",
+                  background: "white",
+                  boxShadow: "0px 0px 10px rgba(0,0,0,0.2)",
+                  zIndex: "1",
+                }}>
+                <Link
+                  to="/favorites"
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                    padding: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={closeMenu}>
+                  Favori Filmlerim
+                </Link>
+                <Link
+                  to="/WatchListMovies"
+                  style={{
+                    textDecoration: "none",
+                    color: "black",
+                    padding: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={closeMenu}>
+                  İzleme Listemdeki Filmlerim
+                </Link>
+                {/* Diğer menü öğelerini buraya ekleyebilirsiniz */}
+              </div>
+            )}
+          </div>
         ) : (
           <Button
             onClick={() => navigate("/auth/login")}
