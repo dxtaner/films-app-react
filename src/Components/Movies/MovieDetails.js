@@ -18,6 +18,7 @@ const MovieDetails = ({
     console.error("movieDetails veya imdb_id eksik.");
     return null;
   }
+
   if (!movieDetails) {
     return (
       <VStack
