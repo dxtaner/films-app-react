@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getMoviesDetails,
   addMovieToFavorite,
+  addMovieToWatchList,
 } from "../../../../Components/Services/movies.js";
 import { getAccountDetails } from "../../../../Components/Services/auth.js";
 
@@ -27,10 +28,27 @@ export const addToFavorites = createAsyncThunk(
   async (location_id, isFavorite) => {
     try {
       const { id } = await getAccountDetails();
+      // console.log(id);
       await addMovieToFavorite(id, {
         media_type: "movie",
         media_id: location_id,
         favorite: isFavorite,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const addToWatchList = createAsyncThunk(
+  "movies/addToWatchList",
+  async (location_id, isWatchListed) => {
+    try {
+      const { id } = await getAccountDetails();
+      await addMovieToWatchList(id, {
+        media_type: "movie",
+        media_id: location_id,
+        watchlist: isWatchListed,
       });
     } catch (error) {
       console.log(error);
@@ -54,6 +72,12 @@ export const detailsSlice = createSlice({
         state.status = "pending";
       })
       .addCase(addToFavorites.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(addToWatchList.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(addToWatchList.fulfilled, (state) => {
         state.status = "success";
       });
   },
