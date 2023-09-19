@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Button, Grid, Text } from "@chakra-ui/react";
+import { Box, Button, Grid } from "@chakra-ui/react";
 import {
   popularList,
   getPopular,
@@ -30,8 +30,12 @@ const PopularMovies = () => {
     }
   }, [popularMovies, page]);
 
-  if (!popularMovies || !popularMovies.results) {
-    console.error("popularMovies veya results eksik.");
+  if (!popularMovies) {
+    console.error("popularMovies eksik.");
+    return null;
+  }
+  if (!popularMovies.results) {
+    console.error("results eksik.");
     return null;
   }
 
@@ -50,10 +54,15 @@ const PopularMovies = () => {
 
   return (
     <Box>
-      <Text fontSize="2xl" mb={4}>
-        Popüler Filmler
-      </Text>
-      <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={4}>
+      <Grid
+        templateColumns={{
+          base: "repeat(1, 1fr)",
+          sm: "repeat(2, 1fr)",
+          md: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
+          xl: "repeat(5, 1fr)",
+        }}
+        gap={4}>
         {displayedMovies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
