@@ -10,6 +10,7 @@ import NavBar from "./Components/Header/Navbar/index.js";
 import Footer from "./Components/Footer/Footer.js";
 import ActorDetails from "./Components/Actor/ActorDetails.js";
 import PersonPopular from "./Components/Actor/PopularPerson.js";
+import WatchListMovies from "./Components/Movies/WatchListMovies.js";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/movieDetails/:id" element={<MovieDetails />} />
         <Route path="/auth/login" element={<LoginForm />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/watchListMovies" element={<WatchListMovies />} />
         <Route path="/actorDetails/:id" element={<ActorDetails />} />
         <Route path="/popularPersons" element={<PersonPopular />} />
       </Routes>
