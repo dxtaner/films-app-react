@@ -1,5 +1,3 @@
-// PopularMovies.js
-
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Button, Grid, Text } from "@chakra-ui/react";
@@ -21,10 +19,21 @@ const PopularMovies = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const startIndex = (page - 1) * moviesPerPage;
-    const endIndex = startIndex + moviesPerPage;
-    setDisplayedMovies(popularMovies.results.slice(startIndex, endIndex));
+    if (popularMovies && popularMovies.results) {
+      const startIndex = (page - 1) * moviesPerPage;
+      const endIndex = startIndex + moviesPerPage;
+      if (popularMovies.results.length >= endIndex) {
+        setDisplayedMovies(popularMovies.results.slice(startIndex, endIndex));
+      } else {
+        setPage(Math.ceil(popularMovies.results.length / moviesPerPage));
+      }
+    }
   }, [popularMovies, page]);
+
+  if (!popularMovies || !popularMovies.results) {
+    console.error("popularMovies veya results eksik.");
+    return null;
+  }
 
   const goToPreviousPage = () => {
     if (page > 1) {
