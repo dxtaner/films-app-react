@@ -19,6 +19,10 @@ import {
   creditList,
   getCredit,
 } from "../../app/features/movies/details/creditSlice.js";
+import {
+  fetchMovieExternalIds, // Dış kimlik bilgilerini alma işlemi
+  selectMovieExternalIds, // Dış kimlik bilgilerini seçmek için selektör
+} from "../../app/features/movies/details/movieExternalIdsSlice.js"; //
 import PagePopularMovies from "./PopularMovies.js";
 
 const Details = () => {
@@ -26,6 +30,7 @@ const Details = () => {
   const movieDetails = useSelector(detailsList);
   const movieTrailer = useSelector(trailerList);
   const movieCredits = useSelector(creditList);
+  const movieExternalIds = useSelector(selectMovieExternalIds);
   const location = useLocation();
   const isAuth = sessionStorage.getItem("session_id");
 
@@ -33,11 +38,16 @@ const Details = () => {
     dispatch(getDetails(location.state.id));
     dispatch(getTrailer(location.state.id));
     dispatch(getCredit(location.state.id));
+    dispatch(fetchMovieExternalIds(location.state.id));
   }, [dispatch, location.state.id]);
 
   const handleFavoriteClick = () => {
     dispatch(addToFavorites(location.state.id, true));
   };
+
+  console.log("movieExternalIds", movieExternalIds);
+  // console.log("movieTrailer", movieTrailer);
+  // console.log("movieDetails", movieDetails);
 
   return (
     <HStack
@@ -47,22 +57,28 @@ const Details = () => {
       textAlign="center"
       maxW="1200px"
       mx="auto"
-      alignItems="stretch">
+      alignItems="stretch"
+      flexDirection={["column", "column", "row", "row"]} // Düzeni ayarla
+    >
+      {/* Sol Taraf */}
       <VStack
         spacing={4}
-        w="20%" // Sol tarafı kaplaması için genişlik ayarı
-        mr={20}
-        ml={-20}>
+        w={["100%", "100%", "20%", "20%"]}
+        mr={[0, 0, 20, 20]}
+        ml={[0, 0, -20, -20]}>
         <PagePopularMovies />
       </VStack>
+
+      {/* Sağ Taraf */}
       <VStack
         spacing={4}
-        w="80%" // Sağ tarafı kaplaması için genişlik ayarı
-        ml={50}
-        mr={-50}>
+        w={["100%", "100%", "80%", "80%"]}
+        ml={[0, 0, 50, 50]}
+        mr={[0, 0, -50, -50]}>
         <MovieDetails
           movieDetails={movieDetails}
           isAuth={isAuth}
+          movieExternalIds={movieExternalIds}
           handleFavoriteClick={handleFavoriteClick}
         />
         <MovieCredits credits={movieCredits} />
