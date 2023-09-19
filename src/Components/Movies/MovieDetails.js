@@ -1,19 +1,22 @@
 import React from "react";
-import {
-  Box,
-  Heading,
-  HStack,
-  Image,
-  Tag,
-  Text,
-  VStack,
-  Button,
-} from "@chakra-ui/react";
+import { VStack, Button, Text } from "@chakra-ui/react";
 import { AiOutlineHeart } from "react-icons/ai";
+import MovieImage from "./MovieImage";
+import MovieGenres from "./MovieGenres";
+import MovieOverview from "./MovieOverview";
+import MovieExternalIds from "./MovieExternalIds";
 
-const MovieDetails = ({ movieDetails, isAuth, handleFavoriteClick }) => {
-  const backdropPath = movieDetails.backdrop_path || "";
-  const imageUrl = `https://image.tmdb.org/t/p/original${backdropPath}`;
+const MovieDetails = ({
+  movieDetails,
+  isAuth,
+  handleFavoriteClick,
+  handleWatchListClick,
+  movieExternalIds,
+}) => {
+  if (!movieDetails || !movieDetails.imdb_id) {
+    console.error("movieDetails veya imdb_id eksik.");
+    return null;
+  }
   if (!movieDetails) {
     return (
       <VStack
@@ -28,95 +31,25 @@ const MovieDetails = ({ movieDetails, isAuth, handleFavoriteClick }) => {
     );
   }
 
+  const { backdrop_path, original_title, genres } = movieDetails;
+
+  const backdropImageUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+
   return (
     <VStack
       p={[4, 4, 6, 6]}
       fontSize={["md", "lg", "xl", "2xl"]}
       textAlign="center"
-      maxW="1800px" // Genişliği artırabiliriz
+      maxW="1800px"
       mx="auto"
-      alignItems="stretch" // Metinlerin genişliği eşit olsun
-    >
-      <Box
-        cursor="pointer"
-        w="100%"
-        maxW="800px"
-        mx="auto"
-        m={2}
-        borderRadius="lg"
-        overflow="hidden"
-        transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"
-        _hover={{
-          transform: "scale(1.05)",
-          boxShadow: "lg",
-        }}
-        borderWidth="1px"
-        borderColor="gray.200">
-        <Image
-          src={imageUrl}
-          alt={movieDetails.original_title}
-          w="100%"
-          h="auto"
-          objectFit="cover"
-          objectPosition="center top"
-        />
-      </Box>
-
-      <HStack spacing={2} mt={4} justifyContent="center">
-        {movieDetails?.genres?.map((gen, index) => (
-          <Tag
-            key={index}
-            colorScheme="red"
-            bg="gray.300"
-            borderRadius="lg"
-            p={2}
-            fontSize="sm" // Daha küçük yazı boyutu
-            fontWeight="bold" // Kalın yazı tipi
-          >
-            {gen.name}
-          </Tag>
-        ))}
-      </HStack>
-
-      <Box
-        p={6}
-        boxShadow="lg"
-        borderRadius="lg"
-        bg="white"
-        maxW="800px"
-        mx="auto"
-        borderWidth={1}
-        borderColor="gray.200"
-        textAlign="center"
-        fontSize={["lg", "xl", "2xl", "3xl"]}
-        lineHeight="taller"
-        color="teal.600">
-        <Heading fontSize="2xl" mb={4}>
-          {movieDetails.original_title}
-        </Heading>
-
-        <Text fontSize="lg" mb={4}>
-          {movieDetails.overview}
-        </Text>
-
-        <HStack spacing={4} justifyContent="center">
-          <Text fontSize="md">
-            <strong>Beğeni Sayısı:</strong> {movieDetails.vote_count}
-          </Text>
-          {movieDetails.vote_average != null && (
-            <Text fontSize="md">
-              <strong>Oy Ortalaması:</strong>{" "}
-              {movieDetails.vote_average.toFixed(2)}
-            </Text>
-          )}
-        </HStack>
-
-        <HStack spacing={4} mt={4} justifyContent="center">
-          <Text fontSize="md">
-            <strong>Çıkış Tarihi:</strong> {movieDetails.release_date}
-          </Text>
-        </HStack>
-      </Box>
+      alignItems="stretch">
+      <MovieImage imageUrl={backdropImageUrl} altText={original_title} />
+      <MovieGenres genres={genres} />
+      <MovieOverview title={original_title} movieDetails={movieDetails} />
+      <MovieExternalIds
+        imdbId={movieExternalIds.imdb_id}
+        wikidataId={movieExternalIds.wikidata_id}
+      />
 
       {isAuth && (
         <Button
@@ -131,6 +64,21 @@ const MovieDetails = ({ movieDetails, isAuth, handleFavoriteClick }) => {
             color: "white",
           }}>
           Favori Filmlere Ekle
+        </Button>
+      )}
+      {isAuth && (
+        <Button
+          leftIcon={<AiOutlineHeart />}
+          colorScheme="red"
+          size="lg"
+          onClick={handleWatchListClick}
+          width="100%"
+          borderRadius="md"
+          _hover={{
+            bgColor: "red.600",
+            color: "white",
+          }}>
+          İzleme Listeme Ekle
         </Button>
       )}
     </VStack>
