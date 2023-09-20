@@ -19,6 +19,7 @@ const SeriesCard = ({ series }) => {
     genre_ids,
     first_air_date,
     overview,
+    backdrop_path,
     vote_average,
     vote_count,
     origin_country,
@@ -55,7 +56,7 @@ const SeriesCard = ({ series }) => {
       overflow="hidden"
       boxShadow="md">
       <Image
-        src={`https://image.tmdb.org/t/p/original${poster_path}`}
+        src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
         alt={name}
         w="100%"
         h={44}
@@ -79,7 +80,7 @@ const SeriesCard = ({ series }) => {
           Origin Country: {origin_country}
         </Text>
         <Text fontSize="sm" mb={2}>
-          Popularity: {popularity} {/* popularity gösteriyoruz */}
+          Popularity: {popularity}
         </Text>
         <Text fontSize="sm" mb={2}>
           {overview.length > 150
