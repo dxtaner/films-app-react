@@ -39,6 +39,14 @@ export const authenticateUser = (request_token) => {
 export const getAccountDetails = () => {
   return axios
     .get(`${BASE_URL}/account?api_key=${API_KEY}&session_id=${getSessionId()}`)
-    .then((res) => res.data)
-    .catch((error) => console.log(error));
+    .then((res) => {
+      const data = res.data;
+      // console.log("Account Details:", data); // Log the data
+      // console.log("Account Details:", getSessionId); // Log the data
+      return data;
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+      throw error;
+    });
 };
