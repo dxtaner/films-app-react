@@ -6,13 +6,13 @@ const API_KEY = process.env.REACT_APP_APIKEY;
 
 export const getPopularPersons = () => {
   return axios
-    .get(`${BASE_URL}/person/popular?api_key=${API_KEY}&language=en-US&page=1`)
+    .get(`${BASE_URL}/person/popular?api_key=${API_KEY}&language=tr-US&page=1`)
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
 
 export const getPersonInfo = (id) => {
-  const requestURL = `${BASE_URL}/person/${id}?api_key=${API_KEY}&language=en-US`;
+  const requestURL = `${BASE_URL}/person/${id}?api_key=${API_KEY}&language=tr-US`;
 
   // console.log("Person ID:", id); // Kişi kimliğini konsola yazdır
   // console.log("Request URL:", requestURL); // İstek URL'sini konsola yazdır
@@ -32,7 +32,7 @@ export const getPersonInfo = (id) => {
 export const getPersonMovieCredits = (personId) => {
   return axios
     .get(
-      `${BASE_URL}/person/${personId}/movie_credits?api_key=${API_KEY}&language=en-US`
+      `${BASE_URL}/person/${personId}/movie_credits?api_key=${API_KEY}&language=tr-US`
     )
     .then((response) => {
       return response.data;
@@ -46,7 +46,7 @@ export const getPersonMovieCredits = (personId) => {
 export const getPersonExternalIds = (personId) => {
   return axios
     .get(
-      `${BASE_URL}/person/${personId}/external_ids?api_key=${API_KEY}&language=en-US`
+      `${BASE_URL}/person/${personId}/external_ids?api_key=${API_KEY}&language=tr-US`
     )
     .then((response) => {
       return response.data;
