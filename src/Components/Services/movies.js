@@ -86,8 +86,6 @@ export const addToMovieRatings = async (movie_id, rating) => {
       const data = response.data;
       if (data.status_message === "Success") {
         showSuccessMessage("Film başarıyla derecelendirildi");
-      } else {
-        console.error("Film Derecelendirilemedi:", data.status_message);
       }
     } else {
       console.error("Film Derecelendirilemedi.");
@@ -117,6 +115,37 @@ export const getFavoritesMovies = (account_id) => {
     )
     .then((res) => res.data)
     .catch((error) => console.log(error));
+};
+
+export const getRatedMovies = async (account_id) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/account/${account_id}/rated/movies`,
+      {
+        params: {
+          api_key: API_KEY,
+          session_id: getSessionId(),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const data = response.data;
+      if (data.results) {
+        // console.log("Gelen Derecelendirilmiş Filmler:", data.results);
+        return data.results;
+      } else {
+        console.error("Derecelendirilmiş filmler alınamadı.");
+        return [];
+      }
+    } else {
+      console.error("Derecelendirilmiş filmler alınamadı.");
+      return [];
+    }
+  } catch (error) {
+    console.error("Hata:", error);
+    throw error;
+  }
 };
 
 export const getWatchListMovies = (account_id) => {
