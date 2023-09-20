@@ -3,6 +3,7 @@ import {
   getMoviesDetails,
   addMovieToFavorite,
   addMovieToWatchList,
+  addToMovieRatings,
 } from "../../../../Components/Services/movies.js";
 import { getAccountDetails } from "../../../../Components/Services/auth.js";
 
@@ -56,6 +57,19 @@ export const addToWatchList = createAsyncThunk(
   }
 );
 
+export const addToMovieRating = createAsyncThunk(
+  "movies/addToMovieRating",
+  async ({ movieId, rating }) => {
+    try {
+      await addToMovieRatings(movieId, rating);
+      return { movieId, rating };
+    } catch (error) {
+      console.error("addToMovieRating işlemi sırasında hata oluştu:", error);
+      throw error;
+    }
+  }
+);
+
 export const detailsSlice = createSlice({
   name: "details",
   initialState,
@@ -78,6 +92,12 @@ export const detailsSlice = createSlice({
         state.status = "pending";
       })
       .addCase(addToWatchList.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(addToMovieRating.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(addToMovieRating.fulfilled, (state) => {
         state.status = "success";
       });
   },
