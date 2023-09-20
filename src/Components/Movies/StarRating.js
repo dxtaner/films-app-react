@@ -35,7 +35,7 @@ const StarRating = ({ value, movieDetailsId, onRatingChange }) => {
             style={{ display: "inline-block", marginRight: "5px" }}>
             <FaStar
               color={filled ? "yellow" : "gray"}
-              size={24}
+              size={28}
               style={{ cursor: "pointer" }}
             />
           </span>
