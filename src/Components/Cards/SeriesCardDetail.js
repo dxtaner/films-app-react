@@ -15,7 +15,6 @@ const YOUR_API_KEY = process.env.REACT_APP_APIKEY;
 const SeriesCard = ({ series }) => {
   const {
     name,
-    poster_path,
     genre_ids,
     first_air_date,
     overview,
@@ -33,7 +32,7 @@ const SeriesCard = ({ series }) => {
       .get("https://api.themoviedb.org/3/genre/tv/list", {
         params: {
           api_key: YOUR_API_KEY,
-          language: "en-US",
+          language: "tr-US",
         },
       })
       .then((response) => {
