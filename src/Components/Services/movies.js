@@ -67,6 +67,37 @@ export const addMovieToFavorite = (account_id, values) => {
     .catch((error) => console.log(error));
 };
 
+export const addToMovieRatings = async (movie_id, rating) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/movie/${movie_id}/rating`,
+      {
+        value: rating,
+      },
+      {
+        params: {
+          api_key: API_KEY,
+          session_id: getSessionId(),
+        },
+      }
+    );
+
+    if (response.status === 201) {
+      const data = response.data;
+      if (data.status_message === "Success") {
+        showSuccessMessage("Film başarıyla derecelendirildi");
+      } else {
+        console.error("Film Derecelendirilemedi:", data.status_message);
+      }
+    } else {
+      console.error("Film Derecelendirilemedi.");
+    }
+  } catch (error) {
+    console.error("Hata:", error);
+    throw error;
+  }
+};
+
 export const addMovieToWatchList = (account_id, values) => {
   return axios
     .post(
