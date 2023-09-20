@@ -11,6 +11,8 @@ import Footer from "./Components/Footer/Footer.js";
 import ActorDetails from "./Components/Actor/ActorDetails.js";
 import PersonPopular from "./Components/Actor/PopularPerson.js";
 import WatchListMovies from "./Components/Movies/WatchListMovies.js";
+import PopularSeries from "./Components/Series/PopularSeries.js";
+import TopSeries from "./Components/Series/TopSeries.js";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/watchListMovies" element={<WatchListMovies />} />
         <Route path="/actorDetails/:id" element={<ActorDetails />} />
         <Route path="/popularPersons" element={<PersonPopular />} />
+        <Route path="/popularSeries" element={<PopularSeries />} />
+        <Route path="/topSeries" element={<TopSeries />} />
       </Routes>
       <Footer />
     </Router>
