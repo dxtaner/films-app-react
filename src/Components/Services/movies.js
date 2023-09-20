@@ -11,28 +11,28 @@ const getSessionId = () =>
 
 export const getPopularMovies = () => {
   return axios
-    .get(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`)
+    .get(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=tr-US&page=1`)
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
 
 export const getTopRatedMovies = () => {
   return axios
-    .get(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`)
+    .get(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=tr-US&page=1`)
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
 
 export const getUpcomingMovies = () => {
   return axios
-    .get(`${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`)
+    .get(`${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=tr-US&page=1`)
     .then((res) => res.data)
     .catch((err) => console.log(err));
 };
 
 export const getMoviesDetails = (id) => {
   // console.log(id);
-  const requestURL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`;
+  const requestURL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=tr-US`;
 
   // console.log("Request URL:", requestURL); // URL'yi konsola yazdır
 
@@ -82,7 +82,7 @@ export const addMovieToWatchList = (account_id, values) => {
 export const getFavoritesMovies = (account_id) => {
   return axios
     .get(
-      `${BASE_URL}/account/${account_id}/favorite/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=en-US&sort_by=created_at.asc&page=1`
+      `${BASE_URL}/account/${account_id}/favorite/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=tr-US&sort_by=created_at.asc&page=1`
     )
     .then((res) => res.data)
     .catch((error) => console.log(error));
@@ -91,7 +91,7 @@ export const getFavoritesMovies = (account_id) => {
 export const getWatchListMovies = (account_id) => {
   return axios
     .get(
-      `${BASE_URL}/account/${account_id}/watchlist/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=en-US&sort_by=created_at.asc&page=1`
+      `${BASE_URL}/account/${account_id}/watchlist/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=tr-US&sort_by=created_at.asc&page=1`
     )
     .then((res) => {
       const data = res.data.results;
@@ -106,7 +106,7 @@ export const getWatchListMovies = (account_id) => {
 
 export const getMoviesCredit = (id) => {
   return axios
-    .get(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`)
+    .get(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=tr-US`)
     .then((res) => {
       // console.log("Response Data:", res.data); // Response verisini logla
       return res.data;
@@ -119,7 +119,7 @@ export const getMoviesCredit = (id) => {
 export const getMovieExternalIds = (movieId) => {
   return axios
     .get(
-      `${BASE_URL}/movie/${movieId}/external_ids?api_key=${API_KEY}&language=en-US`
+      `${BASE_URL}/movie/${movieId}/external_ids?api_key=${API_KEY}&language=tr-US`
     )
     .then((response) => {
       // console.log("Response Data:", response.data); // Response verisini logla
@@ -133,7 +133,7 @@ export const getMovieExternalIds = (movieId) => {
 export const getSimilarMovies = (movieId) => {
   return axios
     .get(
-      `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US`
+      `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=tr-US`
     )
     .then((response) => {
       // console.log("Similar Movies Data:", response.data); // Gelen veriyi logla
