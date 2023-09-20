@@ -7,6 +7,7 @@ import {
   addToWatchList,
   detailsList,
   getDetails,
+  addToMovieRating,
 } from "../../app/features/movies/details/detailsSlice.js";
 import MovieCredits from "./MovieCredits";
 import MovieDetails from "./MovieDetails";
@@ -84,6 +85,7 @@ const Details = () => {
               movieExternalIds={movieExternalIds}
               handleFavoriteClick={handleFavoriteClick}
               handleWatchListClick={handleWatchListClick}
+              rating={addToMovieRating}
             />
             <MovieCredits credits={movieCredits} />
             <Box width="full">
