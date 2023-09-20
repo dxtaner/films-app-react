@@ -7,8 +7,11 @@ import {
   addToWatchList,
   detailsList,
   getDetails,
-  addToMovieRating,
 } from "../../app/features/movies/details/detailsSlice.js";
+import {
+  fetchRatedMovies,
+  selectRatedMovies,
+} from "../../app/features/movies/ratedMoiveSlice.js";
 import MovieCredits from "./MovieCredits";
 import MovieDetails from "./MovieDetails";
 import Title from "../Title/titles.js";
@@ -38,6 +41,7 @@ const Details = () => {
   const movieTrailer = useSelector(trailerList);
   const movieCredits = useSelector(creditList);
   const movieSimilar = useSelector(selectSimilarMovies);
+  const ratedMoives = useSelector(selectRatedMovies);
   const movieExternalIds = useSelector(selectMovieExternalIds);
   const location = useLocation();
   const isAuth = sessionStorage.getItem("session_id");
@@ -48,6 +52,7 @@ const Details = () => {
     dispatch(getCredit(location.state.id));
     dispatch(fetchMovieExternalIds(location.state.id));
     dispatch(fetchSimilarMovies(location.state.id));
+    dispatch(fetchRatedMovies(location.state.id));
   }, [dispatch, location.state.id]);
 
   const handleFavoriteClick = () => {
@@ -85,7 +90,7 @@ const Details = () => {
               movieExternalIds={movieExternalIds}
               handleFavoriteClick={handleFavoriteClick}
               handleWatchListClick={handleWatchListClick}
-              rating={addToMovieRating}
+              ratedMoives={ratedMoives}
             />
             <MovieCredits credits={movieCredits} />
             <Box width="full">
