@@ -76,10 +76,10 @@ const SeriesCard = ({ series }) => {
           ))}
         </Text>
         <Text fontSize="sm" mb={2}>
-          Origin Country: {origin_country}
+          Ana Ülke: {origin_country}
         </Text>
         <Text fontSize="sm" mb={2}>
-          Popularity: {popularity}
+          Popületisi: {popularity.toFixed(2)}
         </Text>
         <Text fontSize="sm" mb={2}>
           {overview.length > 150
@@ -89,10 +89,10 @@ const SeriesCard = ({ series }) => {
 
         <Flex justifyContent="space-between" alignItems="center">
           <Tooltip label={`Vote Average: ${vote_average}`}>
-            <Badge colorScheme="blue">IMDb: {vote_average}</Badge>
+            <Badge colorScheme="blue">Oy Oranı: {vote_average}</Badge>
           </Tooltip>
           <Tooltip label={`Vote Count: ${vote_count}`}>
-            <Badge colorScheme="orange">Votes: {vote_count}</Badge>
+            <Badge colorScheme="orange">Oy Sayısı: {vote_count}</Badge>
           </Tooltip>
         </Flex>
       </Box>
