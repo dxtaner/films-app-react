@@ -31,6 +31,12 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
         <MenuItems to="/popularPersons">
           <Text>Popüler Oyuncular</Text>
         </MenuItems>
+        <MenuItems to="/popularSeries">
+          <Text>Popüler Diziler</Text>
+        </MenuItems>
+        <MenuItems to="/topSeries">
+          <Text>En İyi Diziler</Text>
+        </MenuItems>
         <MenuItems to="/">
           <Text>En Yüksek Puan Alan Filmler</Text>
         </MenuItems>
@@ -57,7 +63,7 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
                   zIndex: "1",
                 }}>
                 <Link
-                  to="/favorites"
+                  to="/myFavoriteMovives"
                   style={{
                     textDecoration: "none",
                     color: "black",
