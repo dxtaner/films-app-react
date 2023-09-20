@@ -14,14 +14,21 @@ const MovieDetails = ({
   handleWatchListClick,
   movieExternalIds,
 }) => {
-  if (!movieDetails) {
-    console.error("movieDetails eksik.");
+  if (!movieExternalIds) {
+    console.error("movieExternalIds eksik.");
     return null;
   }
 
-  if (!movieDetails.imdb_id) {
+  if (!movieExternalIds.imdb_id) {
     console.error("imdb_id eksik.");
     return null;
+  }
+
+  if (movieDetails && movieDetails.imdb_id) {
+    // imdb_id özelliğine güvenli bir şekilde erişin
+    console.log(movieDetails.imdb_id);
+  } else {
+    console.log("movie null veya tanımsız.");
   }
 
   if (!movieDetails) {
