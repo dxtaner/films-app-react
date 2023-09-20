@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VStack, Button, Text, Flex, Box } from "@chakra-ui/react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md"; // İzleme listesine eklemek için
@@ -14,13 +14,26 @@ const MovieDetails = ({
   handleFavoriteClick,
   handleWatchListClick,
   movieExternalIds,
-  // rating,
-  // onRating,
+  ratedMoives,
 }) => {
   const [rating, setRating] = useState(0);
 
+  useEffect(() => {
+    // Her film değiştiğinde, yeni filmi değerlendirmek için başlangıç ​​değerini sıfırla
+    setRating(0);
+    // ratedMoives dizisini döngüye alarak eşleşen filmleri kontrol et
+    ratedMoives.forEach((ratedMovie) => {
+      if (ratedMovie.id === movieDetails.id) {
+        // Eşleşen bir film bulundu
+        // console.log("Eşleşen film bulundu:", ratedMovie);
+        // console.log("Eşleşen film bulundu:", ratedMovie.rating);
+        // Eşleşen filmdeki rating değerini alarak rating'i güncelle
+        setRating(ratedMovie.rating);
+      }
+    });
+  }, [ratedMoives, movieDetails.id]);
+
   const handleRatingChange = (newRating) => {
-    // console.log("Seçilen Derecelendirme:", newRating);
     setRating(newRating);
   };
   if (!movieExternalIds) {
@@ -76,7 +89,7 @@ const MovieDetails = ({
             />
             <div style={{ float: "right" }}>
               <Text>
-                Puanım:{" "}
+                Puanım{" "}
                 {rating > 0 ? (
                   <>
                     {[...Array(rating)].map((_, index) => (
@@ -88,7 +101,7 @@ const MovieDetails = ({
                     ))}
                   </>
                 ) : (
-                  "Henüz derecelendirme yok"
+                  ": Henüz derecelendirmem yok"
                 )}
               </Text>
             </div>
