@@ -155,7 +155,7 @@ export const getWatchListMovies = (account_id) => {
     )
     .then((res) => {
       const data = res.data.results;
-      console.log("Watch List Movies Data:", data); // Veriyi logla
+      // console.log("Watch List Movies Data:", data); // Veriyi logla
       return data;
     })
     .catch((error) => {

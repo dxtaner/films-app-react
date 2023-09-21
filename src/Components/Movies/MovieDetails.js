@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { VStack, Button, Text, Flex, Box } from "@chakra-ui/react";
 import { AiOutlineHeart } from "react-icons/ai";
-import { MdPlaylistAdd } from "react-icons/md"; // İzleme listesine eklemek için
+import { MdPlaylistAdd } from "react-icons/md";
 import MovieImage from "./MovieImage";
 import MovieGenres from "./MovieGenres";
 import MovieOverview from "./MovieOverview";
 import MovieExternalIds from "./MovieExternalIds";
-import StarRating from "./StarRating"; // StarRating bileşenini içe aktarın
+import StarRating from "./StarRating";
 
 const MovieDetails = ({
   movieDetails,
@@ -39,16 +39,6 @@ const MovieDetails = ({
   if (!movieExternalIds) {
     console.error("movieExternalIds eksik.");
     return null;
-  }
-
-  if (!movieExternalIds.imdb_id) {
-    console.error("imdb_id eksik.");
-    return null;
-  }
-
-  if (movieDetails && movieDetails.imdb_id) {
-  } else {
-    console.log("movie null veya tanımsız.");
   }
 
   if (!movieDetails) {
@@ -110,10 +100,7 @@ const MovieDetails = ({
       </Flex>
 
       <MovieOverview title={original_title} movieDetails={movieDetails} />
-      <MovieExternalIds
-        imdbId={movieExternalIds.imdb_id}
-        wikidataId={movieExternalIds.wikidata_id}
-      />
+      <MovieExternalIds movieExternalIds={movieExternalIds} />
       {isAuth && (
         <>
           <Button
