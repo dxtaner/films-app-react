@@ -15,18 +15,18 @@ import {
   getWatchList,
   watchListMovies,
   watchListLoading,
-} from "../../app/features/movies/watchListSlice.js"; // İzleme listesi slice'ını eklemeyi unutmayın
+} from "../../app/features/movies/watchListSlice.js";
 import Title from "../Title/titles.js";
 
 const WatchListMovies = () => {
   const dispatch = useDispatch();
-  const watchList = useSelector(watchListMovies); // Watch List slice'ından verileri alın
-  const isLoading = useSelector(watchListLoading); // Watch List yükleniyor mu kontrolü
+  const watchList = useSelector(watchListMovies);
+  const isLoading = useSelector(watchListLoading);
   const token = sessionStorage.getItem("session_id");
 
   useEffect(() => {
     if (token) {
-      dispatch(getWatchList()); // İzleme listesi verilerini almak için gerekli action'u çağırın
+      dispatch(getWatchList());
     }
   }, [dispatch, token]);
 
