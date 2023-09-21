@@ -34,12 +34,17 @@ import {
   selectMovieExternalIds,
 } from "../../app/features/movies/details/movieExternalIdsSlice.js";
 import PagePopularMovies from "./PopularMovies.js";
+import {
+  popularList,
+  getPopular,
+} from "../../app/features/movies/popularSlice.js";
 
 const Details = () => {
   const dispatch = useDispatch();
   const movieDetails = useSelector(detailsList);
   const movieTrailer = useSelector(trailerList);
   const movieCredits = useSelector(creditList);
+  const popularMovies = useSelector(popularList);
   const movieSimilar = useSelector(selectSimilarMovies);
   const ratedMoives = useSelector(selectRatedMovies);
   const movieExternalIds = useSelector(selectMovieExternalIds);
@@ -50,6 +55,7 @@ const Details = () => {
     dispatch(getDetails(location.state.id));
     dispatch(getTrailer(location.state.id));
     dispatch(getCredit(location.state.id));
+    dispatch(getPopular(location.state.id));
     dispatch(fetchMovieExternalIds(location.state.id));
     dispatch(fetchSimilarMovies(location.state.id));
     dispatch(fetchRatedMovies(location.state.id));
@@ -77,7 +83,7 @@ const Details = () => {
         <Heading as="h2" fontSize="2xl">
           Popüler Filmler
         </Heading>
-        <PagePopularMovies />
+        <PagePopularMovies popularMovies={popularMovies} />
       </VStack>
 
       {/* Alt Taraf: Film Detayları */}

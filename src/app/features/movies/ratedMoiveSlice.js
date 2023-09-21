@@ -14,7 +14,7 @@ export const fetchRatedMovies = createAsyncThunk(
       const ratedMovies = await getRatedMovies(account_id);
       return ratedMovies;
     } catch (error) {
-      console.error("Derecelendirilmiş filmleri alma işleminde hata:", error);
+      // console.error("Derecelendirilmiş filmleri alma işleminde hata:", error);
       throw error;
     }
   }
