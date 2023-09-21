@@ -23,7 +23,6 @@ const PersonCard = ({ person }) => {
       shadow="md"
       p={4}
       m={2}
-      onClick={showDetails}
       cursor="pointer"
       transition="transform 0.2s ease-in-out"
       _hover={{
@@ -38,6 +37,7 @@ const PersonCard = ({ person }) => {
           objectFit="cover"
           width="100%"
           maxHeight="300px"
+          onClick={showDetails}
         />
       </MotionBox>
       <Flex mt={2} justifyContent="space-between" alignItems="center">

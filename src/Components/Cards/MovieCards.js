@@ -28,7 +28,6 @@ const MovieCard = ({ movie }) => {
       m={3}
       p={3}
       width={{ base: "200px", md: "250px" }}
-      onClick={showDetails}
       borderRadius="lg"
       boxShadow="lg"
       backgroundColor="white" // Beyaz arka plan
@@ -38,7 +37,12 @@ const MovieCard = ({ movie }) => {
         boxShadow: "xl",
       }}>
       <MotionBox whileHover={{ scale: 1.1 }}>
-        <Image src={backdropImageUrl} alt={movie.title} borderRadius="lg" />
+        <Image
+          src={backdropImageUrl}
+          alt={movie.title}
+          onClick={showDetails}
+          borderRadius="lg"
+        />
       </MotionBox>
       <Text
         mt={6}
