@@ -1,6 +1,7 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import nullImage from "../NullImage/null.png";
 
 const MotionBox = motion.div;
 
@@ -10,6 +11,16 @@ const MovieCard = ({ movie }) => {
   const showDetails = () => {
     navigate(`/movieDetails/${movie.id}`, { state: movie });
   };
+
+  const { poster_path } = movie;
+  let backdropImageUrl = "";
+
+  if (poster_path && poster_path !== "null") {
+    backdropImageUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
+  } else {
+    // Eğer backdrop_path boş, null veya "null" ise varsayılan bir URL veya başka bir işlem yapabiliriz
+    backdropImageUrl = nullImage;
+  }
 
   return (
     <Box
@@ -27,11 +38,7 @@ const MovieCard = ({ movie }) => {
         boxShadow: "xl",
       }}>
       <MotionBox whileHover={{ scale: 1.1 }}>
-        <Image
-          src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-          alt={movie.title}
-          borderRadius="lg"
-        />
+        <Image src={backdropImageUrl} alt={movie.title} borderRadius="lg" />
       </MotionBox>
       <Text
         mt={6}
