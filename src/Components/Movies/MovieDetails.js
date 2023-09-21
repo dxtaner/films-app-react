@@ -15,24 +15,27 @@ const MovieDetails = ({
   handleFavoriteClick,
   handleWatchListClick,
   movieExternalIds,
-  ratedMoives,
+  ratedMovies,
 }) => {
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    // Her film değiştiğinde, yeni filmi değerlendirmek için başlangıç ​​değerini sıfırla
-    setRating(0);
-    // ratedMoives dizisini döngüye alarak eşleşen filmleri kontrol et
-    ratedMoives.forEach((ratedMovie) => {
-      if (ratedMovie.id === movieDetails.id) {
-        // Eşleşen bir film bulundu
-        // console.log("Eşleşen film bulundu:", ratedMovie);
-        // console.log("Eşleşen film bulundu:", ratedMovie.rating);
-        // Eşleşen filmdeki rating değerini alarak rating'i güncelle
-        setRating(ratedMovie.rating);
-      }
-    });
-  }, [ratedMoives, movieDetails.id]);
+    // Eğer kullanıcı oturum açmışsa işlemi yap
+    if (isAuth) {
+      // Her film değiştiğinde, yeni filmi değerlendirmek için başlangıç ​​değerini sıfırla
+      setRating(0);
+      // ratedMovies dizisini döngüye alarak eşleşen filmleri kontrol et
+      ratedMovies.forEach((ratedMovie) => {
+        if (ratedMovie.id === movieDetails.id) {
+          // Eşleşen bir film bulundu
+          // console.log("Eşleşen film bulundu:", ratedMovie);
+          // console.log("Eşleşen film bulundu:", ratedMovie.rating);
+          // Eşleşen filmdeki rating değerini alarak rating'i güncelle
+          setRating(ratedMovie.rating);
+        }
+      });
+    }
+  }, [ratedMovies, movieDetails.id, isAuth]);
 
   const handleRatingChange = (newRating) => {
     setRating(newRating);

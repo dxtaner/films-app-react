@@ -46,7 +46,7 @@ const Details = () => {
   const movieCredits = useSelector(creditList);
   const popularMovies = useSelector(popularList);
   const movieSimilar = useSelector(selectSimilarMovies);
-  const ratedMoives = useSelector(selectRatedMovies);
+  const ratedMovies = useSelector(selectRatedMovies);
   const movieExternalIds = useSelector(selectMovieExternalIds);
   const location = useLocation();
   const isAuth = sessionStorage.getItem("session_id");
@@ -96,7 +96,7 @@ const Details = () => {
               movieExternalIds={movieExternalIds}
               handleFavoriteClick={handleFavoriteClick}
               handleWatchListClick={handleWatchListClick}
-              ratedMoives={ratedMoives}
+              ratedMovies={ratedMovies}
             />
             <MovieCredits credits={movieCredits} />
             <Box width="full">
