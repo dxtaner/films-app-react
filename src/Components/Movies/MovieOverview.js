@@ -2,6 +2,10 @@ import React from "react";
 import { Box, Text, VStack, Divider, Badge, Flex } from "@chakra-ui/react";
 
 const MovieOverview = ({ movieDetails }) => {
+  if (!movieDetails) {
+    return null;
+  }
+
   const {
     original_title,
     overview,

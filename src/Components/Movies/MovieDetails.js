@@ -7,6 +7,7 @@ import MovieGenres from "./MovieGenres";
 import MovieOverview from "./MovieOverview";
 import MovieExternalIds from "./MovieExternalIds";
 import StarRating from "./StarRating";
+import nullImage from "../NullImage/null.png";
 
 const MovieDetails = ({
   movieDetails,
@@ -36,9 +37,13 @@ const MovieDetails = ({
   const handleRatingChange = (newRating) => {
     setRating(newRating);
   };
+
   if (!movieExternalIds) {
-    console.error("movieExternalIds eksik.");
-    return null;
+    return (
+      <Box p={6} borderWidth={2} borderColor="gray.300">
+        <Text>No external IDs available for this movie.</Text>
+      </Box>
+    );
   }
 
   if (!movieDetails) {
@@ -62,7 +67,7 @@ const MovieDetails = ({
     backdropImageUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
   } else {
     // Eğer backdrop_path boş, null veya "null" ise varsayılan bir URL veya başka bir işlem yapabiliriz
-    backdropImageUrl = "URL_OF_DEFAULT_IMAGE";
+    backdropImageUrl = nullImage;
   }
 
   return (
