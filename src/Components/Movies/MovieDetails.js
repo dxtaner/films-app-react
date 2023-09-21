@@ -19,7 +19,6 @@ const MovieDetails = ({
 }) => {
   const [rating, setRating] = useState(0);
 
-  console.log("ratedMovies", ratedMovies);
   useEffect(() => {
     // Eğer kullanıcı oturum açmışsa işlemi yap
     if (isAuth) {
