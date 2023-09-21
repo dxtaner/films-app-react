@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectSearchResults,
   searchMoviesAsync,
 } from "../../app/features/movies/searchSlice.js";
-import { useDispatch, useSelector } from "react-redux";
+import { SimpleGrid, Text, Box } from "@chakra-ui/react";
 import MovieCard from "../Cards/MovieCards.js";
-import { SimpleGrid, Text } from "@chakra-ui/react";
 import Title from "../Title/titles.js";
 
 const SearchMovie = () => {
@@ -15,14 +15,17 @@ const SearchMovie = () => {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(searchMoviesAsync(location.state?.id));
-  }, [dispatch, location.state]);
+    const query = new URLSearchParams(location.search).get("query");
+    if (query) {
+      dispatch(searchMoviesAsync(query));
+    }
+  }, [dispatch, location]);
 
   return (
-    <div>
+    <Box mt={8}>
       <Title>Arama Sonuçları</Title>
       {searchMovies.length === 0 ? (
-        <Text>Bulunamadı</Text>
+        <Text align="center">Sonuç Bulunamadı</Text>
       ) : (
         <SimpleGrid
           columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
@@ -32,7 +35,7 @@ const SearchMovie = () => {
           ))}
         </SimpleGrid>
       )}
-    </div>
+    </Box>
   );
 };
 
