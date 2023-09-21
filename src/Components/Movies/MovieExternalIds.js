@@ -2,13 +2,8 @@ import React from "react";
 import { Box, Heading, Text, Link } from "@chakra-ui/react";
 
 const MovieExternalIds = ({ movieExternalIds }) => {
-  const externalLinks = [
-    { name: "IMDb", id: "imdb_id" },
-    { name: "WikiData", id: "wikidata_id" },
-    { name: "Facebook", id: "facebook_id" },
-    { name: "Twitter", id: "twitter_id" },
-    { name: "Instagram", id: "instagram_id" },
-  ];
+  const { imdb_id, wikidata_id, facebook_id, twitter_id, instagram_id } =
+    movieExternalIds;
 
   return (
     <Box
@@ -27,28 +22,71 @@ const MovieExternalIds = ({ movieExternalIds }) => {
       <Heading fontSize="2xl" mb={4}>
         Dış Film Bilgileri
       </Heading>
-      {externalLinks.map((link) => {
-        const id = link.id;
-        const url = movieExternalIds[id];
-
-        if (url) {
-          return (
-            <Text key={id} fontSize="lg" mb={2}>
-              {link.name} bilgileri için tıklayın:{" "}
-              <Link
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                color="teal.600"
-                textDecoration="underline">
-                {link.name}
-              </Link>
-            </Text>
-          );
-        }
-
-        return null;
-      })}
+      {imdb_id && (
+        <Text fontSize="lg" mb={2}>
+          IMDb bilgileri için tıklayın:{" "}
+          <Link
+            href={`https://www.imdb.com/title/${imdb_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="teal.600"
+            textDecoration="underline">
+            IMDb
+          </Link>
+        </Text>
+      )}
+      {wikidata_id && (
+        <Text fontSize="lg" mb={2}>
+          WikiData bilgileri için tıklayın:{" "}
+          <Link
+            href={`https://www.wikidata.org/wiki/${wikidata_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="teal.600"
+            textDecoration="underline">
+            WikiData
+          </Link>
+        </Text>
+      )}
+      {facebook_id && (
+        <Text fontSize="lg" mb={2}>
+          Facebook sayfası için tıklayın:{" "}
+          <Link
+            href={`https://www.facebook.com/${facebook_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="teal.600"
+            textDecoration="underline">
+            Facebook
+          </Link>
+        </Text>
+      )}
+      {twitter_id && (
+        <Text fontSize="lg" mb={2}>
+          Twitter hesabı için tıklayın:{" "}
+          <Link
+            href={`https://www.twitter.com/${twitter_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="teal.600"
+            textDecoration="underline">
+            Twitter
+          </Link>
+        </Text>
+      )}
+      {instagram_id && (
+        <Text fontSize="lg">
+          Instagram hesabı için tıklayın:{" "}
+          <Link
+            href={`https://www.instagram.com/${instagram_id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="teal.600"
+            textDecoration="underline">
+            Instagram
+          </Link>
+        </Text>
+      )}
     </Box>
   );
 };
