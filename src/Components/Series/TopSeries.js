@@ -28,9 +28,10 @@ const TopSeries = () => {
 
   return (
     <Box p={6}>
-      <Heading as="h1" size="xl" mb={4}>
+      <Heading as="h1" size="xl" mb={4} textAlign="center">
         En İyi Diziler
       </Heading>
+      <Box borderBottom="1px solid #ccc" mb={4} />
       {seriesToShow.length > 0 ? (
         <>
           <Wrap spacing={4} justify="center">
