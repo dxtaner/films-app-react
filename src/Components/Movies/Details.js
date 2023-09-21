@@ -11,7 +11,7 @@ import {
 import {
   fetchRatedMovies,
   selectRatedMovies,
-} from "../../app/features/movies/ratedMoiveSlice.js";
+} from "../../app/features/movies/ratedMovieSlice.js";
 import MovieCredits from "./MovieCredits";
 import MovieDetails from "./MovieDetails";
 import Title from "../Title/titles.js";
