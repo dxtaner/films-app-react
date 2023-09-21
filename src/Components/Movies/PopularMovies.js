@@ -1,27 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Box, Button, Grid } from "@chakra-ui/react";
-import {
-  popularList,
-  getPopular,
-} from "../../app/features/movies/popularSlice.js";
-import MovieCard from "../Cards/MovieCards.js";
+import MovieCard from "../Cards/MovieCards";
 
-const PopularMovies = () => {
-  const dispatch = useDispatch();
-  const popularMovies = useSelector(popularList);
+const PopularMovies = ({ popularMovies }) => {
   const [page, setPage] = useState(1);
   const moviesPerPage = 4;
   const [displayedMovies, setDisplayedMovies] = useState([]);
 
   useEffect(() => {
-    dispatch(getPopular());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (popularMovies && popularMovies.results) {
       const startIndex = (page - 1) * moviesPerPage;
       const endIndex = startIndex + moviesPerPage;
+
       if (popularMovies.results.length >= endIndex) {
         setDisplayedMovies(popularMovies.results.slice(startIndex, endIndex));
       } else {
@@ -30,23 +20,18 @@ const PopularMovies = () => {
     }
   }, [popularMovies, page]);
 
-  if (!popularMovies) {
-    console.error("popularMovies eksik.");
-    return null;
-  }
-  if (!popularMovies.results) {
-    console.error("results eksik.");
-    return null;
-  }
-
   const goToPreviousPage = () => {
     if (page > 1) {
       setPage(page - 1);
     }
   };
 
+  const totalPages =
+    popularMovies && popularMovies.results
+      ? Math.ceil(popularMovies.results.length / moviesPerPage)
+      : 0;
+
   const goToNextPage = () => {
-    const totalPages = Math.ceil(popularMovies.results.length / moviesPerPage);
     if (page < totalPages) {
       setPage(page + 1);
     }
@@ -77,9 +62,7 @@ const PopularMovies = () => {
         </Button>
         <Button
           onClick={goToNextPage}
-          disabled={
-            page === Math.ceil(popularMovies.results.length / moviesPerPage)
-          }
+          disabled={page === totalPages}
           colorScheme="teal">
           İleri
         </Button>
