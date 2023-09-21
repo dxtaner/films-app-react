@@ -126,32 +126,33 @@ export const getFavoritesMovies = (account_id) => {
 };
 
 export const getRatedMovies = async (account_id) => {
-  const params = {
-    api_key: API_KEY,
-    session_id: getSessionId(),
-  };
-
   try {
     const response = await axios.get(
       `${BASE_URL}/account/${account_id}/rated/movies`,
-      { params }
+      {
+        params: {
+          api_key: API_KEY,
+          session_id: getSessionId(),
+        },
+      }
     );
 
     if (response.status === 200) {
       const data = response.data;
       if (data.results) {
+        // console.log("Gelen Derecelendirilmiş Filmler:", data.results);
         return data.results;
       } else {
         console.error("Derecelendirilmiş filmler alınamadı.");
         return [];
       }
     } else {
-      console.error("API isteği başarısız oldu. Durum Kodu:", response.status);
+      console.error("Derecelendirilmiş filmler alınamadı.");
       return [];
     }
   } catch (error) {
     console.error("Hata:", error);
-    throw new Error("Derecelendirilmiş filmler alınamadı.");
+    throw error;
   }
 };
 
