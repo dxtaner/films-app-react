@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VStack, Text, HStack, IconButton, SimpleGrid } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import MovieCard from "../Cards/MovieCards";
@@ -24,6 +24,10 @@ const SimilarMovies = ({ movieSimilar }) => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [movieSimilar]);
 
   return (
     <VStack spacing={4} align="left">

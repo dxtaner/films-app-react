@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -29,6 +29,10 @@ const MovieCredits = ({ credits }) => {
   const showDetails = (person) => {
     navigate(`/actorDetails/${person.id}`, { state: person });
   };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [credits]);
 
   return (
     <Box
