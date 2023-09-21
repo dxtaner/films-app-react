@@ -12,8 +12,10 @@ const SearchBar = () => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    dispatch(searchMoviesAsync(location.state?.id));
-  }, [dispatch, location.state]);
+    if (location.state && location.state.id) {
+      dispatch(searchMoviesAsync(location.state.id));
+    }
+  }, [dispatch, location]);
 
   useEffect(() => {
     setQuery("");
