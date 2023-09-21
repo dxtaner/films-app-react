@@ -118,33 +118,28 @@ export const getFavoritesMovies = (account_id) => {
 };
 
 export const getRatedMovies = async (account_id) => {
+  const params = {
+    api_key: API_KEY,
+    session_id: getSessionId(),
+  };
+
   try {
     const response = await axios.get(
       `${BASE_URL}/account/${account_id}/rated/movies`,
-      {
-        params: {
-          api_key: API_KEY,
-          session_id: getSessionId(),
-        },
-      }
+      { params }
     );
 
     if (response.status === 200) {
       const data = response.data;
       if (data.results) {
-        // console.log("Gelen Derecelendirilmiş Filmler:", data.results);
         return data.results;
-      } else {
-        console.error("Derecelendirilmiş filmler alınamadı.");
-        return [];
       }
-    } else {
-      console.error("Derecelendirilmiş filmler alınamadı.");
-      return [];
     }
+    console.error("Derecelendirilmiş filmler alınamadı.");
+    return [];
   } catch (error) {
     console.error("Hata:", error);
-    throw error;
+    throw new Error("Derecelendirilmiş filmler alınamadı.");
   }
 };
 
@@ -190,6 +185,7 @@ export const getMovieExternalIds = (movieId) => {
       throw error;
     });
 };
+
 export const getSimilarMovies = (movieId) => {
   return axios
     .get(
@@ -203,4 +199,26 @@ export const getSimilarMovies = (movieId) => {
       console.error("Hata:", error);
       throw error;
     });
+};
+
+export const searchMovies = async (query) => {
+  try {
+    const apiUrl = `https://api.themoviedb.org/3/search/movie`;
+    const response = await axios.get(apiUrl, {
+      params: {
+        query: query,
+        api_key: API_KEY,
+        language: "tr-US",
+      },
+    });
+
+    if (response.status !== 200) {
+      throw new Error("API isteği başarısız oldu.");
+    }
+
+    return response.data.results;
+  } catch (error) {
+    console.error("Hata:", error);
+    throw error;
+  }
 };
