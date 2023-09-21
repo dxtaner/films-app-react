@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import nullImage from "../NullImage/null.png";
 
 const itemsPerPage = 12;
 const YOUR_API_KEY = process.env.REACT_APP_APIKEY;
@@ -124,12 +125,19 @@ const PersonCredits = ({ movieCredits }) => {
             onClick={() => showDetails(credit)}
             _hover={{ transform: "scale(1.05)", transition: "0.3s" }}>
             <Image
-              src={`https://image.tmdb.org/t/p/original${credit.poster_path}`}
+              src={
+                credit.backdrop_path &&
+                credit.backdrop_path !== null &&
+                credit.backdrop_path !== "null"
+                  ? `https://image.tmdb.org/t/p/original${credit.backdrop_path}`
+                  : nullImage
+              }
               alt={credit.title}
               borderRadius="full"
               boxSize="150px"
               mx="auto"
             />
+
             <Heading fontSize="lg" mt={4}>
               {credit.title}
             </Heading>
