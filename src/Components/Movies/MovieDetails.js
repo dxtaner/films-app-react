@@ -56,8 +56,14 @@ const MovieDetails = ({
   }
 
   const { backdrop_path, original_title, genres } = movieDetails;
+  let backdropImageUrl = "";
 
-  const backdropImageUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+  if (backdrop_path && backdrop_path !== "null") {
+    backdropImageUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
+  } else {
+    // Eğer backdrop_path boş, null veya "null" ise varsayılan bir URL veya başka bir işlem yapabiliriz
+    backdropImageUrl = "URL_OF_DEFAULT_IMAGE";
+  }
 
   return (
     <VStack
