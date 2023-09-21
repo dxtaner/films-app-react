@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaFemale, FaMale } from "react-icons/fa";
 
-function ActorHeader({ person }) {
+function ActorHeader({ person, movieCreditsLength }) {
   function calculateAge(birthDate) {
     const birthYear = new Date(birthDate).getFullYear();
     const currentYear = new Date().getFullYear();
@@ -100,6 +100,10 @@ function ActorHeader({ person }) {
               </Badge>
             )}
           </Flex>
+
+          <Text fontSize="lg" m={2}>
+            <strong>Toplam Rol Aldığı Sayı:</strong> {movieCreditsLength}
+          </Text>
         </Box>
       </HStack>
     </Box>

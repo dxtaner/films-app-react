@@ -73,7 +73,7 @@ const ActorDetails = () => {
       bgColor="white">
       {/* <LeftArrow prevId={actorId - 1} />
       <RightArrow nextId={actorId + 1} /> */}
-      <ActorHeader person={person} />
+      <ActorHeader person={person} movieCreditsLength={movieCredits.length} />
       <Biography biography={person.biography} />
       <SocialIdentityLinks externalIds={externalIds} />
       <PersonCredits movieCredits={movieCredits} />
