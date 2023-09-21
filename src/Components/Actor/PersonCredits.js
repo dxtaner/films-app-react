@@ -29,7 +29,7 @@ const PersonCredits = ({ movieCredits }) => {
       .get("https://api.themoviedb.org/3/genre/movie/list", {
         params: {
           api_key: YOUR_API_KEY,
-          language: "en-US",
+          language: "tr-US",
         },
       })
       .then((response) => {
