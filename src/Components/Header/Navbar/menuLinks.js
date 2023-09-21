@@ -2,6 +2,7 @@ import { Box, Button, Image, Stack, Text } from "@chakra-ui/react";
 import { MenuItems } from "./menuItems.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import SearchBar from "./SearchBar.js";
 
 export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
         justify={["center", "space-between", "flex-end", "flex-end"]}
         direction={["column", "row", "row", "row"]}
         pt={[6, 6, 0, 0]}>
+        <SearchBar />
         <MenuItems to="/about">
           <Text>Site Hakkında...</Text>
         </MenuItems>
