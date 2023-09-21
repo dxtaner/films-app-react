@@ -15,6 +15,7 @@ import movieExternalIdsReducer from "./features/movies/details/movieExternalIdsS
 import similarReducer from "./features/movies/details/similarSlice.js";
 import watchListReducer from "./features/movies/watchListSlice.js";
 import ratedMovieReducer from "./features/movies/ratedMoiveSlice.js";
+import searchMovieReducer from "./features/movies/searchSlice.js";
 import popularSeriesReducer from "./features/series/popularSeriesSlice.js";
 import topSeriesReducer from "./features/series/topSeriesSlice.js";
 
@@ -38,5 +39,6 @@ export default configureStore({
     popularSeries: popularSeriesReducer,
     topSeries: topSeriesReducer,
     ratedMovies: ratedMovieReducer,
+    search: searchMovieReducer,
   },
 });
