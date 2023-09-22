@@ -12,7 +12,7 @@ const WithoutGenreFilter = ({ queryParams, onFilterChange }) => {
       borderRadius="sm" // Hafif yuvarlak kenarlar
       borderColor="gray.300" // Kenarlık rengi
       _focus={{ borderColor: "blue.400", boxShadow: "none" }} // Odaklandığında stillendirme
-      maxWidth="100px" // Maksimum genişlik
+      maxWidth="150px" // Maksimum genişlik
     >
       <option value="">Seçmeme</option>
       {genreOptions.map((genre) => (
