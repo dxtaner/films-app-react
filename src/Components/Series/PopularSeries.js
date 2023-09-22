@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPopularSeries } from "../../app/features/series/popularSeriesSlice.js";
-import { Box, Heading, Text, Wrap } from "@chakra-ui/react";
+import { Box, Center, Heading, Spinner, Text, Wrap } from "@chakra-ui/react";
 import SeriesCardDetail from "../Cards/SeriesCardDetail.js";
 
 const PopularSeries = () => {
   const dispatch = useDispatch();
   const seriesPopular = useSelector((state) => state.popularSeries.series);
+  const status = useSelector((state) => state.popularSeries.status);
+  const error = useSelector((state) => state.popularSeries.error);
 
   useEffect(() => {
     dispatch(fetchPopularSeries());
@@ -18,14 +20,22 @@ const PopularSeries = () => {
         Popüler Diziler
       </Heading>
       <Box borderBottom="1px solid #ccc" mb={4} />
-      {seriesPopular.length > 0 ? (
-        <Wrap spacing={4} justify="center">
-          {seriesPopular.map((series) => (
-            <SeriesCardDetail key={series.id} series={series} />
-          ))}
-        </Wrap>
+      {status === "loading" ? (
+        <Center>
+          <Spinner size="xl" />
+        </Center>
+      ) : status === "failed" ? (
+        <Text fontSize="lg">Hata: {error}</Text>
       ) : (
-        <Text fontSize="lg">Hiç veri bulunamadı.</Text>
+        <Wrap spacing={4} justify="center">
+          {seriesPopular.length > 0 ? (
+            seriesPopular.map((series) => (
+              <SeriesCardDetail key={series.id} series={series} />
+            ))
+          ) : (
+            <Text fontSize="lg">Hiç veri bulunamadı.</Text>
+          )}
+        </Wrap>
       )}
     </Box>
   );
