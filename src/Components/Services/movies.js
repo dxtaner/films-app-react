@@ -245,7 +245,6 @@ export const discoverMovies = async (queryParams) => {
       {
         params: {
           api_key: API_KEY,
-          page: queryParams.page,
           ...queryParams, // Diğer sorgu parametreleri buradan eklenir
         },
       }
@@ -253,7 +252,7 @@ export const discoverMovies = async (queryParams) => {
 
     if (response.status === 200) {
       const data = response.data;
-      console.error("data:madı.", data);
+      // console.error("data:", data);
       if (data.results) {
         return data.results;
       } else {
