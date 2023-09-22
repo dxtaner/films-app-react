@@ -2,7 +2,7 @@ import React from "react";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { FaClock } from "react-icons/fa";
 
-const MinRuntimeFilter = ({ queryParams, onFilterChange }) => {
+const MaxRuntimeFilter = ({ queryParams, onFilterChange }) => {
   return (
     <InputGroup size="xs">
       <InputLeftElement pointerEvents="none">
