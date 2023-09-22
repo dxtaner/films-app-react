@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTopRatedSeries } from "../../app/features/series/topSeriesSlice.js";
-import { Box, Heading, Text, Wrap } from "@chakra-ui/react";
+import { Box, Center, Heading, Spinner, Text, Wrap } from "@chakra-ui/react";
 import SeriesCardDetail from "../Cards/SeriesCardDetail.js";
 
 const TopSeries = () => {
   const dispatch = useDispatch();
   const topSeries = useSelector((state) => state.topSeries.series);
+  const status = useSelector((state) => state.topSeries.status);
+  const error = useSelector((state) => state.topSeries.error);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Her sayfada 10 veri göster
@@ -32,7 +34,13 @@ const TopSeries = () => {
         En İyi Diziler
       </Heading>
       <Box borderBottom="1px solid #ccc" mb={4} />
-      {seriesToShow.length > 0 ? (
+      {status === "loading" ? (
+        <Center>
+          <Spinner size="xl" />
+        </Center>
+      ) : status === "failed" ? (
+        <Text fontSize="lg">Hata: {error}</Text>
+      ) : seriesToShow.length > 0 ? (
         <>
           <Wrap spacing={4} justify="center">
             {seriesToShow.map((series) => (
