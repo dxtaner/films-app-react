@@ -78,16 +78,12 @@ const DiscoverMovies = () => {
 
         <Box flex="4">
           <MoviesList movies={movies} status={status} error={error} />
+          <Flex justifyContent="center" alignItems={"center"} mt={6}>
+            <LoadMoreButton onClick={handleLoadMore} colorScheme="teal">
+              Daha Fazla Yükle
+            </LoadMoreButton>
+          </Flex>
         </Box>
-      </Flex>
-
-      <Flex flexWrap="wrap" justifyContent="center" alignItems="center" mt={6}>
-        <LoadMoreButton
-          onClick={handleLoadMore}
-          marginTop={4}
-          colorScheme="teal">
-          Daha Fazla Yükle
-        </LoadMoreButton>
       </Flex>
     </Box>
   );
