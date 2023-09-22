@@ -15,6 +15,7 @@ const OriginalLanguageFilter = ({ queryParams, onFilterChange }) => {
           onFilterChange("with_original_language", e.target.value)
         }
         placeholder="Orijinal Dil"
+        maxWidth="150px"
       />
     </InputGroup>
   );

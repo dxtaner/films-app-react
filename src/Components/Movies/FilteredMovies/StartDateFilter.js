@@ -20,7 +20,7 @@ const StartDateFilter = ({ queryParams, onFilterChange }) => {
         borderRadius="sm"
         borderColor="gray.300"
         _focus={{ borderColor: "blue.400", boxShadow: "none" }}
-        maxWidth="100px"
+        maxWidth="150px"
       />
     </div>
   );

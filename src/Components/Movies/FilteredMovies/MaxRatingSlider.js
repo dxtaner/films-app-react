@@ -20,15 +20,15 @@ const MaxRatingSlider = ({ queryParams, onFilterChange }) => {
         step={0.1}
         value={parseFloat(queryParams["vote_average.lte"] || 10)}
         onChange={handleMaxRatingChange}
-        size="xs" // Küçük boyut
-        colorScheme="blue" // Renk şeması
-      >
+        size="xs"
+        colorScheme="blue"
+        maxWidth="150px">
         <SliderTrack>
           <SliderFilledTrack />
         </SliderTrack>
         <SliderThumb boxSize={4} bg="blue.400" />
       </Slider>
-      <Text mt={2} fontSize="xs" textAlign="center">
+      <Text mt={2} fontSize="xs" textAlign="center" maxWidth="100px">
         Seçilen Değer:{" "}
         {parseFloat(queryParams["vote_average.lte"] || 10).toFixed(1)}
       </Text>

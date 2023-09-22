@@ -18,6 +18,7 @@ const YearFilter = ({ queryParams, onFilterChange }) => {
         border="1px solid"
         borderColor="gray.200"
         borderRadius="md"
+        maxWidth="150px"
         _hover={{
           borderColor: "gray.300",
         }}

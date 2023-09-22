@@ -12,7 +12,7 @@ const CertificationFilter = ({ queryParams, onFilterChange }) => {
       borderRadius="sm"
       borderColor="gray.300"
       _focus={{ borderColor: "blue.400", boxShadow: "none" }}
-      maxWidth="100px">
+      maxWidth="150px">
       {renderSelectOptions([
         { id: "PG-13", name: "PG-13" },
         { id: "R", name: "R" },

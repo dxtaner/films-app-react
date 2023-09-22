@@ -13,7 +13,7 @@ const SortByFilter = ({ queryParams, onFilterChange }) => {
       borderColor="gray.300"
       _focus={{ borderColor: "blue.400", boxShadow: "none" }}
       _hover={{ borderColor: "gray.400" }}
-      maxWidth="200px">
+      maxWidth="150px">
       {renderSelectOptions([
         { id: "popularity.desc", name: "Popülerlik (Azalan)" },
         { id: "popularity.asc", name: "Popülerlik (Artan)" },

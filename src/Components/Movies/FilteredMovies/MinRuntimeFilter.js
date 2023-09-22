@@ -15,6 +15,7 @@ const MinRuntimeFilter = ({ queryParams, onFilterChange }) => {
         placeholder="Süre (Dakika) (Minumum)"
         size="xs"
         fontSize="sm"
+        maxWidth="150px"
         border="1px solid"
         borderColor="gray.200"
         borderRadius="md"

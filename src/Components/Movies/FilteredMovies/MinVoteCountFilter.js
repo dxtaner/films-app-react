@@ -14,6 +14,7 @@ const MinVoteCountFilter = ({ queryParams, onFilterChange }) => {
           onChange={(e) => onFilterChange("vote_count.gte", e.target.value)}
           placeholder="0 ile 10 arası bir değer girin"
           size="xs"
+          maxWidth="150px"
         />
       </Flex>
     </FormControl>

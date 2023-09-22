@@ -13,6 +13,7 @@ const OriginCountryFilter = ({ queryParams, onFilterChange }) => {
         value={queryParams.with_origin_country || ""}
         onChange={(e) => onFilterChange("with_origin_country", e.target.value)}
         placeholder="Ülke"
+        maxWidth="150px"
       />
     </InputGroup>
   );
