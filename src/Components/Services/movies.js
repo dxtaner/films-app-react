@@ -237,3 +237,35 @@ export const searchMovies = async (query) => {
     throw error;
   }
 };
+
+export const discoverMovies = async (queryParams) => {
+  try {
+    const response = await axios.get(
+      "https://api.themoviedb.org/3/discover/movie",
+      {
+        params: {
+          api_key: API_KEY,
+          page: queryParams.page,
+          ...queryParams, // Diğer sorgu parametreleri buradan eklenir
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const data = response.data;
+      console.error("data:madı.", data);
+      if (data.results) {
+        return data.results;
+      } else {
+        console.error("Filmler alınamadı.");
+        return [];
+      }
+    } else {
+      console.error("API isteği başarısız oldu. Durum Kodu:", response.status);
+      return [];
+    }
+  } catch (error) {
+    console.error("Hata:", error);
+    throw new Error("Filmler alınamadı.");
+  }
+};
