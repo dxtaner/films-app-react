@@ -80,7 +80,7 @@ const FilterOptions = ({ queryParams, onFilterChange }) => {
 
         <GridItem>
           <Text fontSize="sm" fontWeight="semibold">
-            Hariç Tür
+            Türü Hariç Tut
           </Text>
           <WithoutFilterGenreFilter
             queryParams={queryParams}
