@@ -34,7 +34,7 @@ const DiscoverMovies = () => {
     "vote_count.gte": undefined,
     "vote_count.lte": undefined,
     with_cast: undefined,
-    with_genres: undefined,
+    with_genres: "",
     "with_runtime.gte": undefined,
     "with_runtime.lte": undefined,
     without_genres: undefined,
@@ -43,6 +43,7 @@ const DiscoverMovies = () => {
     with_original_language: undefined,
   });
 
+  console.log("queryParams", queryParams);
   useEffect(() => {
     dispatch(fetchDiscoverMovies({ ...queryParams, page: page }));
   }, [dispatch, queryParams, page]);
