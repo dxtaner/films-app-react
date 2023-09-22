@@ -14,6 +14,7 @@ import WatchListMovies from "./Components/Movies/WatchListMovies.js";
 import PopularSeries from "./Components/Series/PopularSeries.js";
 import TopSeries from "./Components/Series/TopSeries.js";
 import SearchMovies from "./Components/Movies/SearchMovie.js";
+import DiscoverMovies from "./Components/Movies/DiscoverMovies.js";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/popularSeries" element={<PopularSeries />} />
         <Route path="/topSeries" element={<TopSeries />} />
         <Route path="/searchMovies" element={<SearchMovies />} />
+        <Route path="/discoverMovies" element={<DiscoverMovies />} />
       </Routes>
       <Footer />
     </Router>

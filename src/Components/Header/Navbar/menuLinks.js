@@ -30,6 +30,9 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
         <MenuItems to="/about">
           <Text>Site Hakkında...</Text>
         </MenuItems>
+        <MenuItems to="/discoverMovies">
+          <Text>Filmleri Keşfet</Text>
+        </MenuItems>
         <MenuItems to="/popularPersons">
           <Text>Popüler Oyuncular</Text>
         </MenuItems>
