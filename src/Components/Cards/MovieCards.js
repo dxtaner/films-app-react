@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -12,49 +13,84 @@ const MovieCard = ({ movie }) => {
     navigate(`/movieDetails/${movie.id}`, { state: movie });
   };
 
-  const { poster_path } = movie;
-  let backdropImageUrl = "";
+  const { poster_path, release_date, vote_average } = movie;
+  const backdropImageUrl =
+    poster_path && poster_path !== "null"
+      ? `https://image.tmdb.org/t/p/original${poster_path}`
+      : nullImage;
 
-  if (poster_path && poster_path !== "null") {
-    backdropImageUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
-  } else {
-    // Eğer backdrop_path boş, null veya "null" ise varsayılan bir URL veya başka bir işlem yapabiliriz
-    backdropImageUrl = nullImage;
-  }
+  const getVoteColor = (voteAverage) => {
+    const newVoteAverage = voteAverage * 10;
+    if (newVoteAverage >= 70) {
+      return "green";
+    } else if (newVoteAverage >= 50) {
+      return "yellow";
+    } else {
+      return "red";
+    }
+  };
 
   return (
     <Box
+      whileHover={{ scale: 1.01 }}
       cursor="pointer"
-      m={3}
-      p={3}
+      m={2}
+      p={2}
       width={{ base: "200px", md: "250px" }}
       borderRadius="lg"
       boxShadow="lg"
-      backgroundColor="white" // Beyaz arka plan
-      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"
-      _hover={{
-        transform: "scale(1.05)",
-        boxShadow: "xl",
-      }}>
-      <MotionBox whileHover={{ scale: 1.1 }}>
-        <Image
-          src={backdropImageUrl}
-          alt={movie.title}
-          onClick={showDetails}
-          borderRadius="lg"
-        />
+      backgroundColor="white"
+      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out">
+      <MotionBox whileHover={{ scale: 1.02 }}>
+        <Box
+          position="relative"
+          borderRadius="md"
+          cursor="pointer"
+          overflow="hidden"
+          height={{ base: "250px", md: "320px" }}>
+          <Image
+            src={backdropImageUrl}
+            alt={movie.title}
+            objectFit="cover"
+            onClick={showDetails}
+          />
+          <Text
+            fontSize="md"
+            fontWeight="extrabold"
+            color={getVoteColor(vote_average)}
+            position="absolute"
+            bottom="5px"
+            right="5px"
+            backgroundColor="rgba(255, 255, 255, 0.9)"
+            paddingX={2}
+            paddingY={1}
+            borderRadius="15px"
+            zIndex="1">
+            {vote_average.toFixed(1) * 10}%
+          </Text>
+        </Box>
       </MotionBox>
-      <Text
-        mt={6}
-        fontWeight="semibold"
-        fontSize="lg"
-        textAlign="center"
-        lineHeight="shorter"
-        noOfLines={2}
-        color="teal.600"
-        _hover={{ color: "teal.800" }}>
-        {movie.title}
-      </Text>
+      <Box p={2}>
+        <Text
+          fontWeight="extrabold"
+          fontSize="lg"
+          noOfLines={2}
+          cursor="pointer"
+          color="black"
+          onClick={showDetails}
+          _hover={{ color: "teal.500" }}>
+          {movie.title}
+        </Text>
+        <Text
+          fontSize="sm"
+          color="gray.600"
+          whiteSpace="nowrap"
+          mt={0}
+          overflow="hidden"
+          textOverflow="ellipsis">
+          {release_date}
+        </Text>
+      </Box>
     </Box>
   );
 };
