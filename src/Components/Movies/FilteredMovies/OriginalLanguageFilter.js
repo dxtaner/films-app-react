@@ -16,6 +16,7 @@ const OriginalLanguageFilter = ({ queryParams, onFilterChange }) => {
         }
         placeholder="Orijinal Dil"
         maxWidth="150px"
+        size="xs"
       />
     </InputGroup>
   );
