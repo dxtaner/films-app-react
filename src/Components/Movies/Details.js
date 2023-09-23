@@ -50,6 +50,7 @@ const Details = () => {
   const movieExternalIds = useSelector(selectMovieExternalIds);
   const location = useLocation();
   const isAuth = sessionStorage.getItem("session_id");
+  const token = sessionStorage.getItem("session_id");
 
   useEffect(() => {
     dispatch(getDetails(location.state.id));
@@ -58,8 +59,13 @@ const Details = () => {
     dispatch(getPopular(location.state.id));
     dispatch(fetchMovieExternalIds(location.state.id));
     dispatch(fetchSimilarMovies(location.state.id));
-    dispatch(fetchRatedMovies(location.state.id));
   }, [dispatch, location.state.id]);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchRatedMovies());
+    }
+  }, [dispatch, token]);
 
   const handleFavoriteClick = () => {
     dispatch(addToFavorites(location.state.id, true));
