@@ -29,11 +29,26 @@ export const addToFavorites = createAsyncThunk(
   async (location_id, isFavorite) => {
     try {
       const { id } = await getAccountDetails();
-      // console.log(id);
       await addMovieToFavorite(id, {
         media_type: "movie",
         media_id: location_id,
         favorite: isFavorite,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const removeFromFavorites = createAsyncThunk(
+  "movies/removeFromFavorites",
+  async (location_id, isFavorite) => {
+    try {
+      const { id } = await getAccountDetails();
+      await addMovieToFavorite(id, {
+        media_type: "movie",
+        media_id: location_id,
+        favorite: !isFavorite,
       });
     } catch (error) {
       console.log(error);
@@ -50,6 +65,22 @@ export const addToWatchList = createAsyncThunk(
         media_type: "movie",
         media_id: location_id,
         watchlist: isWatchListed,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const remevoToWatchList = createAsyncThunk(
+  "movies/addToWatchList",
+  async (location_id, isWatchListed) => {
+    try {
+      const { id } = await getAccountDetails();
+      await addMovieToWatchList(id, {
+        media_type: "movie",
+        media_id: location_id,
+        watchlist: !isWatchListed,
       });
     } catch (error) {
       console.log(error);
