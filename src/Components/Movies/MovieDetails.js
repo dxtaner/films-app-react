@@ -18,7 +18,7 @@ const MovieDetails = ({
   ratedMovies,
 }) => {
   const [rating, setRating] = useState(0);
-
+  const movieDetailsIDs = movieDetails.id;
   useEffect(() => {
     // Eğer kullanıcı oturum açmışsa işlemi yap
     if (isAuth) {
@@ -26,7 +26,7 @@ const MovieDetails = ({
       setRating(0);
       // ratedMovies dizisini döngüye alarak eşleşen filmleri kontrol et
       ratedMovies.forEach((ratedMovie) => {
-        if (ratedMovie.id === movieDetails.id) {
+        if (ratedMovie.id === movieDetailsIDs) {
           // Eşleşen bir film bulundu
           // console.log("Eşleşen film bulundu:", ratedMovie);
           // console.log("Eşleşen film bulundu:", ratedMovie.rating);
@@ -35,7 +35,7 @@ const MovieDetails = ({
         }
       });
     }
-  }, [ratedMovies, movieDetails.id, isAuth]);
+  }, [ratedMovies, movieDetailsIDs, isAuth]);
 
   const handleRatingChange = (newRating) => {
     setRating(newRating);
@@ -69,7 +69,6 @@ const MovieDetails = ({
   if (backdrop_path && backdrop_path !== "null") {
     backdropImageUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
   } else {
-    // Eğer backdrop_path boş, null veya "null" ise varsayılan bir URL veya başka bir işlem yapabiliriz
     backdropImageUrl = nullImage;
   }
 
