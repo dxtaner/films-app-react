@@ -53,15 +53,16 @@ const MovieCard = ({ movie }) => {
 
   const watchListIDs = watchList ? watchList.map((watch) => watch.id) : [];
   const favoriteIDs = favorites ? favorites.map((favorite) => favorite.id) : [];
+  const moviesIDs = movie.id;
   useEffect(() => {
     if (token) {
       dispatch(getFavorites());
       dispatch(getWatchList());
     }
-  }, [dispatch, token, movie.id]);
+  }, [dispatch, token, moviesIDs]);
 
   const showDetails = () => {
-    navigate(`/movieDetails/${movie.id}`, { state: movie });
+    navigate(`/movieDetails/${moviesIDs}`, { state: movie });
   };
 
   const addToToggleFavorite = () => {
