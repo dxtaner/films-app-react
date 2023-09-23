@@ -70,7 +70,8 @@ export const addMovieToFavorite = (account_id, values) => {
       values
     )
     .then((res) => {
-      res.data.success && showSuccessMessage(res.data.status_message);
+      res.data.success &&
+        showSuccessMessage("Film Favori İşlemi Başarıyla Gerçekleştirildi");
     })
     .catch((error) => console.log(error));
 };
@@ -111,7 +112,8 @@ export const addMovieToWatchList = (account_id, values) => {
       values
     )
     .then((res) => {
-      res.data.success && showSuccessMessage(res.data.status_message);
+      res.data.success &&
+        showSuccessMessage("Film İzleme İşlemi Başarıyla Gerçekleştirildi");
     })
     .catch((error) => console.log(error));
 };
@@ -151,7 +153,7 @@ export const getRatedMovies = async (account_id) => {
       return [];
     }
   } catch (error) {
-    // console.error("Hata:", error);
+    console.error("Hata:", error);
     throw error;
   }
 };
