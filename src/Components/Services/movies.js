@@ -151,22 +151,24 @@ export const getRatedMovies = async (account_id) => {
       return [];
     }
   } catch (error) {
-    console.error("Hata:", error);
+    // console.error("Hata:", error);
     throw error;
   }
 };
-
 export const getWatchListMovies = (account_id) => {
+  // URL'yi doğru bir şekilde oluşturun
+  const url = `${BASE_URL}/account/${account_id}/watchlist/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=${language}&sort_by=created_at.asc&page=1`;
+
   return axios
-    .get(
-      `${BASE_URL}/account/${account_id}/watchlist/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=${language}&sort_by=created_at.asc&page=1`
-    )
+    .get(url) // URL'yi kullanarak GET isteği gönderin
     .then((res) => {
       const data = res.data.results;
-      // console.log("Watch List Movies Data:", data); // Veriyi logla
+      // Veriyi logla
+      // console.log("Watch List Movies Data:", data);
       return data;
     })
     .catch((error) => {
+      // Hata durumunda hatayı logla
       console.error("getWatchListMovies Hatası:", error);
       throw error;
     });
