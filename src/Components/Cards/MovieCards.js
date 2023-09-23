@@ -51,17 +51,14 @@ const MovieCard = ({ movie }) => {
   const isAuth = sessionStorage.getItem("session_id");
   const token = sessionStorage.getItem("session_id");
 
+  const watchListIDs = watchList ? watchList.map((watch) => watch.id) : [];
+  const favoriteIDs = favorites ? favorites.map((favorite) => favorite.id) : [];
   useEffect(() => {
     if (token) {
       dispatch(getFavorites());
       dispatch(getWatchList());
     }
   }, [dispatch, token, movie.id]);
-
-  const favoriteIDs = favorites.map((favorite) => favorite.id);
-  const watchListIDs = watchList.map((watch) => watch.id);
-  // console.log("favorites uzln", favorites.length);
-  // console.log("watch uzln", watchList.length);
 
   const showDetails = () => {
     navigate(`/movieDetails/${movie.id}`, { state: movie });
