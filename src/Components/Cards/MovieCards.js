@@ -106,7 +106,6 @@ const MovieCard = ({ movie }) => {
 
   return (
     <Box
-      whileHover={{ scale: 1.01 }}
       cursor="pointer"
       m={2}
       p={2}
