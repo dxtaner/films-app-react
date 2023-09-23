@@ -68,7 +68,7 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
                   zIndex: "1",
                 }}>
                 <Link
-                  to="/myFavoriteMovives"
+                  to="/myFavoriteMovies"
                   style={{
                     textDecoration: "none",
                     color: "black",

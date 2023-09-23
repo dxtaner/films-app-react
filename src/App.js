@@ -26,7 +26,7 @@ function App() {
         <Route path="/upComingMovies" element={<UpcomingMovies />} />
         <Route path="/movieDetails/:id" element={<MovieDetails />} />
         <Route path="/auth/login" element={<LoginForm />} />
-        <Route path="/myFavoriteMovives" element={<FavoriteMovies />} />
+        <Route path="/myFavoriteMovies" element={<FavoriteMovies />} />
         <Route path="/watchListMovies" element={<WatchListMovies />} />
         <Route path="/actorDetails/:id" element={<ActorDetails />} />
         <Route path="/popularPersons" element={<PersonPopular />} />
