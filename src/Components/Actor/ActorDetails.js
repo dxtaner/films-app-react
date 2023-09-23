@@ -71,8 +71,6 @@ const ActorDetails = () => {
       boxShadow={["sm", "sm", "md", "md", "lg"]}
       borderColor="teal.400"
       bgColor="white">
-      {/* <LeftArrow prevId={actorId - 1} />
-      <RightArrow nextId={actorId + 1} /> */}
       <ActorHeader person={person} movieCreditsLength={movieCredits.length} />
       <Biography biography={person.biography} />
       <SocialIdentityLinks externalIds={externalIds} />
