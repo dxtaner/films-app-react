@@ -1,9 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getWatchListMovies } from "../../../Components/Services/movies.js";
+import { getAccountDetails } from "../../../Components/Services/auth.js";
+
+export const watchListLoading = (state) => state.watchList.loading;
 
 const initialState = {
   watchList: [],
   isLoading: false,
+  status: "idle",
 };
 
 // İzleme listesini alma işlemi
@@ -11,7 +15,8 @@ export const getWatchList = createAsyncThunk(
   "movies/getWatchList",
   async () => {
     try {
-      const result = await getWatchListMovies(); // İzleme listesini almak için gereken servis işlemini burada çağırın
+      const { id } = await getAccountDetails();
+      const result = await getWatchListMovies(id);
       return result;
     } catch (error) {
       console.error("İzleme listesi alınırken hata oluştu:", error);
@@ -23,7 +28,6 @@ export const getWatchList = createAsyncThunk(
 export const watchListSlice = createSlice({
   name: "watchList",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getWatchList.pending, (state) => {
@@ -41,4 +45,3 @@ export const watchListSlice = createSlice({
 
 export default watchListSlice.reducer;
 export const watchListMovies = (state) => state.watchList.watchList;
-export const watchListLoading = (state) => state.watchList.isLoading;
