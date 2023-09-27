@@ -13,23 +13,19 @@ import {
 import { useLocation } from "react-router-dom";
 import PersonCredits from "./PersonCredits.js";
 import {
-  fetchPersonExternalIds, // Dış kimlik bilgilerini alma işlemi
-  selectPersonExternalIds, // Dış kimlik bilgilerini seçmek için selektör
-} from "../../app/features/actors/personExternalIdsSlice.js"; // Yeni eklenen dış kimlik bilgileri slice'ı
-
+  fetchPersonExternalIds,
+  selectPersonExternalIds,
+} from "../../app/features/actors/personExternalIdsSlice.js";
 import ActorHeader from "./ActorHeader.js";
 import Biography from "./Biography.js";
 import SocialIdentityLinks from "./SocialIdentityLinks.js";
-
-// import RightArrow from "./RightArrow.js";
-// import LeftArrow from "./LeftArrow.js";
 
 const ActorDetails = () => {
   const dispatch = useDispatch();
   const person = useSelector(selectPerson);
   const status = useSelector(selectPersonStatus);
   const movieCredits = useSelector(selectPersonMovieCredits);
-  const externalIds = useSelector(selectPersonExternalIds); // Dış kimlik bilgilerini seçmek
+  const externalIds = useSelector(selectPersonExternalIds);
   const location = useLocation();
   const actorId = location.state.id;
 
