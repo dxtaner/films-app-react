@@ -1,5 +1,3 @@
-// components/ActorHeader.js
-
 import React from "react";
 import {
   Box,
@@ -22,7 +20,7 @@ function ActorHeader({ person, movieCreditsLength }) {
 
   return (
     <Box>
-      <HStack spacing={4} alignItems="center" justifyContent="start">
+      <HStack spacing={2} alignItems="center">
         <Image
           src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
           alt={person.name}
@@ -30,7 +28,7 @@ function ActorHeader({ person, movieCreditsLength }) {
           borderRadius="10px"
           boxShadow="lg"
           border="4px solid teal"
-          maxW={"200px"}
+          maxW={"150px"}
           _hover={{
             transform: "scale(1.05)",
             transition: "transform 0.2s ease-in-out",
@@ -40,19 +38,19 @@ function ActorHeader({ person, movieCreditsLength }) {
         />
 
         <Box>
-          <Heading as="h2" size="xl" mb={4}>
+          <Heading as="h2" size="lg" mb={2}>
             {person.name}
           </Heading>
-          <Text fontSize="lg" m={2}>
-            <strong>Doğum Tarihi:</strong> {person.birthday}
-            {` (${calculateAge(person.birthday)} yaşında)`}
+          <Text fontSize="md" m={1}>
+            <strong>Doğum Tarihi:</strong> {person.birthday} (
+            {calculateAge(person.birthday)} yaşında)
           </Text>
 
-          <Text fontSize="lg" m={2}>
+          <Text fontSize="md" m={1}>
             <strong>Doğum Yeri:</strong>{" "}
             <Badge
               colorScheme="blue"
-              fontSize="1rem"
+              fontSize="sm"
               py={1}
               px={2}
               borderRadius="md">
@@ -60,11 +58,11 @@ function ActorHeader({ person, movieCreditsLength }) {
             </Badge>
           </Text>
 
-          <Text fontSize="lg" m={2}>
+          <Text fontSize="md" m={1}>
             <strong>Popülerlik Derecesi:</strong>{" "}
             <Badge
               colorScheme={person.popularity >= 7 ? "green" : "red"}
-              fontSize="1rem"
+              fontSize="sm"
               py={1}
               px={2}
               borderRadius="md">
@@ -72,36 +70,40 @@ function ActorHeader({ person, movieCreditsLength }) {
             </Badge>
           </Text>
 
-          <Text fontSize="lg" m={2}>
+          <Text fontSize="md" m={1}>
             <strong>Cinsiyet:</strong>{" "}
             {person.gender === 2 ? (
               <>
-                <Badge colorScheme="blue">Erkek</Badge>{" "}
-                <Icon as={FaMale} boxSize={5} color="blue.500" />
+                <Badge colorScheme="blue" fontSize="sm">
+                  Erkek
+                </Badge>{" "}
+                <Icon as={FaMale} boxSize={3} color="blue.500" />
               </>
             ) : (
               <>
-                <Badge colorScheme="pink">Kadın</Badge>{" "}
-                <Icon as={FaFemale} boxSize={5} color="pink.500" />
+                <Badge colorScheme="pink" fontSize="sm">
+                  Kadın
+                </Badge>{" "}
+                <Icon as={FaFemale} boxSize={3} color="pink.500" />
               </>
             )}
           </Text>
 
-          <Flex flexWrap="wrap" mt={2} m={2}>
+          <Flex flexWrap="wrap" mt={1} m={1}>
             {person?.known_for_department && (
               <Badge
                 colorScheme="green"
                 bg="gray.300"
                 borderRadius="lg"
-                p={[1, 1, 2, 2]}
-                mr={2}
-                mb={2}>
+                p={1}
+                mr={1}
+                mb={1}>
                 Departman: {person.known_for_department}
               </Badge>
             )}
           </Flex>
 
-          <Text fontSize="lg" m={2}>
+          <Text fontSize="md" m={1}>
             <strong>Toplam Rol Aldığı Sayı:</strong> {movieCreditsLength}
           </Text>
         </Box>
