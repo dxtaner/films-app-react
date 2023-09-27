@@ -4,7 +4,7 @@ import MovieCard from "../Cards/MovieCards";
 
 const PopularMovies = ({ popularMovies }) => {
   const [page, setPage] = useState(1);
-  const moviesPerPage = 5;
+  const moviesPerPage = 8;
   const [displayedMovies, setDisplayedMovies] = useState([]);
 
   useEffect(() => {
