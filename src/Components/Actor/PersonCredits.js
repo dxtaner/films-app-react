@@ -79,11 +79,14 @@ const PersonCredits = ({ movieCredits }) => {
   };
 
   return (
-    <Box mt={8}>
-      <Heading as="h2" size="xl" mb={4}>
+    <Box mt={["4", "4", "6", "6", "8"]}>
+      <Heading as="h2" size="xl" mb={["4", "4", "6", "6", "8"]}>
         Oyuncunun Rol Aldığı Filmler
       </Heading>
-      <Flex justifyContent="space-between" alignItems="center" mb={4}>
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        mb={["4", "4", "6", "6", "8"]}>
         <ButtonGroup size="sm" isAttached variant="outline">
           <Button
             colorScheme={sortBy === "popularity" ? "teal" : "gray"}
@@ -112,13 +115,13 @@ const PersonCredits = ({ movieCredits }) => {
           </strong>
         </Text>
       </Flex>
-      <Wrap spacing={4} justify="center">
+      <Wrap spacing={["2", "2", "3", "3", "4"]} justify="center">
         {moviesToShow.map((credit) => (
           <Box
             key={credit.id}
             bg="gray.200"
             borderRadius="lg"
-            p={4}
+            p={["2", "2", "3", "3", "4"]}
             maxW="200px"
             flexBasis="200px"
             cursor="pointer"
@@ -134,37 +137,42 @@ const PersonCredits = ({ movieCredits }) => {
               }
               alt={credit.title}
               borderRadius="full"
-              boxSize="150px"
+              boxSize={["150px", "150px", "180px", "180px", "200px"]}
               mx="auto"
             />
 
-            <Heading fontSize="lg" mt={4}>
+            <Heading
+              fontSize={["lg", "lg", "xl", "xl", "2xl"]}
+              mt={["4", "4", "6", "6", "8"]}>
               {credit.title}
             </Heading>
-            <Text mt={2}>
+            <Text mt={["2", "2", "3", "3", "4"]}>
               Türler:{" "}
               {credit?.genre_ids?.map((genreId) => (
-                <Badge key={genreId} colorScheme="green" ml={1}>
+                <Badge
+                  key={genreId}
+                  colorScheme="green"
+                  ml={["1", "1", "2", "2", "3"]}>
                   {genreData[genreId]}{" "}
                 </Badge>
               ))}
             </Text>
-            <Text fontSize="md" mt={2}>
+            <Text fontSize="md" mt={["2", "2", "3", "3", "4"]}>
               Karakter: {credit.character}
             </Text>
-            <Badge colorScheme="teal" mt={2}>
+            <Badge colorScheme="teal" mt={["2", "2", "3", "3", "4"]}>
               Popülerlik: {credit.popularity.toFixed(2)}
             </Badge>
-            <Text fontSize="sm" mt={2}>
+            <Text fontSize="sm" mt={["2", "2", "3", "3", "4"]}>
               Yayın Tarihi: {credit.release_date}
             </Text>
-            <Badge colorScheme="purple" mt={2}>
+            <Badge colorScheme="purple" mt={["2", "2", "3", "3", "4"]}>
               Orijinal Dil: {credit.original_language}
             </Badge>
             <Flex
               justifyContent="space-between"
               alignItems="center"
-              mt={2}
+              mt={["2", "2", "3", "3", "4"]}
               color="gray.600">
               <Text>
                 Değerlendirme:{" "}
@@ -177,11 +185,14 @@ const PersonCredits = ({ movieCredits }) => {
           </Box>
         ))}
       </Wrap>
-      <Flex justifyContent="center" alignItems="center" mt={4}>
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        mt={["4", "4", "6", "6", "8"]}>
         <Button
           onClick={() => handlePageChange(currentPage - 1)}
           isDisabled={currentPage === 0}
-          mr={2}
+          mr={["2", "2", "3", "3", "4"]}
           colorScheme="blue">
           Önceki
         </Button>
@@ -196,7 +207,7 @@ const PersonCredits = ({ movieCredits }) => {
         <Button
           onClick={() => handlePageChange(currentPage + 1)}
           isDisabled={currentPage === totalPages - 1}
-          ml={2}
+          ml={["2", "2", "3", "3", "4"]}
           colorScheme="blue">
           Sonraki
         </Button>
