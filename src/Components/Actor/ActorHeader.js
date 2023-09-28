@@ -28,7 +28,7 @@ function ActorHeader({ person, movieCreditsLength }) {
           borderRadius="10px"
           boxShadow="lg"
           border="4px solid teal"
-          maxW={"150px"}
+          maxW={"250px"}
           _hover={{
             transform: "scale(1.05)",
             transition: "transform 0.2s ease-in-out",
