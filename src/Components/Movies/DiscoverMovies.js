@@ -43,7 +43,7 @@ const DiscoverMovies = () => {
     with_original_language: undefined,
   });
 
-  console.log("queryParams", queryParams);
+  // console.log("queryParams", queryParams);
   useEffect(() => {
     dispatch(fetchDiscoverMovies({ ...queryParams, page: page }));
   }, [dispatch, queryParams, page]);
