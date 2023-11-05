@@ -3,6 +3,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 https://films-app-react.vercel.app/
+
+![](https://github.com/dxtaner/films-app-react/blob/master/recatfilmsapp.mp4)
 ## Available Scripts
 
 In the project directory, you can run:
