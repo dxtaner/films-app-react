@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTopRatedSeries } from "../../app/features/series/topSeriesSlice.js";
-import { Box, Center, Heading, Spinner, Text, Wrap } from "@chakra-ui/react";
-import SeriesCardDetail from "../Cards/SeriesCardDetail.js";
+import { fetchTopRatedSeries } from "../../app/features/series/topSeriesSlice";
+import {
+  Box,
+  Center,
+  Heading,
+  Spinner,
+  Text,
+  Wrap,
+  Button,
+} from "@chakra-ui/react";
+import SeriesCardDetail from "../Cards/SeriesCardDetail";
 
 const TopSeries = () => {
   const dispatch = useDispatch();
@@ -33,40 +41,40 @@ const TopSeries = () => {
         En İyi Diziler
       </Heading>
       <Box borderBottom="1px solid #ccc" mb={4} />
-      {status === "loading" ? (
+      {status === "loading" && (
         <Center>
           <Spinner size="xl" />
         </Center>
-      ) : status === "failed" ? (
-        <Text fontSize="lg">Hata: {error}</Text>
-      ) : seriesToShow.length > 0 ? (
+      )}
+      {status === "failed" && (
+        <Text fontSize="lg" textAlign="center" color="red.500">
+          Hata: {error}
+        </Text>
+      )}
+      {seriesToShow.length > 0 && (
         <>
           <Wrap spacing={4} justify="center">
             {seriesToShow.map((series) => (
               <SeriesCardDetail key={series.id} series={series} />
             ))}
           </Wrap>
-          <Box mt={4}>
+          <Box mt={4} textAlign="center">
             {Array.from({ length: totalPages }, (_, index) => (
-              <button
+              <Button
                 key={index}
-                onClick={() => handlePageChange(index + 1)}
-                style={{
-                  margin: "0.2rem",
-                  padding: "0.2rem 0.5rem",
-                  cursor: "pointer",
-                  border:
-                    currentPage === index + 1
-                      ? "2px solid teal"
-                      : "1px solid gray",
-                }}>
+                variant={currentPage === index + 1 ? "solid" : "outline"}
+                colorScheme={currentPage === index + 1 ? "teal" : "gray"}
+                onClick={() => handlePageChange(index + 1)}>
                 {index + 1}
-              </button>
+              </Button>
             ))}
           </Box>
         </>
-      ) : (
-        <Text fontSize="lg">Hiç veri bulunamadı.</Text>
+      )}
+      {seriesToShow.length === 0 && (
+        <Text fontSize="lg" textAlign="center">
+          Hiç veri bulunamadı.
+        </Text>
       )}
     </Box>
   );
