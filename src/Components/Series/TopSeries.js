@@ -11,13 +11,12 @@ const TopSeries = () => {
   const error = useSelector((state) => state.topSeries.error);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Her sayfada 10 veri göster
+  const itemsPerPage = 10;
 
   useEffect(() => {
     dispatch(fetchTopRatedSeries());
   }, [dispatch]);
 
-  // Verileri sayfalara böl
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const seriesToShow = topSeries.slice(startIndex, endIndex);

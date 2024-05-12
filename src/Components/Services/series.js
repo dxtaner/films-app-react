@@ -7,8 +7,6 @@ export const getSeriesPopular = () => {
   return axios
     .get(`${BASE_URL}/tv/popular?api_key=${APIKEY}&language=tr&page=1`)
     .then((res) => {
-      // console.log("Başarılı istek, veriler:");
-      // console.log(res.data);
       return res.data;
     })
     .catch((err) => {
@@ -19,13 +17,20 @@ export const getSeriesPopular = () => {
 
 export const getSeriesTop = (page) => {
   return axios
-    .get(`${BASE_URL}/tv/top_rated?api_key=${APIKEY}&language=tr&page=${page}`)
+    .get(`${BASE_URL}/tv/top_rated`, {
+      params: {
+        api_key: APIKEY,
+        language: "tr",
+        page: page,
+      },
+    })
     .then((res) => {
-      // Başarılı istek, verileri döndür
+      // Successful request, return the data
       return res.data;
     })
     .catch((err) => {
-      console.error("Hata oluştu:");
+      console.error("An error occurred:");
       console.error(err);
+      throw err;
     });
 };
