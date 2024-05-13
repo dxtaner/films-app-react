@@ -1,8 +1,14 @@
 import React from "react";
 import { List, ListItem, Box, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SearchResults = ({ results, handleResultClick }) => {
+  const navigate = useNavigate();
+
+  const showDetails = (result) => {
+    navigate(`/movieDetails/${result.id}`, { state: result });
+  };
+
   return (
     <Box
       bg="white"
@@ -21,9 +27,7 @@ const SearchResults = ({ results, handleResultClick }) => {
             cursor="pointer"
             _hover={{ bg: "gray.100" }}
             onClick={() => handleResultClick(result)}>
-            <Link to={`/movieDetails/${result.id}`}>
-              <Text>{result.title}</Text>
-            </Link>
+            <Text onClick={() => showDetails(result)}>{result.title}</Text>
           </ListItem>
         ))}
       </List>

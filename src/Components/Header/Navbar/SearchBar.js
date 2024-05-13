@@ -27,11 +27,12 @@ const SearchBar = () => {
     if (query.trim() !== "") {
       dispatch(searchMoviesAsync(query));
     }
-  }, [dispatch, navigate, query]);
+  }, [dispatch, query]);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
+      navigate(`/searchMovies?query=${query}`);
     }
   };
 
@@ -42,7 +43,6 @@ const SearchBar = () => {
   const handleSearch = () => {
     if (query.trim() !== "") {
       dispatch(searchMoviesAsync(query));
-      navigate(`/searchMovies?query=${query}`);
     }
   };
 
