@@ -5,12 +5,20 @@ import {
   selectSearchResults,
   searchMoviesAsync,
 } from "../../app/features/movies/searchSlice.js";
-import { SimpleGrid, Text, Box, Button } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  Text,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+} from "@chakra-ui/react";
 import MovieCard from "../Cards/MovieCards.js";
 import Title from "../Title/titles.js";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
-const RESULTS_PER_PAGE = 5; // Her sayfada gösterilecek sonuç sayısı
+const RESULTS_PER_PAGE = 10;
 
 const SearchMovie = () => {
   const dispatch = useDispatch();
@@ -46,52 +54,59 @@ const SearchMovie = () => {
   );
 
   return (
-    <Box mt={8}>
-      <Title>En İyi 20 Arama Sonucu</Title>
+    <Box mt={8} textAlign="center">
+      <Title>{`En İyi ${totalResults} Arama Sonucu`}</Title>
       {totalResults === 0 ? (
-        <Text align="center">Sonuç Bulunamadı</Text>
+        <Text mt={4} fontSize="lg">
+          Sonuç Bulunamadı
+        </Text>
       ) : (
         <>
           <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
             spacing={4}
-            justifyItems="center">
+            justifyContent="center">
             {displayedResults.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </SimpleGrid>
 
-          <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <Button
-              variant="outline"
+          <Flex justifyContent="center" mt={4}>
+            <IconButton
+              icon={<ChevronLeftIcon />}
               size="sm"
-              mx={1}
-              onClick={() => handlePageChange(currentPage - 1)} // Önceki sayfaya gitmek için
-              isDisabled={currentPage <= 1} // Sayfa 1 veya daha küçükse düğmeyi kapat
-            >
-              Previous Page
-            </Button>
+              m={1}
+              colorScheme="blue"
+              variant="outline"
+              aria-label="Previous Page"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage <= 1}
+              mr={2}
+            />
             {Array.from({ length: totalPages }, (_, index) => (
               <Button
                 key={index + 1}
-                variant="outline"
                 size="sm"
-                mx={1}
+                m={1}
+                colorScheme="blue"
+                variant={currentPage === index + 1 ? "solid" : "outline"}
                 onClick={() => handlePageChange(index + 1)}
-                isDisabled={currentPage === index + 1}>
+                mx={1}>
                 {index + 1}
               </Button>
             ))}
-            <Button
-              variant="outline"
+            <IconButton
+              icon={<ChevronRightIcon />}
               size="sm"
-              mx={1}
-              onClick={() => handlePageChange(currentPage + 1)} // Sonraki sayfaya gitmek için
-              isDisabled={currentPage >= totalPages} // Sayfa son sayfa veya daha büyükse düğmeyi kapat
-            >
-              Next Page
-            </Button>
-          </div>
+              m={1}
+              colorScheme="blue"
+              variant="outline"
+              aria-label="Next Page"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage >= totalPages}
+              ml={2}
+            />
+          </Flex>
         </>
       )}
     </Box>
