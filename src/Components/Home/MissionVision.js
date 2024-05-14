@@ -3,9 +3,9 @@ import { Box, Heading, Text, Stack } from "@chakra-ui/react";
 
 function MissionVision() {
   return (
-    <Stack direction="row" spacing={4}>
-      <Box>
-        <Heading as="h3" size="lg">
+    <Stack direction={{ base: "column", md: "row" }} spacing={8} align="start">
+      <Box flex="1">
+        <Heading as="h3" size="lg" mb={2}>
           Misyonumuz
         </Heading>
         <Text>
@@ -13,8 +13,8 @@ function MissionVision() {
           güncel kalmak.
         </Text>
       </Box>
-      <Box>
-        <Heading as="h3" size="lg">
+      <Box flex="1">
+        <Heading as="h3" size="lg" mb={2}>
           Vizyonumuz
         </Heading>
         <Text>
