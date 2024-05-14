@@ -1,4 +1,5 @@
-import { Box, VStack, Text, StackDivider } from "@chakra-ui/react";
+import React from "react";
+import { Box, VStack, StackDivider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import PopularMoviesCarousel from "../Movies/popularMoviesCarousel.js";
 import TopRatedMovies from "../Movies/TopRatedMovies.js";
@@ -12,8 +13,8 @@ const Home = () => {
   };
 
   return (
-    <>
-      <Box>
+    <Box>
+      <Box mb={8}>
         <PopularMoviesCarousel />
       </Box>
 
@@ -21,14 +22,14 @@ const Home = () => {
         spacing={5}
         p={4}
         divider={<StackDivider borderColor="blue.800" />}
-        alignItems="stretch" // İçerikleri yatay olarak genişletir
-      >
+        alignItems="stretch">
         <Title text="En Çok Puan Alan Filmler">
-          <Text>Şimdiki zamana kadarki en değerli filmler</Text>
+          Şimdiki zamana kadarki en değerli filmler
         </Title>
         <TopRatedMovies handleDetails={showDetails} />
       </VStack>
-    </>
+    </Box>
   );
 };
+
 export default Home;
