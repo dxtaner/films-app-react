@@ -53,7 +53,12 @@ const LoginForm = () => {
         }}>
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <Flex justifyContent="center" alignItems="center" height="90vh">
-            <VStack spacing={5} padding="5" boxShadow="lg">
+            <VStack
+              spacing={5}
+              padding="5"
+              boxShadow="lg"
+              bg="gray.100"
+              borderRadius="xl">
               <Heading size="lg">Giriş Ekranı</Heading>
               <Text fontSize="md">
                 Oturum açmak için bir TMDB hesabınızın olması gereklidir.
@@ -66,6 +71,11 @@ const LoginForm = () => {
                   type="text"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  bg="white"
+                  borderRadius="xl"
+                  borderColor="blue.400"
+                  _hover={{ borderColor: "blue.500" }}
+                  _focus={{ borderColor: "blue.500" }}
                 />
                 <FormErrorMessage>{errors.username}</FormErrorMessage>
               </FormControl>
@@ -77,6 +87,11 @@ const LoginForm = () => {
                   type="password"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  bg="white"
+                  borderRadius="xl"
+                  borderColor="blue.400"
+                  _hover={{ borderColor: "blue.500" }}
+                  _focus={{ borderColor: "blue.500" }}
                 />
                 <FormErrorMessage>{errors.password}</FormErrorMessage>
               </FormControl>
@@ -84,7 +99,8 @@ const LoginForm = () => {
                 bg="blue.400"
                 color="white"
                 _hover={{ bg: "blue.500" }}
-                onClick={handleSubmit}>
+                onClick={handleSubmit}
+                borderRadius="xl">
                 Giriş Yap
               </Button>
               <Text fontSize="md">
