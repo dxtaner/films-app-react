@@ -7,11 +7,10 @@ function AboutHeader() {
       as="h2"
       size="xl"
       mb={4}
-      color="teal.900" // Başlığın metin rengi
-      fontWeight="bold" // Kalın metin
-      textShadow="2px 2px 4px rgba(0, 0, 0, 0.2)" // Metin gölgesi
-      textAlign="center" // Metin ortalanmış olarak
-    >
+      color="teal.900"
+      fontWeight="bold"
+      textAlign="center"
+      _hover={{ color: "teal.700", textDecoration: "underline" }}>
       Hoş Geldiniz!
     </Heading>
   );
