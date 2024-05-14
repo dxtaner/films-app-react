@@ -105,20 +105,16 @@ const MovieCard = ({ movie }) => {
   return (
     <Box
       cursor="pointer"
-      m={2}
-      p={2}
-      width={{ base: "200px", md: "250px" }}
-      borderRadius="lg"
-      boxShadow="lg"
-      backgroundColor="white"
-      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out">
+      maxW="250px"
+      mx="auto"
+      mb="4"
+      shadow="md"
+      rounded="md"
+      overflow="hidden"
+      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"
+      _hover={{ transform: "scale(1.05)" }}>
       <MotionBox whileHover={{ scale: 1.02 }}>
-        <Box
-          position="relative"
-          borderRadius="md"
-          cursor="pointer"
-          overflow="hidden"
-          height={{ base: "250px", md: "320px" }}>
+        <Box position="relative">
           <Image
             src={backdropImageUrl}
             alt={movie.title}
@@ -126,17 +122,16 @@ const MovieCard = ({ movie }) => {
             onClick={showDetails}
           />
           <Text
-            fontSize="md"
-            fontWeight="extrabold"
-            color={getVoteColor(vote_average)}
             position="absolute"
             bottom="5px"
             right="5px"
-            backgroundColor="rgba(255, 255, 255, 0.9)"
-            paddingX={2}
-            paddingY={1}
-            borderRadius="15px"
-            zIndex="1">
+            bgColor="rgba(255, 255, 255, 0.9)"
+            px={2}
+            py={1}
+            rounded="md"
+            fontWeight="bold"
+            fontSize="sm"
+            color={getVoteColor(vote_average)}>
             {vote_average.toFixed(1) * 10}%
           </Text>
           <Menu
@@ -152,6 +147,7 @@ const MovieCard = ({ movie }) => {
               right={2}
               zIndex="2"
               size="sm"
+              variant="ghost"
             />
             <MenuList fontSize="sm">
               {!isAuth ? (
@@ -195,6 +191,7 @@ const MovieCard = ({ movie }) => {
                   )}
 
                   <Divider />
+
                   {watchListIDs.includes(movie.id) ? (
                     <MenuItem
                       size="xs"
@@ -234,24 +231,18 @@ const MovieCard = ({ movie }) => {
           </Menu>
         </Box>
       </MotionBox>
-      <Box p={2}>
+      <Box p={3}>
         <Text
-          fontWeight="extrabold"
+          fontWeight="bold"
           fontSize="lg"
           noOfLines={2}
+          color="gray.900"
           cursor="pointer"
-          color="black"
           onClick={showDetails}
           _hover={{ color: "teal.500" }}>
           {movie.title}
         </Text>
-        <Text
-          fontSize="sm"
-          color="gray.600"
-          whiteSpace="nowrap"
-          mt={0}
-          overflow="hidden"
-          textOverflow="ellipsis">
+        <Text fontSize="sm" color="gray.500" mt={1}>
           {release_date}
         </Text>
       </Box>
