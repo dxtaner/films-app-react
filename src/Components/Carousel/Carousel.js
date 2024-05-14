@@ -11,27 +11,29 @@ const AppCarousel = ({ data }) => {
     return null;
   }
 
+  const renderIndicator = (onClickHandler, isSelected, index, label) => (
+    <span
+      onClick={onClickHandler}
+      key={index}
+      style={{
+        background: isSelected ? "#0074d9" : "#ffffff",
+        width: "10px",
+        height: "10px",
+        borderRadius: "50%",
+        display: "inline-block",
+        margin: "0 5px",
+        cursor: "pointer",
+      }}
+      aria-label={`Slide ${label}`}
+    />
+  );
+
   return (
     <Carousel
       showThumbs={false}
-      showArrows={!isMobile} // Mobil cihazlarda okları gizle
+      showArrows={!isMobile}
       autoPlay
-      renderIndicator={(onClickHandler, isSelected, index, label) => (
-        <span
-          onClick={onClickHandler}
-          key={index}
-          style={{
-            background: isSelected ? "#0074d9" : "#ffffff",
-            width: "10px",
-            height: "10px",
-            borderRadius: "50%",
-            display: "inline-block",
-            margin: "0 5px",
-            cursor: "pointer",
-          }}
-          aria-label={`Slide ${label}`}
-        />
-      )}>
+      renderIndicator={renderIndicator}>
       {data.results.map((item, index) => (
         <div className="carousel-item" key={index}>
           <img
