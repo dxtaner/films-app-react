@@ -12,23 +12,23 @@ function About() {
     <Box bgGradient="linear(to-r, teal.800, blue.100)" minH="100vh">
       <Center py={8}>
         <Box
-          p={4}
+          p={8}
           textAlign="center"
           bgColor="white"
           rounded="lg"
-          shadow="lg"
+          shadow="xl"
           maxW="800px">
-          <Icon as={FaFilm} boxSize={12} color="blue.900" mb={4} />
+          <Icon as={FaFilm} boxSize={16} color="blue.900" mb={4} />
           <MovieImage />
           <AboutHeader />
           <AboutText />
           <ExploreButton />
-          <Divider my={4} />
-          <VStack spacing={4} align="start">
+          <Divider my={6} borderColor="gray.400" />
+          <VStack spacing={6} align="start">
             <MissionVision />
           </VStack>
-          <Text fontSize="sm" mt={4} color="gray.700">
-            © 2023 Film Dünyası
+          <Text fontSize="sm" mt={6} color="gray.700">
+            © 2024 Film Dünyası
           </Text>
         </Box>
       </Center>
