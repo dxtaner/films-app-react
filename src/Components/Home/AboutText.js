@@ -4,12 +4,11 @@ import { Text } from "@chakra-ui/react";
 function AboutText() {
   return (
     <Text
-      fontSize="lg"
-      mb={4}
-      color="gray.700" // Metin rengi
-      lineHeight="1.6" // Satır aralığı
-      textAlign="center" // Metin ortalanmış olarak
-    >
+      fontSize={{ base: "md", md: "lg" }}
+      mb={8}
+      color="gray.700"
+      lineHeight="1.6"
+      textAlign="center">
       Bu sayfa, sitemizde yer alan filmler hakkında bilgileri içermektedir.
       Sitemizde en yeni ve en popüler filmleri bulabilir, inceleyebilir ve
       hakkında daha fazla bilgi alabilirsiniz. Ayrıca, filmlerin türleri ve daha
