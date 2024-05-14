@@ -15,11 +15,14 @@ import PopularSeries from "./Components/Series/PopularSeries.js";
 import TopSeries from "./Components/Series/TopSeries.js";
 import SearchMovies from "./Components/Movies/SearchMovie.js";
 import DiscoverMovies from "./Components/Movies/DiscoverMovies.js";
+import SearchBar from "./Components/Header/Navbar/SearchBar.js";
+import NotFound from "./Components/NotFound/NotFound.js";
 
 function App() {
   return (
     <Router>
       <NavBar />
+      <SearchBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -34,6 +37,7 @@ function App() {
         <Route path="/topSeries" element={<TopSeries />} />
         <Route path="/searchMovies" element={<SearchMovies />} />
         <Route path="/discoverMovies" element={<DiscoverMovies />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Router>
