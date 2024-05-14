@@ -10,14 +10,13 @@ function MovieImage() {
       mb={4}
       rounded="md"
       w="100%"
-      boxShadow="lg" // Görselin üzerine hafif bir gölge ekler
-      border="4px solid teal" // Kenarlık ekler
+      boxShadow="lg"
+      border="4px solid teal"
       _hover={{
         transform: "scale(1.05)",
-        transition: "transform 0.2s ease-in-out",
         cursor: "pointer",
-      }} // Görselin üzerine gelindiğinde büyüme efekti ekler
-      transition="border 0.2s ease-in-out" // Kenarlık renginin değişimini yumuşatır
+      }}
+      transition="transform 0.2s ease-in-out"
     />
   );
 }
