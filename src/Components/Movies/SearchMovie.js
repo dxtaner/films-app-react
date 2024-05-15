@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectSearchResults,
   searchMoviesAsync,
-} from "../../app/features/movies/searchSlice.js";
+} from "../../app/features/movies/searchSlice";
 import {
   SimpleGrid,
   Text,
@@ -12,9 +12,10 @@ import {
   Button,
   Flex,
   IconButton,
+  Heading,
+  Center,
 } from "@chakra-ui/react";
-import MovieCard from "../Cards/MovieCards.js";
-import Title from "../Title/titles.js";
+import MovieCard from "../Cards/MovieCards";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -54,12 +55,16 @@ const SearchMovie = () => {
   );
 
   return (
-    <Box mt={8} textAlign="center">
-      <Title>{`En İyi ${totalResults} Arama Sonucu`}</Title>
+    <Box mt={8}>
+      <Heading as="h1" size="xl" mb={4} textAlign="center">
+        En İyi {totalResults} Arama Sonucu
+      </Heading>
       {totalResults === 0 ? (
-        <Text mt={4} fontSize="lg">
-          Sonuç Bulunamadı
-        </Text>
+        <Center>
+          <Text mt={4} fontSize="lg">
+            Sonuç Bulunamadı
+          </Text>
+        </Center>
       ) : (
         <>
           <SimpleGrid
