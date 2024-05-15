@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import MovieCard from "../Cards/MovieCards.js";
+import MovieCard from "../Cards/MovieCards";
 import {
   Box,
   VStack,
@@ -15,8 +15,8 @@ import {
   getWatchList,
   watchListMovies,
   watchListLoading,
-} from "../../app/features/movies/watchListSlice.js";
-import Title from "../Title/titles.js";
+} from "../../app/features/movies/watchListSlice";
+import Title from "../Title/titles";
 
 const WatchListMovies = () => {
   const dispatch = useDispatch();
@@ -30,18 +30,22 @@ const WatchListMovies = () => {
     }
   }, [dispatch, token]);
 
+  if (!token) {
+    return <Navigate replace to="/auth/login" />;
+  }
+
   return (
     <VStack
       divider={<StackDivider borderColor="blue.800" />}
       justifyContent="center"
       p={[2, 4, 6, 8]}
       spacing={4}>
-      {!token && <Navigate replace to="/auth/login" />}
       <Box>
         <Title text="İzleme Listem">
-          Buradaki filmlerin tümü izleme listesine eklediğiniz filmlerdir.
+          Buradaki filmler, izleme listenize eklediğiniz filmlerdir.
         </Title>
       </Box>
+
       {isLoading ? (
         <Center>
           <Spinner size="xl" />
