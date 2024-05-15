@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   SimpleGrid,
   VStack,
@@ -8,14 +9,13 @@ import {
   Center,
   Spinner,
 } from "@chakra-ui/react";
-import MovieCard from "../Cards/MovieCards.js";
+import MovieCard from "../Cards/MovieCards";
 import {
   getUpcoming,
   upcomingList,
   upcomingLoading,
-} from "../../app/features/movies/upcomingSlice.js";
-import { useDispatch, useSelector } from "react-redux";
-import Title from "../Title/titles.js";
+} from "../../app/features/movies/upcomingSlice";
+import Title from "../Title/titles";
 
 const UpcomingMovies = () => {
   const dispatch = useDispatch();
@@ -53,4 +53,5 @@ const UpcomingMovies = () => {
     </VStack>
   );
 };
+
 export default UpcomingMovies;
