@@ -1,115 +1,88 @@
 import React from "react";
-import {
-  Box,
-  Heading,
-  Text,
-  Image,
-  HStack,
-  Badge,
-  Flex,
-  Icon,
-} from "@chakra-ui/react";
-import { FaFemale, FaMale } from "react-icons/fa";
+import { Box, Image, Text, Badge } from "@chakra-ui/react";
 
-function ActorHeader({ person, movieCreditsLength }) {
-  function calculateAge(birthDate) {
-    const birthYear = new Date(birthDate).getFullYear();
-    const currentYear = new Date().getFullYear();
-    return currentYear - birthYear;
-  }
+const ActorHeader = ({ person, movieCreditsLength }) => {
+  const {
+    name,
+    birthday,
+    place_of_birth,
+    gender,
+    known_for_department,
+    popularity,
+    profile_path,
+  } = person;
+
+  const calculateAge = (birthday) => {
+    const today = new Date();
+    const birthDate = new Date(birthday);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  };
 
   return (
-    <Box>
-      <HStack spacing={2} alignItems="center">
+    <Box
+      display="flex"
+      alignItems="center"
+      mb={8}
+      p={2}
+      borderRadius="lg"
+      bg="gray.100"
+      boxShadow="md">
+      {profile_path && (
         <Image
-          src={`https://image.tmdb.org/t/p/original${person.profile_path}`}
-          alt={person.name}
-          objectFit="cover"
-          borderRadius="10px"
+          boxSize="200px"
+          borderRadius="full"
+          src={`https://image.tmdb.org/t/p/w500${profile_path}`}
+          alt={`${name} profile`}
+          mr={6}
           boxShadow="lg"
-          border="4px solid teal"
-          maxW={"250px"}
-          _hover={{
-            transform: "scale(1.05)",
-            transition: "transform 0.2s ease-in-out",
-            cursor: "pointer",
-          }}
-          transition="border 0.2s ease-in-out"
         />
-
-        <Box>
-          <Heading as="h2" size="lg" mb={2}>
-            {person.name}
-          </Heading>
-          <Text fontSize="md" m={1}>
-            <strong>Doğum Tarihi:</strong> {person.birthday} (
-            {calculateAge(person.birthday)} yaşında)
-          </Text>
-
-          <Text fontSize="md" m={1}>
-            <strong>Doğum Yeri:</strong>{" "}
-            <Badge
-              colorScheme="blue"
-              fontSize="sm"
-              py={1}
-              px={2}
-              borderRadius="md">
-              {person.place_of_birth}
-            </Badge>
-          </Text>
-
-          <Text fontSize="md" m={1}>
-            <strong>Popülerlik Derecesi:</strong>{" "}
-            <Badge
-              colorScheme={person.popularity >= 7 ? "green" : "red"}
-              fontSize="sm"
-              py={1}
-              px={2}
-              borderRadius="md">
-              {person.popularity.toFixed(2)}
-            </Badge>
-          </Text>
-
-          <Text fontSize="md" m={1}>
-            <strong>Cinsiyet:</strong>{" "}
-            {person.gender === 2 ? (
-              <>
-                <Badge colorScheme="blue" fontSize="sm">
-                  Erkek
-                </Badge>{" "}
-                <Icon as={FaMale} boxSize={3} color="blue.500" />
-              </>
-            ) : (
-              <>
-                <Badge colorScheme="pink" fontSize="sm">
-                  Kadın
-                </Badge>{" "}
-                <Icon as={FaFemale} boxSize={3} color="pink.500" />
-              </>
-            )}
-          </Text>
-
-          <Flex flexWrap="wrap" mt={1} m={1}>
-            {person?.known_for_department && (
-              <Badge
-                colorScheme="green"
-                bg="gray.300"
-                borderRadius="lg"
-                p={1}
-                mr={1}
-                mb={1}>
-                Departman: {person.known_for_department}
-              </Badge>
-            )}
-          </Flex>
-
-          <Text fontSize="md" m={1}>
-            <strong>Toplam Rol Aldığı Sayı:</strong> {movieCreditsLength}
+      )}
+      <Box>
+        <Text fontSize="2xl" fontWeight="bold" mb={2}>
+          {name}
+        </Text>
+        <Box display="flex" alignItems="center" mb={2}>
+          <Badge colorScheme="teal" variant="solid" fontSize="sm" mr={2}>
+            {calculateAge(birthday)} Yaş
+          </Badge>
+          <Text fontSize="sm" color="gray.600">
+            {gender === 2 ? "Erkek" : "Kadın"} - {place_of_birth}
           </Text>
         </Box>
-      </HStack>
+        <Box display="flex" alignItems="center" mb={2}>
+          <Badge colorScheme="purple" variant="solid" fontSize="sm" mr={2}>
+            Popülerlik:
+          </Badge>
+          <Text fontSize="sm" color="gray.600">
+            {popularity.toFixed(2)}
+          </Text>
+        </Box>
+        <Box display="flex" alignItems="center" mb={2}>
+          <Badge colorScheme="green" variant="solid" fontSize="sm" mr={2}>
+            Departman:
+          </Badge>
+          <Text fontSize="sm" color="gray.600">
+            {known_for_department}
+          </Text>
+        </Box>
+        <Box display="flex" alignItems="center">
+          <Badge colorScheme="orange" variant="solid" fontSize="sm" mr={2}>
+            Rol Sayısı:
+          </Badge>
+          <Text fontSize="sm" color="gray.600">
+            {movieCreditsLength}
+          </Text>
+        </Box>
+      </Box>
     </Box>
   );
-}
+};
 
 export default ActorHeader;
