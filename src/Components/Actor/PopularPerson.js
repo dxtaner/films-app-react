@@ -8,14 +8,14 @@ import {
   Center,
   Spinner,
 } from "@chakra-ui/react";
-import PersonCard from "../Cards/PersonCards.js";
+import PersonCard from "../Cards/PersonCards";
 import {
   getPopularPersonsAsync,
   selectPopularPersons,
   selectPopularPersonsStatus,
-} from "../../app/features/actors/personPopularSlice.js";
+} from "../../app/features/actors/personPopularSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Title from "../Title/titles.js";
+import Title from "../Title/titles";
 
 const PopularPersons = () => {
   const dispatch = useDispatch();
@@ -31,15 +31,15 @@ const PopularPersons = () => {
       divider={<StackDivider borderColor="blue.800" />}
       spacing={4}
       p={[2, 4, 6, 8]}
-      alignItems="stretch" // Bileşenleri yatay olarak çekmek için
-    >
+      alignItems="stretch">
       <Box>
         <Title text="Popüler Kişiler">
           <Text fontSize="lg" fontWeight="bold">
-            Popüler Oyuncular ve Kişilerin Listesi
+            Popüler oyuncular ve kişilerin listesi
           </Text>
         </Title>
       </Box>
+
       {isLoading === "loading" ? (
         <Center>
           <Spinner size="xl" />
