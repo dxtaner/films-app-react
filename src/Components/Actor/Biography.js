@@ -8,9 +8,15 @@ function Biography({ biography }) {
         <Heading as="h2" size="lg" mb={2}>
           Biyografi
         </Heading>
-        <Text fontSize="lg" color="gray.600">
-          {biography}
-        </Text>
+        {biography ? (
+          <Text fontSize="lg" color="gray.600">
+            {biography}
+          </Text>
+        ) : (
+          <Text fontSize="lg" color="gray.600">
+            Biyografi mevcut değil.
+          </Text>
+        )}
       </VStack>
     </Box>
   );
