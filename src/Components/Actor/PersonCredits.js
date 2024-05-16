@@ -1,52 +1,50 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Heading,
-  Image,
-  Text,
-  Wrap,
-  Flex,
-  Button,
-  ButtonGroup,
-  Badge,
-} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { VStack, Text, Flex, Spinner, Center, Divider } from "@chakra-ui/react";
 import axios from "axios";
-import nullImage from "../NullImage/null.png";
+import PersonCreditCard from "./PersonCreditCard";
+import SortButtons from "./SortButtons";
+import SortText from "./SortText";
+import Pagination from "./Pagination";
 
 const itemsPerPage = 12;
-const YOUR_API_KEY = process.env.REACT_APP_APIKEY;
 
 const PersonCredits = ({ movieCredits }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [genreData, setGenreData] = useState({});
+  const navigate = useNavigate();
   const [sortedMovieCredits, setSortedMovieCredits] = useState([]);
   const [sortBy, setSortBy] = useState("popularity");
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [genreData, setGenreData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get("https://api.themoviedb.org/3/genre/movie/list", {
-        params: {
-          api_key: YOUR_API_KEY,
-          language: "tr-US",
-        },
-      })
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.themoviedb.org/3/genre/movie/list",
+          {
+            params: {
+              api_key: process.env.REACT_APP_APIKEY,
+              language: "tr-US",
+            },
+          }
+        );
         const genres = {};
         response.data.genres.forEach((genre) => {
           genres[genre.id] = genre.name;
         });
         setGenreData(genres);
-      })
-      .catch((error) => {
+        setLoading(false);
+      } catch (error) {
         console.error("Genre data fetch error:", error);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
     if (movieCredits && movieCredits.length > 0) {
-      // movieCredits boş veya tanımsız değilse devam et
       let sortedCredits = [...movieCredits];
       if (sortBy === "popularity") {
         sortedCredits = sortedCredits.sort(
@@ -65,155 +63,68 @@ const PersonCredits = ({ movieCredits }) => {
     }
   }, [sortBy, movieCredits]);
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const showDetails = (credit) => {
+    navigate(`/movieDetails/${credit.id}`, { state: credit });
   };
 
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const moviesToShow = sortedMovieCredits.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(sortedMovieCredits.length / itemsPerPage);
-
-  const showDetails = (movie) => {
-    navigate(`/movieDetails/${movie.id}`, { state: movie });
+  const renderMovieCards = () => {
+    return sortedMovieCredits
+      .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+      .map((credit) => (
+        <PersonCreditCard
+          key={credit.credit_id}
+          credit={credit}
+          showDetails={showDetails}
+          genreData={genreData}
+        />
+      ));
   };
 
   return (
-    <Box mt={["4", "4", "6", "6", "8"]}>
-      <Heading as="h2" size="xl" mb={["4", "4", "6", "6", "8"]}>
+    <VStack spacing={6} align="center">
+      <Text fontSize="2xl" fontWeight="bold">
         Oyuncunun Rol Aldığı Filmler
-      </Heading>
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        mb={["4", "4", "6", "6", "8"]}>
-        <ButtonGroup size="sm" isAttached variant="outline">
-          <Button
-            colorScheme={sortBy === "popularity" ? "teal" : "gray"}
-            onClick={() => setSortBy("popularity")}>
-            Popülerlik
-          </Button>
-          <Button
-            colorScheme={sortBy === "release_date" ? "teal" : "gray"}
-            onClick={() => setSortBy("release_date")}>
-            Yayın Tarihi
-          </Button>
-          <Button
-            colorScheme={sortBy === "vote_count" ? "teal" : "gray"}
-            onClick={() => setSortBy("vote_count")}>
-            Oy Sayısı
-          </Button>
-        </ButtonGroup>
-        <Text fontSize="lg">
-          Şu anki sıralama:{" "}
-          <strong>
-            {sortBy === "popularity"
-              ? "Popülerlik"
-              : sortBy === "release_date"
-              ? "Yayın Tarihi"
-              : "Oy Sayısı"}
-          </strong>
-        </Text>
-      </Flex>
-      <Wrap spacing={["2", "2", "3", "3", "4"]} justify="center">
-        {moviesToShow.map((credit) => (
-          <Box
-            key={credit.id}
-            bg="gray.200"
-            borderRadius="lg"
-            p={["2", "2", "3", "3", "4"]}
-            maxW="200px"
-            flexBasis="200px"
-            cursor="pointer"
-            onClick={() => showDetails(credit)}
-            _hover={{ transform: "scale(1.05)", transition: "0.3s" }}>
-            <Image
-              src={
-                credit.backdrop_path &&
-                credit.backdrop_path !== null &&
-                credit.backdrop_path !== "null"
-                  ? `https://image.tmdb.org/t/p/original${credit.backdrop_path}`
-                  : nullImage
-              }
-              alt={credit.title}
-              borderRadius="full"
-              boxSize={["150px", "150px", "180px", "180px", "200px"]}
-              mx="auto"
-            />
-
-            <Heading
-              fontSize={["lg", "lg", "xl", "xl", "2xl"]}
-              mt={["4", "4", "6", "6", "8"]}>
-              {credit.title}
-            </Heading>
-            <Text mt={["2", "2", "3", "3", "4"]}>
-              Türler:{" "}
-              {credit?.genre_ids?.map((genreId) => (
-                <Badge
-                  key={genreId}
-                  colorScheme="green"
-                  ml={["1", "1", "2", "2", "3"]}>
-                  {genreData[genreId]}{" "}
-                </Badge>
-              ))}
-            </Text>
-            <Text fontSize="md" mt={["2", "2", "3", "3", "4"]}>
-              Karakter: {credit.character}
-            </Text>
-            <Badge colorScheme="teal" mt={["2", "2", "3", "3", "4"]}>
-              Popülerlik: {credit.popularity.toFixed(2)}
-            </Badge>
-            <Text fontSize="sm" mt={["2", "2", "3", "3", "4"]}>
-              Yayın Tarihi: {credit.release_date}
-            </Text>
-            <Badge colorScheme="purple" mt={["2", "2", "3", "3", "4"]}>
-              Orijinal Dil: {credit.original_language}
-            </Badge>
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              mt={["2", "2", "3", "3", "4"]}
-              color="gray.600">
-              <Text>
-                Değerlendirme:{" "}
-                <Badge colorScheme="blue">{credit.vote_average}</Badge>
-                <br />
-                Oy Sayısı:{" "}
-                <Badge colorScheme="orange">{credit.vote_count}</Badge>
-              </Text>
-            </Flex>
-          </Box>
-        ))}
-      </Wrap>
-      <Flex
-        justifyContent="center"
-        alignItems="center"
-        mt={["4", "4", "6", "6", "8"]}>
-        <Button
-          onClick={() => handlePageChange(currentPage - 1)}
-          isDisabled={currentPage === 0}
-          mr={["2", "2", "3", "3", "4"]}
-          colorScheme="blue">
-          Önceki
-        </Button>
-        {Array.from({ length: totalPages }, (_, index) => (
-          <Button
-            key={index}
-            onClick={() => handlePageChange(index)}
-            colorScheme={currentPage === index ? "teal" : "gray"}>
-            {index + 1}
-          </Button>
-        ))}
-        <Button
-          onClick={() => handlePageChange(currentPage + 1)}
-          isDisabled={currentPage === totalPages - 1}
-          ml={["2", "2", "3", "3", "4"]}
-          colorScheme="blue">
-          Sonraki
-        </Button>
-      </Flex>
-    </Box>
+      </Text>
+      <SortSection sortBy={sortBy} setSortBy={setSortBy} />
+      {loading ? (
+        <Center>
+          <Spinner size="xl" color="teal.500" />
+        </Center>
+      ) : (
+        <Flex
+          flexWrap="wrap"
+          justifyContent="center"
+          alignItems="flex-start"
+          width="100%">
+          {renderMovieCards()}
+        </Flex>
+      )}
+      <PaginationSection
+        currentPage={currentPage}
+        totalPages={Math.ceil(sortedMovieCredits.length / itemsPerPage)}
+        setCurrentPage={setCurrentPage}
+      />
+    </VStack>
   );
 };
+
+const SortSection = ({ sortBy, setSortBy }) => (
+  <Flex
+    justifyContent={{ base: "center", md: "space-between" }}
+    alignItems="center"
+    width="100%"
+    mb={{ base: 4, md: 8 }}>
+    <SortButtons sortBy={sortBy} setSortBy={setSortBy} />
+    <SortText sortBy={sortBy} />
+  </Flex>
+);
+
+const PaginationSection = ({ currentPage, totalPages, setCurrentPage }) => (
+  <Pagination
+    currentPage={currentPage}
+    totalPages={totalPages}
+    setCurrentPage={setCurrentPage}
+  />
+);
 
 export default PersonCredits;
