@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Image, Text, Badge } from "@chakra-ui/react";
+import { Box, Image, Text, Badge, Flex } from "@chakra-ui/react";
 
 const ActorHeader = ({ person, movieCreditsLength }) => {
   const {
@@ -29,10 +29,11 @@ const ActorHeader = ({ person, movieCreditsLength }) => {
     <Box
       display="flex"
       alignItems="center"
+      flexDirection={{ base: "column", md: "row" }}
       mb={8}
-      p={2}
+      p={4}
       borderRadius="lg"
-      bg="gray.100"
+      bg="white"
       boxShadow="md">
       {profile_path && (
         <Image
@@ -40,47 +41,63 @@ const ActorHeader = ({ person, movieCreditsLength }) => {
           borderRadius="full"
           src={`https://image.tmdb.org/t/p/w500${profile_path}`}
           alt={`${name} profile`}
-          mr={6}
+          mr={{ base: 0, md: 8 }}
+          mb={{ base: 4, md: 0 }}
           boxShadow="lg"
         />
       )}
-      <Box>
-        <Text fontSize="2xl" fontWeight="bold" mb={2}>
+      <Flex
+        flexDirection="column"
+        justifyContent="center"
+        alignItems={{ base: "center", md: "flex-start" }}>
+        <Text fontSize="3xl" fontWeight="bold" mb={2} color="teal.500">
           {name}
         </Text>
-        <Box display="flex" alignItems="center" mb={2}>
+        <Flex alignItems="center" mb={2}>
           <Badge colorScheme="teal" variant="solid" fontSize="sm" mr={2}>
             {calculateAge(birthday)} Yaş
           </Badge>
           <Text fontSize="sm" color="gray.600">
             {gender === 2 ? "Erkek" : "Kadın"} - {place_of_birth}
           </Text>
-        </Box>
-        <Box display="flex" alignItems="center" mb={2}>
+        </Flex>
+        <Flex alignItems="center" mb={2}>
+          <Badge colorScheme="red" variant="solid" fontSize="sm" mr={2}>
+            Doğum Tarihi:
+          </Badge>
+          <Text fontSize="sm" color="gray.600">
+            {new Date(birthday).toLocaleDateString("tr-TR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </Text>
+        </Flex>
+        <Flex alignItems="center" mb={2}>
           <Badge colorScheme="purple" variant="solid" fontSize="sm" mr={2}>
             Popülerlik:
           </Badge>
           <Text fontSize="sm" color="gray.600">
             {popularity.toFixed(2)}
           </Text>
-        </Box>
-        <Box display="flex" alignItems="center" mb={2}>
+        </Flex>
+        <Flex alignItems="center" mb={2}>
           <Badge colorScheme="green" variant="solid" fontSize="sm" mr={2}>
             Departman:
           </Badge>
           <Text fontSize="sm" color="gray.600">
             {known_for_department}
           </Text>
-        </Box>
-        <Box display="flex" alignItems="center">
+        </Flex>
+        <Flex alignItems="center">
           <Badge colorScheme="orange" variant="solid" fontSize="sm" mr={2}>
             Rol Sayısı:
           </Badge>
           <Text fontSize="sm" color="gray.600">
             {movieCreditsLength}
           </Text>
-        </Box>
-      </Box>
+        </Flex>
+      </Flex>
     </Box>
   );
 };
