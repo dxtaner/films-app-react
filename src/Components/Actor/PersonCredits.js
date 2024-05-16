@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { VStack, Text, Flex, Spinner, Center, Divider } from "@chakra-ui/react";
+import { VStack, Text, Flex, Spinner, Center } from "@chakra-ui/react";
 import axios from "axios";
 import PersonCreditCard from "./PersonCreditCard";
 import SortButtons from "./SortButtons";
