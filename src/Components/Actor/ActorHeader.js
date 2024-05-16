@@ -33,12 +33,12 @@ const ActorHeader = ({ person, movieCreditsLength }) => {
       mb={8}
       p={4}
       borderRadius="lg"
-      bg="white"
+      bg="gray.100"
       boxShadow="md">
       {profile_path && (
         <Image
-          boxSize="200px"
-          borderRadius="full"
+          boxSize="220px"
+          borderRadius="20px"
           src={`https://image.tmdb.org/t/p/w500${profile_path}`}
           alt={`${name} profile`}
           mr={{ base: 0, md: 8 }}
