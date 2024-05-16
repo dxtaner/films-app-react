@@ -57,7 +57,7 @@ const SocialIdentityLinks = ({ externalIds }) => {
   ];
 
   return (
-    <Flex as="section" alignItems="center" mt={4} mb={2}>
+    <Flex as="section" alignItems="center" p={2} mt={4} bg={"gray.100"} mb={2}>
       <strong>Sosyal Kimlik Bilgileri:</strong>
       <Flex ml={4} wrap="wrap" justify="flex-start">
         {socialLinks.map((link, index) => (
@@ -70,7 +70,8 @@ const SocialIdentityLinks = ({ externalIds }) => {
               fontSize="xl"
               color="gray.600"
               _hover={{ color: "blue.500", transform: "scale(1.1)" }}
-              mr={4}>
+              mr={4}
+              mb={2}>
               <Icon as={link.icon} boxSize={8} />
             </Link>
           </Tooltip>
