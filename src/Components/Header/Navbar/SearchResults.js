@@ -6,7 +6,7 @@ const SearchResults = ({ results, handleResultClick }) => {
   const navigate = useNavigate();
 
   const showDetails = (result) => {
-    navigate(`/movieDetails/${result.id}`, { state: result });
+    navigate(`/MovieDetails/${result.id}`, { state: result });
   };
 
   return (
