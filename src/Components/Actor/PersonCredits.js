@@ -64,7 +64,7 @@ const PersonCredits = ({ movieCredits }) => {
   }, [sortBy, movieCredits]);
 
   const showDetails = (credit) => {
-    navigate(`/movieDetails/${credit.id}`, { state: credit });
+    navigate(`/MovieDetails/${credit.id}`, { state: credit });
   };
 
   const renderMovieCards = () => {
