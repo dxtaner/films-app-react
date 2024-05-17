@@ -32,12 +32,12 @@ const SearchBar = () => {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
-      navigate(`/searchMovies?query=${query}`);
+      navigate(`/SearchMovies?query=${query}`);
     }
   };
 
   const handleResultClick = (result) => {
-    console.log("Selected Movie:", result);
+    // console.log("Selected Movie:", result);
   };
 
   const handleSearch = () => {
