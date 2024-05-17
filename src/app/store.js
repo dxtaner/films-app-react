@@ -16,6 +16,7 @@ import similarReducer from "./features/movies/details/similarSlice.js";
 import watchListReducer from "./features/movies/watchListSlice.js";
 import ratedMovieReducer from "./features/movies/ratedMovieSlice.js";
 import searchMovieReducer from "./features/movies/searchSlice.js";
+import personSearchReducer from "./features/actors/personSearchSlice.js";
 import popularSeriesReducer from "./features/series/popularSeriesSlice.js";
 import topSeriesReducer from "./features/series/topSeriesSlice.js";
 import discoverMoviesReducer from "./features/movies/discoverMoviesSlice.js";
@@ -41,6 +42,7 @@ export default configureStore({
     topSeries: topSeriesReducer,
     ratedMovies: ratedMovieReducer,
     search: searchMovieReducer,
+    personSearch: personSearchReducer,
     discoverMovies: discoverMoviesReducer,
   },
 });
