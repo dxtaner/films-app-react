@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SimpleGrid,
   VStack,
@@ -7,7 +7,10 @@ import {
   Box,
   Center,
   Spinner,
+  Input,
+  Button,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import PersonCard from "../Cards/PersonCards";
 import {
   getPopularPersonsAsync,
@@ -21,10 +24,19 @@ const PopularPersons = () => {
   const dispatch = useDispatch();
   const popularPersons = useSelector(selectPopularPersons);
   const isLoading = useSelector(selectPopularPersonsStatus);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(getPopularPersonsAsync());
   }, [dispatch]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredPersons = popularPersons.filter((person) =>
+    person.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <VStack
@@ -40,16 +52,37 @@ const PopularPersons = () => {
         </Title>
       </Box>
 
+      <Box justifyContent={"center"} display="flex">
+        <Link to="/SearchPerson">
+          <Button colorScheme="yellow">Oyuncu Arama Sayfasına Git</Button>
+        </Link>
+      </Box>
+
+      <Box>
+        <Input
+          type="text"
+          placeholder="Kişi ara..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </Box>
+
       {isLoading === "loading" ? (
         <Center>
           <Spinner size="xl" />
         </Center>
+      ) : filteredPersons.length === 0 ? (
+        <Box textAlign="center" width="100%">
+          <Text fontSize="lg" fontWeight="bold" color="red.500">
+            Aradığınız kişi bulunamadı.
+          </Text>
+        </Box>
       ) : (
         <SimpleGrid
           columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
           spacing={4}>
-          {popularPersons.map((item) => (
-            <PersonCard key={item.id} person={item} />
+          {filteredPersons.map((person) => (
+            <PersonCard key={person.id} person={person} />
           ))}
         </SimpleGrid>
       )}
