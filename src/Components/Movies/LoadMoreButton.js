@@ -1,18 +1,24 @@
 import React from "react";
-import { Button, Center, Spinner } from "@chakra-ui/react";
+import { Button, Spinner, Box, Text, Flex } from "@chakra-ui/react";
 
 const LoadMoreButton = ({ onClick, status }) => {
-  if (status === "loading") {
-    return (
-      <Center mt={6}>
-        <Spinner size="xl" color="teal.500" />
-      </Center>
-    );
-  }
   return (
-    <Button onClick={onClick} marginTop={4} colorScheme="teal">
-      Daha Fazla Yükle
-    </Button>
+    <Box mt={6} textAlign="center">
+      <Flex alignItems="center" justifyItems="center">
+        {status === "loading" ? (
+          <>
+            <Spinner size="lg" color="teal.500" mr={2} />
+            <Text fontWeight="semibold" fontSize="lg" color="teal.500">
+              Yükleniyor...
+            </Text>
+          </>
+        ) : (
+          <Button onClick={onClick} colorScheme="teal" size="lg">
+            Daha Fazla Yükle
+          </Button>
+        )}
+      </Flex>
+    </Box>
   );
 };
 
