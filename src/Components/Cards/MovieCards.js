@@ -62,7 +62,7 @@ const MovieCard = ({ movie }) => {
   }, [dispatch, token, moviesIDs]);
 
   const showDetails = () => {
-    navigate(`/movieDetails/${moviesIDs}`, { state: movie });
+    navigate(`/MovieDetails/${moviesIDs}`, { state: movie });
   };
 
   const addToToggleFavorite = () => {
@@ -131,8 +131,8 @@ const MovieCard = ({ movie }) => {
             rounded="md"
             fontWeight="bold"
             fontSize="sm"
-            color={getVoteColor(vote_average)}>
-            {vote_average.toFixed(1) * 10}%
+            color={vote_average ? getVoteColor(vote_average) : "gray.500"}>
+            {vote_average ? vote_average.toFixed(1) * 10 + "%" : ""}
           </Text>
           <Menu
             isOpen={isMenuOpen}
