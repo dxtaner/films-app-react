@@ -1,49 +1,57 @@
 import React, { useState, useEffect } from "react";
+import { Button, Box, Flex, Wrap, WrapItem } from "@chakra-ui/react";
 import genreOptions from "../genreOptions";
-import { Button, Box } from "@chakra-ui/react";
 
 const GenreFilter = ({ queryParams, onFilterChange }) => {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   useEffect(() => {
-    if (queryParams.with_genres) {
-      setSelectedGenres(queryParams.with_genres.split(",").map(Number));
-    }
-  }, [queryParams]);
+    onFilterChange({
+      with_genres: selectedGenres.join(","),
+    });
+  }, [selectedGenres, onFilterChange, queryParams]);
 
   const handleGenreClick = (genreId) => {
-    if (selectedGenres.includes(genreId)) {
-      setSelectedGenres(selectedGenres.filter((id) => id !== genreId));
-    } else {
-      setSelectedGenres([...selectedGenres, genreId]);
-    }
-  };
-
-  const applyGenreFilters = () => {
-    onFilterChange("with_genres", selectedGenres.join(","));
+    const updatedGenres = selectedGenres.includes(genreId)
+      ? selectedGenres.filter((id) => id !== genreId)
+      : [...selectedGenres, genreId];
+    setSelectedGenres(updatedGenres);
+    onFilterChange("with_genres", updatedGenres.join(","));
   };
 
   return (
-    <Box>
-      {genreOptions.map((genre) => (
-        <Button
-          key={genre.id}
-          onClick={() => handleGenreClick(genre.id)}
-          colorScheme={selectedGenres.includes(genre.id) ? "blue" : "gray"}
-          size="xs"
-          isFullWidth
-          m={1}>
-          {genre.name}
-        </Button>
-      ))}
-      <Button
-        onClick={applyGenreFilters}
-        colorScheme="blue"
-        variant="outline"
-        size="sm"
-        isFullWidth>
-        Türleri Uygula
-      </Button>
+    <Box
+      p={4}
+      borderWidth={1}
+      borderRadius="lg"
+      boxShadow="sm"
+      bg="gray.50"
+      borderColor="gray.200"
+      _hover={{ boxShadow: "md", borderColor: "gray.300" }}>
+      <Flex wrap="wrap" justifyContent="center" alignItems="center">
+        <Wrap spacing={2} justify="center">
+          {genreOptions.map((genre) => (
+            <WrapItem key={genre.id}>
+              <Button
+                onClick={() => handleGenreClick(genre.id)}
+                colorScheme={
+                  selectedGenres.includes(genre.id) ? "teal" : "gray"
+                }
+                size="sm"
+                m={1}
+                borderRadius="md"
+                _hover={{
+                  bg: selectedGenres.includes(genre.id)
+                    ? "teal.500"
+                    : "gray.300",
+                }}
+                _focus={{ outline: "none" }}>
+                {genre.name}
+              </Button>
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Flex>
     </Box>
   );
 };
