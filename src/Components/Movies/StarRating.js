@@ -3,6 +3,7 @@ import { FaStar } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addToMovieRating } from "../../app/features/movies/details/detailsSlice.js";
 import { showSuccessMessage } from "../Alerts.js";
+import { Box } from "@chakra-ui/react";
 
 const StarRating = ({ value, movieDetailsId, onRatingChange }) => {
   const [hoverValue, setHoverValue] = useState(0);
@@ -19,15 +20,15 @@ const StarRating = ({ value, movieDetailsId, onRatingChange }) => {
   const handleClick = (newValue) => {
     dispatch(addToMovieRating({ movieId: movieDetailsId, rating: newValue }));
     showSuccessMessage("Film başarıyla derecelendirildi");
-    onRatingChange(newValue);
+    onRatingChange(newValue === value ? 0 : newValue);
   };
 
   return (
-    <div>
+    <Box display="flex">
       {[1, 2, 3, 4, 5].map((star) => {
         const filled = star <= (hoverValue || value);
         return (
-          <span
+          <Box
             key={star}
             onMouseEnter={() => handleMouseEnter(star)}
             onMouseLeave={handleMouseLeave}
@@ -38,10 +39,10 @@ const StarRating = ({ value, movieDetailsId, onRatingChange }) => {
               size={28}
               style={{ cursor: "pointer" }}
             />
-          </span>
+          </Box>
         );
       })}
-    </div>
+    </Box>
   );
 };
 
