@@ -23,6 +23,7 @@ const AppCarousel = ({ data }) => {
         display: "inline-block",
         margin: "0 5px",
         cursor: "pointer",
+        transition: "background 0.3s",
       }}
       aria-label={`Slide ${label}`}
     />
@@ -33,26 +34,40 @@ const AppCarousel = ({ data }) => {
       showThumbs={false}
       showArrows={!isMobile}
       autoPlay
-      renderIndicator={renderIndicator}>
+      renderIndicator={renderIndicator}
+      infiniteLoop
+      interval={5000}
+      transitionTime={1000}>
       {data.results.map((item, index) => (
         <div className="carousel-item" key={index}>
           <img
             src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
             alt={item.original_title}
             className="carousel-image"
+            aria-label={item.original_title}
           />
-          <div className="carousel-content">
-            <Box>
-              <Heading as="h2" size="xl" mb={4} color="white">
-                {item.original_title}
-              </Heading>
-              {!isMobile && (
-                <Text fontSize="lg" color="white" m={8}>
-                  {item.overview}
-                </Text>
-              )}
-            </Box>
-          </div>
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            width="100%"
+            height="100%"
+            bg="rgba(0, 0, 0, 0.5)"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            color="white"
+            p={4}>
+            <Heading as="h2" size={isMobile ? "md" : "xl"} mb={4}>
+              {item.original_title}
+            </Heading>
+            {!isMobile && (
+              <Text fontSize="lg" textAlign="center" maxW="80%">
+                {item.overview}
+              </Text>
+            )}
+          </Box>
         </div>
       ))}
     </Carousel>
