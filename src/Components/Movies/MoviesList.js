@@ -1,32 +1,33 @@
 import React from "react";
-import { Flex, Text, Spinner, Center, Box } from "@chakra-ui/react";
+import { Text, Center, Grid } from "@chakra-ui/react";
 import MovieCard from "../Cards/MovieCards.js";
 
 const MoviesList = ({ movies, status, error }) => {
-  if (status === "loading") {
+  if (status === "failed") {
     return (
       <Center mt={6}>
-        <Spinner size="xl" color="teal.500" />
+        <Text color="red.500" fontSize="lg" fontWeight="bold">
+          Hata: {error}
+        </Text>
       </Center>
     );
   }
 
-  if (status === "failed") {
-    return (
-      <Text mt={6} color="red.500" fontSize="lg" fontWeight="bold">
-        Hata: {error}
-      </Text>
-    );
-  }
-
   return (
-    <Flex flexWrap="wrap" justifyContent="center" alignItems="center" mt={6}>
+    <Grid
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(3, 1fr)",
+        lg: "repeat(5, 1fr)",
+      }}
+      gap={6}
+      mt={6}
+      px={4}>
       {movies.map((movie) => (
-        <Box key={movie.id} m={2}>
-          <MovieCard movie={movie} />
-        </Box>
+        <MovieCard key={movie.id} movie={movie} />
       ))}
-    </Flex>
+    </Grid>
   );
 };
 
