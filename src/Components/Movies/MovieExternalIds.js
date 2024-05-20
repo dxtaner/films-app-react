@@ -1,7 +1,26 @@
 import React from "react";
-import { Box, Heading, Text, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Link,
+  Stack,
+  Icon,
+  HStack,
+} from "@chakra-ui/react";
+import {
+  FaImdb,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaWikipediaW,
+} from "react-icons/fa";
 
 const MovieExternalIds = ({ movieExternalIds }) => {
+  if (!movieExternalIds) {
+    return null;
+  }
+
   const { imdb_id, wikidata_id, facebook_id, twitter_id, instagram_id } =
     movieExternalIds;
 
@@ -10,83 +29,77 @@ const MovieExternalIds = ({ movieExternalIds }) => {
       p={6}
       boxShadow="lg"
       borderRadius="lg"
-      bg="white"
-      maxW="800px"
+      bg="gray.100"
       mx="auto"
       borderWidth={1}
       borderColor="gray.200"
-      textAlign="center"
       fontSize={["lg", "xl", "2xl", "3xl"]}
-      lineHeight="taller"
-      color="teal.600">
-      <Heading fontSize="2xl" mb={4}>
-        Dış Film Bilgileri
+      lineHeight="taller">
+      <Heading fontSize="2xl" mb={4} textAlign="center">
+        Harici Film Bağlantıları
       </Heading>
-      {imdb_id && (
-        <Text fontSize="lg" mb={2}>
-          IMDb bilgileri için tıklayın:{" "}
+
+      <HStack spacing={4} justify="center" wrap="wrap">
+        {imdb_id && (
           <Link
             href={`https://www.imdb.com/title/${imdb_id}`}
             target="_blank"
-            rel="noopener noreferrer"
-            color="teal.600"
-            textDecoration="underline">
-            IMDb
+            rel="noopener noreferrer">
+            <Stack align="center">
+              <Icon as={FaImdb} fontSize="2xl" color="teal.600" />
+              <Text fontSize="lg">IMDb</Text>
+            </Stack>
           </Link>
-        </Text>
-      )}
-      {wikidata_id && (
-        <Text fontSize="lg" mb={2}>
-          WikiData bilgileri için tıklayın:{" "}
+        )}
+
+        {wikidata_id && (
           <Link
             href={`https://www.wikidata.org/wiki/${wikidata_id}`}
             target="_blank"
-            rel="noopener noreferrer"
-            color="teal.600"
-            textDecoration="underline">
-            WikiData
+            rel="noopener noreferrer">
+            <Stack align="center">
+              <Icon as={FaWikipediaW} fontSize="2xl" color="teal.600" />
+              <Text fontSize="lg">WikiData</Text>
+            </Stack>
           </Link>
-        </Text>
-      )}
-      {facebook_id && (
-        <Text fontSize="lg" mb={2}>
-          Facebook sayfası için tıklayın:{" "}
+        )}
+
+        {facebook_id && (
           <Link
             href={`https://www.facebook.com/${facebook_id}`}
             target="_blank"
-            rel="noopener noreferrer"
-            color="teal.600"
-            textDecoration="underline">
-            Facebook
+            rel="noopener noreferrer">
+            <Stack align="center">
+              <Icon as={FaFacebook} fontSize="2xl" color="teal.600" />
+              <Text fontSize="lg">Facebook</Text>
+            </Stack>
           </Link>
-        </Text>
-      )}
-      {twitter_id && (
-        <Text fontSize="lg" mb={2}>
-          Twitter hesabı için tıklayın:{" "}
+        )}
+
+        {twitter_id && (
           <Link
             href={`https://www.twitter.com/${twitter_id}`}
             target="_blank"
-            rel="noopener noreferrer"
-            color="teal.600"
-            textDecoration="underline">
-            Twitter
+            rel="noopener noreferrer">
+            <Stack align="center">
+              <Icon as={FaTwitter} fontSize="2xl" color="teal.600" />
+              <Text fontSize="lg">Twitter</Text>
+            </Stack>
           </Link>
-        </Text>
-      )}
-      {instagram_id && (
-        <Text fontSize="lg">
-          Instagram hesabı için tıklayın:{" "}
+        )}
+
+        {instagram_id && (
           <Link
             href={`https://www.instagram.com/${instagram_id}`}
             target="_blank"
-            rel="noopener noreferrer"
-            color="teal.600"
-            textDecoration="underline">
-            Instagram
+            rel="noopener noreferrer">
+            <Stack align="center">
+              <Icon as={FaInstagram} fontSize="2xl" color="teal.600" />
+              <Text fontSize="lg">Instagram</Text>
+            </Stack>
           </Link>
-        </Text>
-      )}
+        )}
+      </HStack>
     </Box>
   );
 };
