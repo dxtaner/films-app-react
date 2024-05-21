@@ -25,25 +25,25 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
         justify={["center", "space-between", "flex-end", "flex-end"]}
         direction={["column", "row", "row", "row"]}
         pt={[6, 6, 0, 0]}>
-        <MenuItems to="/about">
+        <MenuItems to="/About">
           <Text>Site Hakkında...</Text>
         </MenuItems>
-        <MenuItems to="/discoverMovies">
+        <MenuItems to="/DiscoverMovies">
           <Text>Filmleri Keşfet</Text>
         </MenuItems>
-        <MenuItems to="/popularPersons">
+        <MenuItems to="/PopularPersons">
           <Text>Popüler Oyuncular</Text>
         </MenuItems>
-        <MenuItems to="/popularSeries">
+        <MenuItems to="/PopularSeries">
           <Text>Popüler Diziler</Text>
         </MenuItems>
-        <MenuItems to="/topSeries">
+        <MenuItems to="/TopSeries">
           <Text>En İyi Diziler</Text>
         </MenuItems>
         <MenuItems to="/">
           <Text>En Yüksek Puan Alan Filmler</Text>
         </MenuItems>
-        <MenuItems to="/upComingMovies">
+        <MenuItems to="/UpComingMovies">
           <Text> Yaklaşan Filmler</Text>
         </MenuItems>
         {isAuth ? (
@@ -66,7 +66,7 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
                   zIndex: "1",
                 }}>
                 <Link
-                  to="/myFavoriteMovies"
+                  to="/MyFavoriteMovies"
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -89,13 +89,12 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
                   onClick={closeMenu}>
                   İzleme Listemdeki Filmlerim
                 </Link>
-                {/* Diğer menü öğelerini buraya ekleyebilirsiniz */}
               </div>
             )}
           </div>
         ) : (
           <Button
-            onClick={() => navigate("/auth/login")}
+            onClick={() => navigate("/Auth/Login")}
             size="sm"
             bg="gray.100"
             _hover={{ bg: "gray.300" }}>
