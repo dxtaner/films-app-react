@@ -4,6 +4,7 @@ import {
   addMovieToFavorite,
   addMovieToWatchList,
   addToMovieRatings,
+  removeFromMovieRatings,
 } from "../../../../Components/Services/movies.js";
 import { getAccountDetails } from "../../../../Components/Services/auth.js";
 
@@ -20,22 +21,42 @@ export const getDetails = createAsyncThunk(
       return result;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );
 
 export const addToFavorites = createAsyncThunk(
   "movies/addToFavorites",
-  async (location_id, isFavorite) => {
+  async (movieId, isFavorite) => {
     try {
       const { id } = await getAccountDetails();
       await addMovieToFavorite(id, {
         media_type: "movie",
-        media_id: location_id,
+        media_id: movieId,
         favorite: isFavorite,
       });
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  }
+);
+
+export const addToWatchList = createAsyncThunk(
+  "movies/addToWatchList",
+  async (movieId, isWatchListed) => {
+    try {
+      const { id } = await getAccountDetails();
+
+      await addMovieToWatchList(id, {
+        media_type: "movie",
+        media_id: movieId,
+        watchlist: isWatchListed,
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   }
 );
@@ -45,6 +66,7 @@ export const removeFromFavorites = createAsyncThunk(
   async (location_id, isFavorite) => {
     try {
       const { id } = await getAccountDetails();
+
       await addMovieToFavorite(id, {
         media_type: "movie",
         media_id: location_id,
@@ -52,31 +74,17 @@ export const removeFromFavorites = createAsyncThunk(
       });
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );
 
-export const addToWatchList = createAsyncThunk(
-  "movies/addToWatchList",
+export const removeFromWatchList = createAsyncThunk(
+  "movies/removeFromWatchList",
   async (location_id, isWatchListed) => {
     try {
       const { id } = await getAccountDetails();
-      await addMovieToWatchList(id, {
-        media_type: "movie",
-        media_id: location_id,
-        watchlist: isWatchListed,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
 
-export const remevoToWatchList = createAsyncThunk(
-  "movies/addToWatchList",
-  async (location_id, isWatchListed) => {
-    try {
-      const { id } = await getAccountDetails();
       await addMovieToWatchList(id, {
         media_type: "movie",
         media_id: location_id,
@@ -84,18 +92,30 @@ export const remevoToWatchList = createAsyncThunk(
       });
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );
 
 export const addToMovieRating = createAsyncThunk(
   "movies/addToMovieRating",
-  async ({ movieId, rating }) => {
+  async (movie) => {
     try {
-      await addToMovieRatings(movieId, rating);
-      return { movieId, rating };
+      await addToMovieRatings(movie.id, movie.rating);
     } catch (error) {
-      console.error("addToMovieRating işlemi sırasında hata oluştu:", error);
+      console.error("An error occurred while adding movie rating:", error);
+      throw error;
+    }
+  }
+);
+
+export const removeFromRating = createAsyncThunk(
+  "movies/removeFromRating",
+  async (movieId) => {
+    try {
+      await removeFromMovieRatings(movieId);
+    } catch (error) {
+      console.error("An error occurred while removing movie rating:", error);
       throw error;
     }
   }
