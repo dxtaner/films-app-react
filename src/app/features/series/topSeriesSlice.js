@@ -1,12 +1,14 @@
-// topSeriesSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getSeriesTop } from "../../../Components/Services/series.js";
 
 export const fetchTopRatedSeries = createAsyncThunk(
   "topSeries/fetchTopRatedSeries",
-  async () => {
-    const response = await getSeriesTop();
-    return response.results;
+  async (page) => {
+    const response = await getSeriesTop(page);
+    return {
+      results: response.results,
+      totalPages: response.total_pages,
+    };
   }
 );
 
@@ -14,12 +16,18 @@ const initialState = {
   series: [],
   status: "idle",
   error: null,
+  currentPage: 1,
+  totalPages: 0,
 };
 
 const topSeriesSlice = createSlice({
   name: "topSeries",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTopRatedSeries.pending, (state) => {
@@ -27,7 +35,8 @@ const topSeriesSlice = createSlice({
       })
       .addCase(fetchTopRatedSeries.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.series = action.payload;
+        state.series = action.payload.results;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchTopRatedSeries.rejected, (state, action) => {
         state.status = "failed";
@@ -35,5 +44,7 @@ const topSeriesSlice = createSlice({
       });
   },
 });
+
+export const { setCurrentPage } = topSeriesSlice.actions;
 
 export default topSeriesSlice.reducer;
