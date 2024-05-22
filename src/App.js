@@ -17,6 +17,7 @@ import SearchMovies from "./Components/Movies/SearchMovie.js";
 import DiscoverMovies from "./Components/Movies/DiscoverMovies.js";
 import SearchBar from "./Components/Header/Navbar/SearchBar.js";
 import NotFound from "./Components/NotFound/NotFound.js";
+import SearchPerson from "./Components/Actor/Search/SearchPerson.js";
 
 function App() {
   return (
@@ -25,18 +26,22 @@ function App() {
       <SearchBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/upComingMovies" element={<UpcomingMovies />} />
-        <Route path="/movieDetails/:id" element={<MovieDetails />} />
-        <Route path="/auth/login" element={<LoginForm />} />
-        <Route path="/myFavoriteMovies" element={<FavoriteMovies />} />
-        <Route path="/watchListMovies" element={<WatchListMovies />} />
-        <Route path="/actorDetails/:id" element={<ActorDetails />} />
-        <Route path="/popularPersons" element={<PersonPopular />} />
-        <Route path="/popularSeries" element={<PopularSeries />} />
-        <Route path="/topSeries" element={<TopSeries />} />
-        <Route path="/searchMovies" element={<SearchMovies />} />
-        <Route path="/discoverMovies" element={<DiscoverMovies />} />
+        <Route path="/UpComingMovies" element={<UpcomingMovies />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Auth/Login" element={<LoginForm />} />
+
+        <Route path="/MyFavoriteMovies" element={<FavoriteMovies />} />
+        <Route path="/WatchListMovies" element={<WatchListMovies />} />
+
+        <Route path="/PopularPersons" element={<PersonPopular />} />
+        <Route path="/SearchPerson" element={<SearchPerson />} />
+        <Route path="/MovieDetails/:id" element={<MovieDetails />} />
+        <Route path="/ActorDetails/:id" element={<ActorDetails />} />
+
+        <Route path="/PopularSeries" element={<PopularSeries />} />
+        <Route path="/TopSeries" element={<TopSeries />} />
+        <Route path="/SearchMovies" element={<SearchMovies />} />
+        <Route path="/DiscoverMovies" element={<DiscoverMovies />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
