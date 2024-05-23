@@ -20,6 +20,8 @@ import personSearchReducer from "./features/actors/personSearchSlice.js";
 import popularSeriesReducer from "./features/series/popularSeriesSlice.js";
 import topSeriesReducer from "./features/series/topSeriesSlice.js";
 import discoverMoviesReducer from "./features/movies/discoverMoviesSlice.js";
+import movieCollectionReducer from "./features/movies/details/movieCollectionSlice.js";
+import movieCollectionImagesReducer from "./features/movies/details/movieCollectionImagesSlice.js";
 
 export default configureStore({
   reducer: {
@@ -44,5 +46,7 @@ export default configureStore({
     search: searchMovieReducer,
     personSearch: personSearchReducer,
     discoverMovies: discoverMoviesReducer,
+    movieCollection: movieCollectionReducer,
+    movieCollectionImages: movieCollectionImagesReducer,
   },
 });
