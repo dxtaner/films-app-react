@@ -34,7 +34,6 @@ const MovieCollection = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Move useColorModeValue calls to the top of the component
   const bg = useColorModeValue("white", "gray.800");
   const overviewBg = useColorModeValue("gray.50", "gray.700");
   const overviewTextBg = useColorModeValue("white", "gray.800");
