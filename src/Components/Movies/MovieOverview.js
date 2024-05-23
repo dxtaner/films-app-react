@@ -1,92 +1,127 @@
 import React from "react";
-import { Box, Text, VStack, Divider, Badge, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Heading,
+  VStack,
+  HStack,
+  Badge,
+  Tooltip,
+  Link as ChakraLink,
+  Divider,
+} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const MovieOverview = ({ movieDetails }) => {
-  if (!movieDetails) {
-    return null;
-  }
+  if (!movieDetails) return null;
 
   const {
+    id,
+    title,
     original_title,
     overview,
-    popularity,
     release_date,
     runtime,
     vote_average,
     vote_count,
+    budget,
+    revenue,
+    belongs_to_collection,
+    production_companies,
     production_countries,
     spoken_languages,
+    tagline,
   } = movieDetails;
 
-  const formattedProductionCountries = production_countries
-    ? production_countries.map((country) => country.name).join(", ")
-    : "";
-
-  const formattedSpokenLanguages = spoken_languages
-    ? spoken_languages.map((language) => language.english_name).join(", ")
-    : "";
-
-  const formattedRuntime = runtime
-    ? `${Math.floor(runtime / 60)} saat ${runtime % 60} dakika`
-    : "";
+  const hours = Math.floor(runtime / 60);
+  const minutes = runtime % 60;
+  const runtimeText = `${hours} saat ${minutes} dakika`;
 
   return (
     <Box
-      p={6}
+      p={8}
       borderRadius="lg"
-      bg="gray.100"
+      bg="white"
       mx="auto"
-      borderWidth={2}
-      borderColor="gray.300"
-      textAlign="left">
-      <Text fontSize="3xl" fontWeight="bold" textAlign="center" mb={4}>
-        {original_title}
-      </Text>
+      borderWidth={1}
+      borderColor="gray.200"
+      textAlign="left"
+      boxShadow="xl">
+      <Heading as="h2" size="xl" mb={4}>
+        {title} (
+        {release_date ? release_date.substring(0, 4) : "Yayınlanma Tarihi Yok"})
+      </Heading>
 
-      <Flex justify="space-between" align="center" flexWrap="wrap" mb={4}>
-        <Badge colorScheme="teal" mb={2}>
-          Popülerlik: {popularity ? popularity.toFixed(2) : ""}
-        </Badge>
-        <Text fontWeight="bold" mb={2}>
-          Vizyon Tarihi: {release_date ? release_date : ""}
+      {tagline && (
+        <Text fontSize="lg" fontStyle="italic" color="gray.600" mb={4}>
+          {tagline}
         </Text>
-      </Flex>
+      )}
 
-      <Text fontSize="lg" mb={4}>
-        {overview}
-      </Text>
+      <VStack spacing={6} align="start">
+        <Text fontSize="lg">
+          <strong>Orijinal Başlık:</strong> {original_title}
+        </Text>
+        <Text fontSize="lg">
+          <strong>Özet:</strong> {overview}
+        </Text>
 
-      <Divider my={4} />
+        <HStack spacing={4} wrap="wrap" mb={4}>
+          <Tooltip label="Filmin süresi" aria-label="Runtime Tooltip">
+            <Badge colorScheme="teal" variant="solid">
+              Süre: {runtimeText}
+            </Badge>
+          </Tooltip>
+          <Tooltip label="Filmin bütçesi" aria-label="Budget Tooltip">
+            <Badge colorScheme="green" variant="solid">
+              Bütçe:{" "}
+              {budget ? `$${budget.toLocaleString()}` : "Bilgi mevcut değil"}
+            </Badge>
+          </Tooltip>
+          <Tooltip
+            label="Filmin elde ettiği gelir"
+            aria-label="Revenue Tooltip">
+            <Badge colorScheme="purple" variant="solid">
+              Gelir:{" "}
+              {revenue ? `$${revenue.toLocaleString()}` : "Bilgi mevcut değil"}
+            </Badge>
+          </Tooltip>
+          <Tooltip
+            label="Filmin oy ortalaması ve toplam oy sayısı"
+            aria-label="Vote Average Tooltip">
+            <Badge colorScheme="orange" variant="solid">
+              Oy Ortalaması: {vote_average} ({vote_count} oy)
+            </Badge>
+          </Tooltip>
+        </HStack>
 
-      <VStack spacing={4} align="left">
-        <Flex justify="space-between" p={1} w="100%" mb={2} wrap={"wrap"}>
-          <Text fontWeight="bold">Süre:</Text>
-          <Text>{formattedRuntime}</Text>
-        </Flex>
+        {belongs_to_collection && (
+          <Box mb={2}>
+            <ChakraLink
+              as={Link}
+              to={`/MovieDetails/${id}/Collection/${belongs_to_collection.id}`}
+              color="teal.500"
+              fontWeight="bold">
+              {belongs_to_collection.name}
+            </ChakraLink>
+          </Box>
+        )}
 
-        <Flex justify="space-between" p={1} w="100%" mb={2} wrap={"wrap"}>
-          <Text fontWeight="bold">Oy Ortalaması:</Text>
-          <Text>{vote_average ? vote_average.toFixed(2) : ""}</Text>
-        </Flex>
-
-        <Flex justify="space-between" p={1} w="100%" mb={2} wrap={"wrap"}>
-          <Text fontWeight="bold">Oy Sayısı:</Text>
-          <Text>{vote_count ? vote_count : ""}</Text>
-        </Flex>
-
-        <Flex justify="space-between" p={1} w="100%" mb={2} wrap={"wrap"}>
-          <Text fontWeight="bold">Üretim Ülkeleri:</Text>
-          <Badge colorScheme="red" m={1} p={2}>
-            {formattedProductionCountries}
-          </Badge>
-        </Flex>
-
-        <Flex justify="space-between" p={1} w="100%" mb={2} wrap={"wrap"}>
-          <Text fontWeight="bold">Konuşulan Diller:</Text>
-          <Badge colorScheme="red" m={1} p={2}>
-            {formattedSpokenLanguages}
-          </Badge>
-        </Flex>
+        <Text fontSize="lg" mt={4}>
+          <strong>Yapım Şirketleri:</strong>{" "}
+          {production_companies &&
+            production_companies.map((company) => company.name).join(", ")}
+        </Text>
+        <Text fontSize="lg">
+          <strong>Üretim Ülkeleri:</strong>{" "}
+          {production_countries &&
+            production_countries.map((country) => country.name).join(", ")}
+        </Text>
+        <Text fontSize="lg">
+          <strong>Konuşulan Diller:</strong>{" "}
+          {spoken_languages &&
+            spoken_languages.map((language) => language.name).join(", ")}
+        </Text>
       </VStack>
     </Box>
   );
