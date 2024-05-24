@@ -12,12 +12,14 @@ import {
   Button,
   Flex,
   IconButton,
-  Heading,
   Center,
+  StackDivider,
+  VStack,
 } from "@chakra-ui/react";
 import MovieCard from "../Cards/MovieCards";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import Title from "../Title/titles";
 
 const RESULTS_PER_PAGE = 10;
 
@@ -55,10 +57,19 @@ const SearchMovie = () => {
   );
 
   return (
-    <Box mt={8}>
-      <Heading as="h1" size="xl" mb={4} textAlign="center">
-        En İyi {totalResults} Arama Sonucu
-      </Heading>
+    <VStack
+      mt={8}
+      spacing={6}
+      p={6}
+      alignItems="stretch"
+      backgroundColor="gray.50"
+      borderRadius="xl"
+      boxShadow="lg"
+      divider={<StackDivider borderColor="blue.800" />}>
+      <Box textAlign="center">
+        <Title text={`En İyi ${totalResults} Arama Sonucu`} />;
+      </Box>
+
       {totalResults === 0 ? (
         <Center>
           <Text mt={4} fontSize="lg">
@@ -114,7 +125,7 @@ const SearchMovie = () => {
           </Flex>
         </>
       )}
-    </Box>
+    </VStack>
   );
 };
 
