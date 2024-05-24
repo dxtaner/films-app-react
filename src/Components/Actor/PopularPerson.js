@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
-  SimpleGrid,
-  VStack,
-  Text,
-  StackDivider,
   Box,
-  Center,
-  Spinner,
-  Input,
   Button,
+  Center,
+  Input,
+  SimpleGrid,
+  Spinner,
+  StackDivider,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import PersonCard from "../Cards/PersonCards";
+import PopularPersonCard from "../Cards/PopularPersonCard";
 import {
   getPopularPersonsAsync,
   selectPopularPersons,
@@ -41,48 +41,51 @@ const PopularPersons = () => {
   return (
     <VStack
       divider={<StackDivider borderColor="blue.800" />}
-      spacing={4}
-      p={[2, 4, 6, 8]}
-      alignItems="stretch">
-      <Box>
-        <Title text="Popüler Kişiler">
-          <Text fontSize="lg" fontWeight="bold">
-            Popüler oyuncular ve kişilerin listesi
-          </Text>
-        </Title>
+      spacing={6}
+      p={6}
+      alignItems="stretch"
+      backgroundColor="gray.50"
+      borderRadius="xl"
+      boxShadow="lg">
+      <Box textAlign="center">
+        <Title text="Popüler Kişiler" />
+        <Text fontSize="lg" color="gray.600">
+          Popüler oyuncular ve kişilerin listesi
+        </Text>
       </Box>
 
-      <Box justifyContent={"center"} display="flex">
+      <Box textAlign="center">
         <Link to="/SearchPerson">
           <Button colorScheme="yellow">Oyuncu Arama Sayfasına Git</Button>
         </Link>
       </Box>
 
-      <Box>
-        <Input
-          type="text"
-          placeholder="Kişi ara..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </Box>
+      <Input
+        type="text"
+        placeholder="Kişi ara..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+        borderRadius="xl"
+        borderColor="gray.300"
+        boxShadow="md"
+        _focus={{ borderColor: "blue.500" }}
+        size="lg"
+      />
 
       {isLoading === "loading" ? (
         <Center>
           <Spinner size="xl" />
         </Center>
       ) : filteredPersons.length === 0 ? (
-        <Box textAlign="center" width="100%">
-          <Text fontSize="lg" fontWeight="bold" color="red.500">
-            Aradığınız kişi bulunamadı.
-          </Text>
-        </Box>
+        <Text fontSize="lg" fontWeight="bold" color="red.500">
+          Aradığınız kişi bulunamadı.
+        </Text>
       ) : (
         <SimpleGrid
           columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
           spacing={4}>
           {filteredPersons.map((person) => (
-            <PersonCard key={person.id} person={person} />
+            <PopularPersonCard key={person.id} person={person} />
           ))}
         </SimpleGrid>
       )}
