@@ -1,6 +1,7 @@
 import React from "react";
-import { List, ListItem, Box, Text } from "@chakra-ui/react";
+import { List, ListItem, Box, Text, Flex, Icon } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 const SearchResults = ({ results, handleResultClick }) => {
   const navigate = useNavigate();
@@ -9,25 +10,44 @@ const SearchResults = ({ results, handleResultClick }) => {
     navigate(`/MovieDetails/${result.id}`, { state: result });
   };
 
+  const safeResults = Array.isArray(results) ? results : [];
+
   return (
     <Box
       bg="white"
-      boxShadow="md"
+      boxShadow="xl"
       border="1px solid"
       borderColor="gray.200"
-      borderRadius="md"
-      maxH="200px"
-      overflowY="auto">
-      <List spacing={2}>
-        {results.map((result) => (
+      borderRadius="lg"
+      maxH="400px"
+      overflowY="auto"
+      width="100%"
+      p={4}
+      mt={4}>
+      <List spacing={3}>
+        {safeResults.map((result) => (
           <ListItem
             key={result.id}
-            py={2}
+            py={3}
             px={4}
             cursor="pointer"
-            _hover={{ bg: "gray.100" }}
-            onClick={() => handleResultClick(result)}>
-            <Text onClick={() => showDetails(result)}>{result.title}</Text>
+            borderRadius="md"
+            _hover={{
+              bg: "gray.50",
+              transform: "scale(1.02)",
+              boxShadow: "md",
+            }}
+            transition="all 0.2s"
+            onClick={() => {
+              handleResultClick(result);
+              showDetails(result);
+            }}>
+            <Flex align="center" justify="space-between">
+              <Text fontSize="lg" fontWeight="bold">
+                {result.title}
+              </Text>
+              <Icon as={ChevronRightIcon} boxSize={6} />
+            </Flex>
           </ListItem>
         ))}
       </List>
