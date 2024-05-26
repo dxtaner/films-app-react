@@ -1,5 +1,5 @@
 import axios from "axios";
-import { showErrorMessage } from "../Alerts.js";
+import { showErrorMessage, showSuccessMessage } from "../Alerts.js";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const API_KEY = process.env.REACT_APP_APIKEY;
@@ -13,7 +13,10 @@ export const getAutheticationToken = () => {
   return axios
     .get(`${BASE_URL}/authentication/token/new?api_key=${API_KEY}`)
     .then((res) => res.data)
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      showErrorMessage("Authentication token couldn't be retrieved.");
+      throw error;
+    });
 };
 
 export const createSessionToken = (values) => {
@@ -23,7 +26,10 @@ export const createSessionToken = (values) => {
       values
     )
     .then((res) => res.data)
-    .catch((error) => showErrorMessage(error.response.data.status_message));
+    .catch((error) => {
+      showErrorMessage(error.response.data.status_message);
+      throw error;
+    });
 };
 
 export const authenticateUser = (request_token) => {
@@ -32,8 +38,14 @@ export const authenticateUser = (request_token) => {
       `${BASE_URL}/authentication/session/new?api_key=${API_KEY}`,
       request_token
     )
-    .then((res) => res.data)
-    .catch((error) => console.log(error));
+    .then((res) => {
+      showSuccessMessage("User authenticated successfully.");
+      return res.data;
+    })
+    .catch((error) => {
+      showErrorMessage("User authentication failed.");
+      throw error;
+    });
 };
 
 export const getAccountDetails = () => {
@@ -41,12 +53,10 @@ export const getAccountDetails = () => {
     .get(`${BASE_URL}/account?api_key=${API_KEY}&session_id=${getSessionId()}`)
     .then((res) => {
       const data = res.data;
-      // console.log("Account Details:", data); // Log the data
-      // console.log("Account Details:", getSessionId); // Log the data
       return data;
     })
     .catch((error) => {
-      console.log("Error:", error);
+      showErrorMessage("Failed to fetch account details.");
       throw error;
     });
 };
