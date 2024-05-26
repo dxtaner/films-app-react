@@ -11,9 +11,11 @@ import Footer from "./Components/Footer/Footer.js";
 import ActorDetails from "./Components/Actor/ActorDetails.js";
 import PersonPopular from "./Components/Actor/PopularPerson.js";
 import WatchListMovies from "./Components/Movies/WatchListMovies.js";
+import RatingListMovies from "./Components/Movies/RatingListMovies.js";
 import PopularSeries from "./Components/Series/PopularSeries.js";
 import TopSeries from "./Components/Series/TopSeries.js";
 import SearchMovies from "./Components/Movies/SearchMovie.js";
+import MovieCollection from "./Components/Movies/MovieCollection.js";
 import DiscoverMovies from "./Components/Movies/DiscoverMovies.js";
 import SearchBar from "./Components/Header/Navbar/SearchBar.js";
 import NotFound from "./Components/NotFound/NotFound.js";
@@ -27,20 +29,29 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/UpComingMovies" element={<UpcomingMovies />} />
+
         <Route path="/About" element={<About />} />
         <Route path="/Auth/Login" element={<LoginForm />} />
 
         <Route path="/MyFavoriteMovies" element={<FavoriteMovies />} />
         <Route path="/WatchListMovies" element={<WatchListMovies />} />
+        <Route path="/MyRatingMovies" element={<RatingListMovies />} />
 
         <Route path="/PopularPersons" element={<PersonPopular />} />
         <Route path="/SearchPerson" element={<SearchPerson />} />
         <Route path="/MovieDetails/:id" element={<MovieDetails />} />
+        <Route
+          path="/MovieDetails/:id/Collection/:id"
+          element={<MovieCollection />}
+        />
+
         <Route path="/ActorDetails/:id" element={<ActorDetails />} />
 
         <Route path="/PopularSeries" element={<PopularSeries />} />
         <Route path="/TopSeries" element={<TopSeries />} />
+
         <Route path="/SearchMovies" element={<SearchMovies />} />
+
         <Route path="/DiscoverMovies" element={<DiscoverMovies />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
