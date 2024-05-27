@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getPersonExternalIds } from "../../../Components/Services/person.js";
 
-// Async thunk ile kişi dış kimlik bilgilerini alma işlemi
 export const fetchPersonExternalIds = createAsyncThunk(
   "personExternalIds/fetchPersonExternalIds",
   async (personId) => {
@@ -10,13 +9,12 @@ export const fetchPersonExternalIds = createAsyncThunk(
   }
 );
 
-// Kişi dış kimlik bilgileri slice'ı oluşturuluyor
 const personExternalIdsSlice = createSlice({
   name: "personExternalIds",
   initialState: {
-    data: null, // Kişi dış kimlik bilgileri
-    status: "idle", // Async işlemin durumu ("idle", "loading", "succeeded", "failed")
-    error: null, // Hata mesajı (eğer varsa)
+    data: null,
+    status: "idle",
+    error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -35,7 +33,5 @@ const personExternalIdsSlice = createSlice({
   },
 });
 
-// Kişi dış kimlik bilgilerini seçmek için bir selektör oluşturuluyor
 export const selectPersonExternalIds = (state) => state.personExternalIds.data;
-
 export default personExternalIdsSlice.reducer;
