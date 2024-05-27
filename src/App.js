@@ -29,14 +29,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/UpComingMovies" element={<UpcomingMovies />} />
-
         <Route path="/About" element={<About />} />
         <Route path="/Auth/Login" element={<LoginForm />} />
-
         <Route path="/MyFavoriteMovies" element={<FavoriteMovies />} />
         <Route path="/WatchListMovies" element={<WatchListMovies />} />
         <Route path="/MyRatingMovies" element={<RatingListMovies />} />
-
         <Route path="/PopularPersons" element={<PersonPopular />} />
         <Route path="/SearchPerson" element={<SearchPerson />} />
         <Route path="/MovieDetails/:id" element={<MovieDetails />} />
@@ -44,14 +41,10 @@ function App() {
           path="/MovieDetails/:id/Collection/:id"
           element={<MovieCollection />}
         />
-
         <Route path="/ActorDetails/:id" element={<ActorDetails />} />
-
         <Route path="/PopularSeries" element={<PopularSeries />} />
         <Route path="/TopSeries" element={<TopSeries />} />
-
         <Route path="/SearchMovies" element={<SearchMovies />} />
-
         <Route path="/DiscoverMovies" element={<DiscoverMovies />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
