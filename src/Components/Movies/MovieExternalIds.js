@@ -1,13 +1,5 @@
-import React from "react";
-import {
-  Box,
-  Heading,
-  Text,
-  Link,
-  Stack,
-  Icon,
-  HStack,
-} from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Box, Link, Icon, Tooltip, Wrap, WrapItem } from "@chakra-ui/react";
 import {
   FaImdb,
   FaFacebook,
@@ -15,8 +7,22 @@ import {
   FaInstagram,
   FaWikipediaW,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  fetchMovieExternalIds,
+  selectMovieExternalIds,
+} from "../../app/features/movies/details/movieExternalIdsSlice";
 
-const MovieExternalIds = ({ movieExternalIds }) => {
+const MovieExternalIds = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const movieExternalIds = useSelector(selectMovieExternalIds);
+
+  useEffect(() => {
+    dispatch(fetchMovieExternalIds(id));
+  }, [dispatch, id]);
+
   if (!movieExternalIds) {
     return null;
   }
@@ -26,80 +32,78 @@ const MovieExternalIds = ({ movieExternalIds }) => {
 
   return (
     <Box
-      p={6}
+      p={3}
       boxShadow="lg"
       borderRadius="lg"
-      bg="gray.100"
       mx="auto"
-      borderWidth={1}
-      borderColor="gray.200"
-      fontSize={["lg", "xl", "2xl", "3xl"]}
-      lineHeight="taller">
-      <Heading fontSize="2xl" mb={4} textAlign="center">
-        Harici Film Bağlantıları
-      </Heading>
-
-      <HStack spacing={4} justify="center" wrap="wrap">
+      border="none"
+      textAlign="center">
+      <Wrap justify="center" spacing={4}>
         {imdb_id && (
-          <Link
-            href={`https://www.imdb.com/title/${imdb_id}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            <Stack align="center">
-              <Icon as={FaImdb} fontSize="2xl" color="teal.600" />
-              <Text fontSize="lg">IMDb</Text>
-            </Stack>
-          </Link>
+          <WrapItem>
+            <Tooltip label="IMDb" hasArrow>
+              <Link
+                href={`https://www.imdb.com/title/${imdb_id}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <Icon as={FaImdb} fontSize="3xl" color="yellow.400" />
+              </Link>
+            </Tooltip>
+          </WrapItem>
         )}
 
         {wikidata_id && (
-          <Link
-            href={`https://www.wikidata.org/wiki/${wikidata_id}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            <Stack align="center">
-              <Icon as={FaWikipediaW} fontSize="2xl" color="teal.600" />
-              <Text fontSize="lg">WikiData</Text>
-            </Stack>
-          </Link>
+          <WrapItem>
+            <Tooltip label="WikiData" hasArrow>
+              <Link
+                href={`https://www.wikidata.org/wiki/${wikidata_id}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <Icon as={FaWikipediaW} fontSize="3xl" color="black" />
+              </Link>
+            </Tooltip>
+          </WrapItem>
         )}
 
         {facebook_id && (
-          <Link
-            href={`https://www.facebook.com/${facebook_id}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            <Stack align="center">
-              <Icon as={FaFacebook} fontSize="2xl" color="teal.600" />
-              <Text fontSize="lg">Facebook</Text>
-            </Stack>
-          </Link>
+          <WrapItem>
+            <Tooltip label="Facebook" hasArrow>
+              <Link
+                href={`https://www.facebook.com/${facebook_id}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <Icon as={FaFacebook} fontSize="3xl" color="blue.600" />
+              </Link>
+            </Tooltip>
+          </WrapItem>
         )}
 
         {twitter_id && (
-          <Link
-            href={`https://www.twitter.com/${twitter_id}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            <Stack align="center">
-              <Icon as={FaTwitter} fontSize="2xl" color="teal.600" />
-              <Text fontSize="lg">Twitter</Text>
-            </Stack>
-          </Link>
+          <WrapItem>
+            <Tooltip label="Twitter" hasArrow>
+              <Link
+                href={`https://www.twitter.com/${twitter_id}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <Icon as={FaTwitter} fontSize="3xl" color="blue.400" />
+              </Link>
+            </Tooltip>
+          </WrapItem>
         )}
 
         {instagram_id && (
-          <Link
-            href={`https://www.instagram.com/${instagram_id}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            <Stack align="center">
-              <Icon as={FaInstagram} fontSize="2xl" color="teal.600" />
-              <Text fontSize="lg">Instagram</Text>
-            </Stack>
-          </Link>
+          <WrapItem>
+            <Tooltip label="Instagram" hasArrow>
+              <Link
+                href={`https://www.instagram.com/${instagram_id}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <Icon as={FaInstagram} fontSize="3xl" color="pink.400" />
+              </Link>
+            </Tooltip>
+          </WrapItem>
         )}
-      </HStack>
+      </Wrap>
     </Box>
   );
 };
