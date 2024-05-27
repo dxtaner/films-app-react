@@ -14,8 +14,10 @@ export const getFavorites = createAsyncThunk(
   async () => {
     try {
       const { id } = await getAccountDetails();
-      const { results } = await getFavoritesMovies(id);
-      return results;
+      const response = await getFavoritesMovies(id);
+      return {
+        results: response.results,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -28,13 +30,19 @@ export const favoritesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getFavorites.pending, (state) => {
-        state.status = "pending";
+        state.status = "loading";
       })
       .addCase(getFavorites.fulfilled, (state, action) => {
-        state.favorites = action.payload;
+        state.favorites = action.payload.results;
         state.status = "success";
+        state.isLoading = true;
+      })
+      .addCase(getFavorites.rejected, (state, action) => {
+        state.status = "failed";
+        state.isLoading = false;
       });
   },
 });
+
 export default favoritesSlice.reducer;
-export const favoritesList = (state) => state.favorites.favorites;
+export const favoritesListMovies = (state) => state.favorites.favorites;
