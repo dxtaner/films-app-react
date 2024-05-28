@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Icon, Link, Tooltip } from "@chakra-ui/react";
+import { Flex, Icon, Link, Text, Tooltip } from "@chakra-ui/react";
 import {
   FaFacebook,
   FaImdb,
@@ -56,27 +56,50 @@ const SocialIdentityLinks = ({ externalIds }) => {
     },
   ];
 
+  const hasSocialLinks = socialLinks.some(
+    (link) => externalIds && externalIds[link.id]
+  );
+
   return (
-    <Flex as="section" alignItems="center" p={2} mt={4} bg={"gray.100"} mb={2}>
-      <strong>Sosyal Kimlik Bilgileri:</strong>
-      <Flex ml={4} wrap="wrap" justify="flex-start">
-        {socialLinks.map((link, index) => (
-          <Tooltip key={index} label={link.name} aria-label={link.name}>
-            <Link
-              key={index}
-              href={link.url}
-              isExternal
-              textDecoration="none"
-              fontSize="xl"
-              color="gray.600"
-              _hover={{ color: "blue.500", transform: "scale(1.1)" }}
-              mr={4}
-              mb={2}>
-              <Icon as={link.icon} boxSize={8} />
-            </Link>
-          </Tooltip>
-        ))}
-      </Flex>
+    <Flex
+      as="section"
+      alignItems="center"
+      p={2}
+      mt={4}
+      wrap={"wrap"}
+      bg={hasSocialLinks ? "gray.50" : "transparent"}
+      mb={2}
+      borderRadius={hasSocialLinks ? "md" : "none"}>
+      {hasSocialLinks ? (
+        <>
+          {socialLinks.map(
+            (link, index) =>
+              externalIds[link.id] && (
+                <Tooltip
+                  key={index}
+                  label={link.name}
+                  aria-label={link.name}
+                  placement="top">
+                  <Link
+                    key={index}
+                    href={link.url}
+                    isExternal
+                    textDecoration="none"
+                    fontSize="xl"
+                    color="gray.600"
+                    _hover={{ color: "blue.500" }}
+                    mx={2}>
+                    <Icon as={link.icon} boxSize={8} />
+                  </Link>
+                </Tooltip>
+              )
+          )}
+        </>
+      ) : (
+        <Text fontSize="lg" color="gray.600">
+          Sosyal kimlik bilgileri bulunamadı.
+        </Text>
+      )}
     </Flex>
   );
 };

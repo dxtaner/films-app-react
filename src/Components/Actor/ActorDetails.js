@@ -33,6 +33,10 @@ const ActorDetails = () => {
     }
   }, [dispatch, id]);
 
+  if (!person || !person.biography) {
+    return null;
+  }
+
   const renderContent = () => {
     switch (status) {
       case "loading":
