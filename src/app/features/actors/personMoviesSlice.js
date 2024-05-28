@@ -1,24 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getPersonMovieCredits } from "../../../Components/Services/person.js";
 
-// Kişinin film kredilerini almak için async thunk
 export const fetchPersonMovieCredits = createAsyncThunk(
   "personMovies/fetchPersonMovieCredits",
   async (personId) => {
     try {
       const response = await getPersonMovieCredits(personId);
-      return response.cast;
+      return response;
     } catch (error) {
       throw error;
     }
   }
 );
 
-// Slice oluşturuluyor
 const personMoviesSlice = createSlice({
   name: "personMovies",
   initialState: {
-    credits: [],
+    credits: { cast: [], crew: [], id: null },
     status: "idle",
     error: null,
   },
@@ -39,6 +37,5 @@ const personMoviesSlice = createSlice({
   },
 });
 
-// Export actions and reducer
 export default personMoviesSlice.reducer;
 export const selectPersonMovieCredits = (state) => state.personMovies.credits;
