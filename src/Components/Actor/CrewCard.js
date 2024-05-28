@@ -20,9 +20,8 @@ const CrewCard = ({ credit }) => {
       borderRadius="md"
       boxShadow="md"
       textAlign="center"
-      mx="auto" // Ortalamak için eklenen stil
-      maxWidth="300px" // Ortalamak için eklenen stil
-    >
+      mx="auto"
+      maxWidth="300px">
       <Image
         src={`https://image.tmdb.org/t/p/w200${poster_path}`}
         alt={name}
@@ -38,12 +37,6 @@ const CrewCard = ({ credit }) => {
         </Text>
         <Text fontSize="md" color="gray.600">
           {original_name}
-        </Text>
-        <Text fontSize="sm" color="gray.500">
-          Görev: {job}
-        </Text>
-        <Text fontSize="sm" color="gray.500">
-          Departman: {department}
         </Text>
         <Text fontSize="sm" color="gray.500">
           Yayın Tarihi: {first_air_date}
