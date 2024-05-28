@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, Image, Text, Badge, Flex } from "@chakra-ui/react";
+import { Box, Image, Text, Badge, Flex, Center } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
-const ActorHeader = ({ person, movieCreditsLength }) => {
+const ActorHeader = ({ person }) => {
   const {
     name,
     birthday,
@@ -11,6 +12,10 @@ const ActorHeader = ({ person, movieCreditsLength }) => {
     popularity,
     profile_path,
   } = person;
+
+  const { credits } = useSelector((state) => state.personMovies);
+
+  const movieCreditsLength = credits.cast.length;
 
   const calculateAge = (birthday) => {
     const today = new Date();
@@ -33,24 +38,32 @@ const ActorHeader = ({ person, movieCreditsLength }) => {
       mb={8}
       p={4}
       borderRadius="lg"
-      bg="gray.100"
-      boxShadow="md">
-      {profile_path && (
-        <Image
-          boxSize="220px"
-          borderRadius="20px"
-          src={`https://image.tmdb.org/t/p/w500${profile_path}`}
-          alt={`${name} profile`}
-          mr={{ base: 0, md: 8 }}
-          mb={{ base: 4, md: 0 }}
-          boxShadow="lg"
-        />
+      bg="white"
+      boxShadow="lg">
+      {profile_path ? (
+        <Center>
+          <Image
+            boxSize="220px"
+            borderRadius="20px"
+            src={`https://image.tmdb.org/t/p/w500${profile_path}`}
+            alt={`${name} profile`}
+            mb={{ base: 4, md: 0 }}
+            boxShadow="lg"
+          />
+        </Center>
+      ) : (
+        <Center>
+          <Box
+            boxSize="220px"
+            borderRadius="20px"
+            bg="gray.200"
+            mb={{ base: 4, md: 0 }}
+            boxShadow="lg"
+          />
+        </Center>
       )}
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        alignItems={{ base: "center", md: "flex-start" }}>
-        <Text fontSize="3xl" fontWeight="bold" mb={2} color="teal.500">
+      <Box ml={{ base: 0, md: 8 }}>
+        <Text fontSize="3xl" fontWeight="bold" mb={2} color="teal.900">
           {name}
         </Text>
         <Flex alignItems="center" mb={2}>
@@ -97,7 +110,7 @@ const ActorHeader = ({ person, movieCreditsLength }) => {
             {movieCreditsLength}
           </Text>
         </Flex>
-      </Flex>
+      </Box>
     </Box>
   );
 };
