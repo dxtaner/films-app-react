@@ -5,9 +5,9 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./Carousel.css";
 
 const AppCarousel = ({ data }) => {
-  const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [isMobile] = useMediaQuery("(max-width: 560px)");
 
-  if (!data || !data.results || !Array.isArray(data.results)) {
+  if (!data || !Array.isArray(data)) {
     return null;
   }
 
@@ -38,7 +38,7 @@ const AppCarousel = ({ data }) => {
       infiniteLoop
       interval={5000}
       transitionTime={1000}>
-      {data.results.map((item, index) => (
+      {data.map((item, index) => (
         <div className="carousel-item" key={index}>
           <img
             src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
