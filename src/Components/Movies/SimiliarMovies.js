@@ -1,58 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { VStack, Text, HStack, IconButton, SimpleGrid } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import MovieCard from "../Cards/MovieCards";
+import SimilarCard from "../../Components/Cards/SimilarCard";
+import React, { useEffect } from "react";
+import { Text, Flex, Spinner, Box } from "@chakra-ui/react";
+import {
+  fetchSimilarMovies,
+  selectSimilarMovies,
+} from "../../app/features/movies/details/similarSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const SimilarMovies = ({ movieSimilar }) => {
-  const moviesPerPage = 4; // Sayfa başına gösterilen film sayısı
-  const [currentPage, setCurrentPage] = useState(0);
-
-  // Mevcut sayfadaki filmleri hesapla
-  const indexOfLastMovie = (currentPage + 1) * moviesPerPage;
-  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = movieSimilar.slice(indexOfFirstMovie, indexOfLastMovie);
-
-  // Sayfa numarasını artırma veya azaltma işlevleri
-  const handleNextPage = () => {
-    if (currentPage < Math.ceil(movieSimilar.length / moviesPerPage) - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+const SimilarMovies = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const similarMovies = useSelector(selectSimilarMovies);
 
   useEffect(() => {
-    setCurrentPage(0);
-  }, [movieSimilar]);
+    dispatch(fetchSimilarMovies(id));
+  }, [dispatch, id]);
+
+  if (!similarMovies) {
+    return (
+      <Flex justify="center" align="center" h="200px">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
+  if (similarMovies.length === 0) {
+    return (
+      <Flex justify="center" align="center" h="200px">
+        <Text>No similar movies found.</Text>
+      </Flex>
+    );
+  }
 
   return (
-    <VStack spacing={4} align="left">
-      <Text fontWeight="bold">Benzer Filmler:</Text>
-      <SimpleGrid columns={[1, 2, 3, 4]} spacing={4}>
-        {currentMovies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+    <Box overflowX="auto" p={3}>
+      <Flex>
+        {similarMovies.map((movie, index) => (
+          <SimilarCard key={index} movie={movie} />
         ))}
-      </SimpleGrid>
-      <HStack>
-        <IconButton
-          icon={<ChevronLeftIcon />}
-          onClick={handlePrevPage}
-          isDisabled={currentPage === 0}
-        />
-        <Text>Sayfa {currentPage + 1}</Text>
-        <IconButton
-          icon={<ChevronRightIcon />}
-          onClick={handleNextPage}
-          isDisabled={
-            currentPage === Math.ceil(movieSimilar.length / moviesPerPage) - 1
-          }
-        />
-      </HStack>
-    </VStack>
+      </Flex>
+    </Box>
   );
 };
 
