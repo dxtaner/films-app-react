@@ -27,7 +27,15 @@ export const createSessionToken = (values) => {
     )
     .then((res) => res.data)
     .catch((error) => {
-      showErrorMessage(error.response.data.status_message);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.status_message
+      ) {
+        showErrorMessage(`Hata: ${error.response.data.status_message}`);
+      } else {
+        showErrorMessage("Beklenmeyen bir hata oluştu.");
+      }
       throw error;
     });
 };
