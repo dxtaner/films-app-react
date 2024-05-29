@@ -2,19 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getPopularPersons } from "../../../Components/Services/person.js";
 
 const initialState = {
-  popularPersons: [], // Verileri popularPersons olarak güncelledik
-  status: "idle",
+  popularPersons: [],
 };
 
 export const getPopularPersonsAsync = createAsyncThunk(
-  "popularPersons/fetchPopularPersons", // Aksiyonun adını güncelledik
+  "popularPersons/fetchPopularPersons",
   async () => {
     try {
       const { results } = await getPopularPersons();
       return results;
     } catch (error) {
       console.error("Error fetching popular persons:", error);
-      throw error; // Hata durumunu yeniden fırlat
+      throw error;
     }
   }
 );
@@ -29,12 +28,12 @@ export const popularPersonSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getPopularPersonsAsync.fulfilled, (state, action) => {
-        state.popularPersons = action.payload; // Verileri güncelledik
+        state.popularPersons = action.payload;
         state.status = "succeeded";
       })
       .addCase(getPopularPersonsAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message; // Hata mesajını saklayabilirsiniz
+        state.error = action.error.message;
       });
   },
 });
@@ -42,7 +41,7 @@ export const popularPersonSlice = createSlice({
 export default popularPersonSlice.reducer;
 
 export const selectPopularPersons = (state) =>
-  state.popularPersons.popularPersons; // Selector'ı güncelledik
+  state.popularPersons.popularPersons;
 export const selectPopularPersonsStatus = (state) =>
-  state.popularPersons.status; // Yükleme durumu selector'ını ekledik
-export const selectPopularPersonsError = (state) => state.popularPersons.error; // Hata selector'ını ekledik
+  state.popularPersons.status;
+export const selectPopularPersonsError = (state) => state.popularPersons.error;
