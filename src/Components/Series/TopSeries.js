@@ -1,82 +1,117 @@
-import React, { useEffect, useState } from "react";
+// components/TopSeries.js
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTopRatedSeries } from "../../app/features/series/topSeriesSlice";
+import { useLocation } from "react-router-dom";
+import {
+  fetchTopRatedSeries,
+  setCurrentPage,
+} from "../../app/features/series/topSeriesSlice";
+import SeriesCardDetail from "../Cards/SeriesCardDetail";
 import {
   Box,
-  Center,
-  Heading,
+  Flex,
   Spinner,
   Text,
-  Wrap,
-  Button,
+  IconButton,
+  Stack,
+  useColorModeValue,
+  VStack,
+  SimpleGrid,
+  StackDivider,
 } from "@chakra-ui/react";
-import SeriesCardDetail from "../Cards/SeriesCardDetail";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import Title from "../Title/titles";
 
 const TopSeries = () => {
   const dispatch = useDispatch();
-  const topSeries = useSelector((state) => state.topSeries.series);
-  const status = useSelector((state) => state.topSeries.status);
-  const error = useSelector((state) => state.topSeries.error);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const location = useLocation();
+  const {
+    series: topRatedSeries,
+    status,
+    error,
+    currentPage,
+    totalPages,
+  } = useSelector((state) => state.topSeries);
 
   useEffect(() => {
-    dispatch(fetchTopRatedSeries());
-  }, [dispatch]);
+    dispatch(fetchTopRatedSeries(currentPage));
+  }, [dispatch, currentPage]);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const seriesToShow = topSeries.slice(startIndex, endIndex);
+  useEffect(() => {
+    dispatch(setCurrentPage(1));
+  }, [dispatch, location.pathname]);
 
-  const totalPages = Math.ceil(topSeries.length / itemsPerPage);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      dispatch(setCurrentPage(currentPage + 1));
+    }
   };
 
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      dispatch(setCurrentPage(currentPage - 1));
+    }
+  };
+
+  const bgColor = useColorModeValue("blue", "blue.800");
+  const textColor = useColorModeValue("black", "white");
   return (
-    <Box p={6}>
-      <Heading as="h1" size="xl" mb={4} textAlign="center">
-        En İyi Diziler
-      </Heading>
-      <Box borderBottom="1px solid #ccc" mb={4} />
+    <VStack
+      spacing={4}
+      p={[2, 4, 6, 8]}
+      divider={<StackDivider borderColor={bgColor} />}
+      color={textColor}
+      borderRadius="lg"
+      boxShadow="md">
+      <Box textAlign="center">
+        <Title text="En Çok Oy Alan Diziler" />
+        <Text>En çok oy alan Dizilerin Listesi</Text>
+      </Box>
       {status === "loading" && (
-        <Center>
+        <Flex justify="center">
           <Spinner size="xl" />
-        </Center>
+        </Flex>
       )}
       {status === "failed" && (
-        <Text fontSize="lg" textAlign="center" color="red.500">
-          Hata: {error}
+        <Text textAlign="center" color="red.500">
+          Error: {error}
         </Text>
       )}
-      {seriesToShow.length > 0 && (
+      {status === "succeeded" && (
         <>
-          <Wrap spacing={4} justify="center">
-            {seriesToShow.map((series) => (
+          <SimpleGrid
+            columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+            spacing={4}>
+            {topRatedSeries.map((series) => (
               <SeriesCardDetail key={series.id} series={series} />
             ))}
-          </Wrap>
-          <Box mt={4} textAlign="center">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <Button
-                key={index}
-                variant={currentPage === index + 1 ? "solid" : "outline"}
-                colorScheme={currentPage === index + 1 ? "teal" : "gray"}
-                onClick={() => handlePageChange(index + 1)}>
-                {index + 1}
-              </Button>
-            ))}
-          </Box>
+          </SimpleGrid>
+          <Flex justify="center" align="center" mt={4}>
+            <IconButton
+              icon={<ChevronLeftIcon />}
+              onClick={handlePrevPage}
+              isDisabled={currentPage === 1}
+              aria-label="Previous Page"
+              size="sm"
+              mr={2}
+            />
+            <Stack direction="row" spacing={4} align="center">
+              <Text fontSize="lg">
+                {currentPage} / {totalPages}
+              </Text>
+            </Stack>
+            <IconButton
+              icon={<ChevronRightIcon />}
+              onClick={handleNextPage}
+              isDisabled={currentPage === totalPages}
+              aria-label="Next Page"
+              size="sm"
+              ml={2}
+            />
+          </Flex>
         </>
       )}
-      {seriesToShow.length === 0 && (
-        <Text fontSize="lg" textAlign="center">
-          Hiç veri bulunamadı.
-        </Text>
-      )}
-    </Box>
+    </VStack>
   );
 };
 
