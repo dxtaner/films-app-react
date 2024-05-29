@@ -1,6 +1,5 @@
-// similarSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getSimilarMovies } from "../../../../Components/Services/movies"; // Benzer filmleri çekmek için API çağrısını eklemelisiniz.
+import { getSimilarMovies } from "../../../../Components/Services/movies";
 
 const initialState = {
   similar: [],
@@ -12,7 +11,7 @@ export const fetchSimilarMovies = createAsyncThunk(
   "movies/fetchSimilarMovies",
   async (movieId) => {
     try {
-      const response = await getSimilarMovies(movieId); // Benzer filmleri çeken API çağrısı
+      const response = await getSimilarMovies(movieId);
       return response.results;
     } catch (error) {
       throw Error("Benzer filmleri alırken bir hata oluştu.");
@@ -31,7 +30,7 @@ const similarSlice = createSlice({
       })
       .addCase(fetchSimilarMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.similar = action.payload; // API yanıtından gelen veriyi ayarla
+        state.similar = action.payload;
       })
       .addCase(fetchSimilarMovies.rejected, (state, action) => {
         state.status = "failed";
@@ -41,4 +40,4 @@ const similarSlice = createSlice({
 });
 
 export default similarSlice.reducer;
-export const selectSimilarMovies = (state) => state.similar.similar; // Redux state'ine uygun şekilde erişim sağla
+export const selectSimilarMovies = (state) => state.similar.similar;
