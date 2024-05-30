@@ -1,18 +1,18 @@
-// topSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getTopRatedMovies } from "../../../Components/Services/movies.js";
 
 const initialState = {
   topMovies: [],
-  status: "idle", // "boşta" yerine "idle" kullanmanız daha uygun olabilir
+  status: "idle",
+  currentPage: 1,
 };
 
 export const getTopMovies = createAsyncThunk(
   "movies/getTopMovies",
-  async () => {
+  async (page = 1) => {
     try {
-      const response = await getTopRatedMovies();
-      return response.results; // API yanıtındaki 'results' özelliğine erişim
+      const response = await getTopRatedMovies(page);
+      return response.results;
     } catch (error) {
       console.error("getTopMovies error:", error);
       throw error;
@@ -23,7 +23,11 @@ export const getTopMovies = createAsyncThunk(
 export const topMoviesSlice = createSlice({
   name: "topMovies",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getTopMovies.pending, (state) => {
@@ -31,7 +35,11 @@ export const topMoviesSlice = createSlice({
       })
       .addCase(getTopMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.topMovies = action.payload;
+        if (state.currentPage === 1) {
+          state.topMovies = action.payload;
+        } else {
+          state.topMovies = [...state.topMovies, ...action.payload];
+        }
       })
       .addCase(getTopMovies.rejected, (state) => {
         state.status = "failed";
@@ -39,5 +47,8 @@ export const topMoviesSlice = createSlice({
   },
 });
 
+export const { setCurrentPage } = topMoviesSlice.actions;
 export default topMoviesSlice.reducer;
 export const topList = (state) => state.topMovies.topMovies;
+export const currentPage = (state) => state.topMovies.currentPage;
+export const topLoading = (state) => state.topMovies.status === "loading";
