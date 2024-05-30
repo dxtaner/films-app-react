@@ -6,18 +6,16 @@ export const watchListLoading = (state) => state.watchList.loading;
 
 const initialState = {
   watchList: [],
-  isLoading: false,
   status: "idle",
 };
 
-// İzleme listesini alma işlemi
 export const getWatchList = createAsyncThunk(
   "movies/getWatchList",
   async () => {
     try {
       const { id } = await getAccountDetails();
-      const result = await getWatchListMovies(id);
-      return result;
+      const { results } = await getWatchListMovies(id);
+      return results;
     } catch (error) {
       console.error("İzleme listesi alınırken hata oluştu:", error);
       throw error;
@@ -31,11 +29,11 @@ export const watchListSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getWatchList.pending, (state) => {
-        state.isLoading = true;
+        state.isLoading = "loading";
       })
       .addCase(getWatchList.fulfilled, (state, action) => {
         state.watchList = action.payload;
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(getWatchList.rejected, (state) => {
         state.isLoading = false;

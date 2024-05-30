@@ -12,7 +12,7 @@ export const getCredit = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const results = await getMoviesCredit(id);
-      return results.cast;
+      return results;
     } catch (error) {
       return rejectWithValue(error);
     }

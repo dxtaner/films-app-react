@@ -1,20 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getRatedMovies } from "../../../Components/Services/movies.js";
+import { getAccountDetails } from "../../../Components/Services/auth.js";
+
+export const ratedMoviesLoading = (state) => state.ratedMovies.loading;
 
 const initialState = {
   ratedMovies: [],
   isLoading: false,
 };
 
-// Derecelendirilmiş filmleri alma işlemi
 export const fetchRatedMovies = createAsyncThunk(
   "ratedMovies/fetchRatedMovies",
-  async (account_id, thunkAPI) => {
+  async () => {
     try {
+      const { account_id } = await getAccountDetails();
       const ratedMovies = await getRatedMovies(account_id);
-      return ratedMovies;
+      return ratedMovies.results;
     } catch (error) {
-      // console.error("Derecelendirilmiş filmleri alma işleminde hata:", error);
       throw error;
     }
   }
@@ -27,11 +29,11 @@ export const ratedMovieSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchRatedMovies.pending, (state) => {
-        state.isLoading = true;
+        state.isLoading = "loading";
       })
       .addCase(fetchRatedMovies.fulfilled, (state, action) => {
         state.ratedMovies = action.payload;
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(fetchRatedMovies.rejected, (state) => {
         state.isLoading = false;
@@ -41,4 +43,3 @@ export const ratedMovieSlice = createSlice({
 
 export default ratedMovieSlice.reducer;
 export const selectRatedMovies = (state) => state.ratedMovies.ratedMovies;
-export const selectRatedMoviesLoading = (state) => state.ratedMovies.isLoading;

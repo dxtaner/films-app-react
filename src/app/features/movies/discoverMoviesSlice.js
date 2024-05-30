@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { discoverMovies } from "../../../Components/Services/movies.js"; // API isteği yapmak için kullanılacak işlev
+import { discoverMovies } from "../../../Components/Services/movies.js";
 
 const initialState = {
   movies: [],
   status: "idle",
   error: null,
-  page: 1, // Sayfa numarasını burada saklayabilirsiniz, başlangıçta 1 olarak ayarladım
+  page: 1,
 };
 
 export const fetchDiscoverMovies = createAsyncThunk(
@@ -25,7 +25,7 @@ const discoverMoviesSlice = createSlice({
   initialState,
   reducers: {
     setPage: (state, action) => {
-      state.page = action.payload; // Sayfa numarasını ayarlamak için bir action ve payload kullanın
+      state.page = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -44,6 +44,5 @@ const discoverMoviesSlice = createSlice({
   },
 });
 
-export const { setPage } = discoverMoviesSlice.actions; // setPage action'ını dışa aktarın
-
+export const { setPage } = discoverMoviesSlice.actions;
 export default discoverMoviesSlice.reducer;

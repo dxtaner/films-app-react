@@ -48,7 +48,6 @@ export const addToWatchList = createAsyncThunk(
   async (movieId, isWatchListed) => {
     try {
       const { id } = await getAccountDetails();
-
       await addMovieToWatchList(id, {
         media_type: "movie",
         media_id: movieId,
@@ -101,7 +100,7 @@ export const addToMovieRating = createAsyncThunk(
   "movies/addToMovieRating",
   async (movie) => {
     try {
-      await addToMovieRatings(movie.id, movie.rating);
+      await addToMovieRatings(movie.id, movie.rating * 2);
     } catch (error) {
       console.error("An error occurred while adding movie rating:", error);
       throw error;
@@ -156,3 +155,4 @@ export const detailsSlice = createSlice({
 
 export default detailsSlice.reducer;
 export const detailsList = (state) => state.details.details;
+export const detailsLoading = (state) => state.details.status === "pending";
