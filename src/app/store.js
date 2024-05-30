@@ -8,7 +8,9 @@ import favoritesReducer from "./features/movies/favoritesSlice.js";
 import accountReducer from "./features/account/accountSlice.js";
 import creditReducer from "./features/movies/details/creditSlice.js";
 import personReducer from "./features/actors/personSlice.js";
+import personTvCreditsReducer from "./features/actors/personTvCreditsSlice.js";
 import personMoviesReducer from "./features/actors/personMoviesSlice.js";
+import personImagesReducer from "./features/actors/personImagesSlice.js";
 import personPopularReducer from "./features/actors/personPopularSlice.js";
 import personExternalIdsReducer from "./features/actors/personExternalIdsSlice.js";
 import movieExternalIdsReducer from "./features/movies/details/movieExternalIdsSlice.js";
@@ -22,6 +24,10 @@ import topSeriesReducer from "./features/series/topSeriesSlice.js";
 import discoverMoviesReducer from "./features/movies/discoverMoviesSlice.js";
 import movieCollectionReducer from "./features/movies/details/movieCollectionSlice.js";
 import movieCollectionImagesReducer from "./features/movies/details/movieCollectionImagesSlice.js";
+import movieReviewsReducer from "./features/movies/details/reviewsSlice.js";
+import movieKeywordsReducer from "./features/movies/details/movieKeywordSlice.js";
+import movieImagesReducer from "./features/movies/details/movieImagesSlice.js";
+import movieProvidersReducer from "./features/movies/details/movieProvidersSlice.js";
 
 export default configureStore({
   reducer: {
@@ -48,5 +54,16 @@ export default configureStore({
     discoverMovies: discoverMoviesReducer,
     movieCollection: movieCollectionReducer,
     movieCollectionImages: movieCollectionImagesReducer,
+    movieReviews: movieReviewsReducer,
+    movieKeywords: movieKeywordsReducer,
+    movieImages: movieImagesReducer,
+    movieProviders: movieProvidersReducer,
+    personImages: personImagesReducer,
+    personTvCredits: personTvCreditsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
 });
