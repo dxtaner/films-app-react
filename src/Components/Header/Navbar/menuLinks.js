@@ -1,19 +1,20 @@
-import { Box, Button, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Avatar,
+  Stack,
+  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
 import { MenuItems } from "./menuItems.js";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const location = useLocation();
 
   return (
     <Box
@@ -25,78 +26,105 @@ export const MenuLinks = ({ isOpen, accountInfo, isAuth }) => {
         justify={["center", "space-between", "flex-end", "flex-end"]}
         direction={["column", "row", "row", "row"]}
         pt={[6, 6, 0, 0]}>
-        <MenuItems to="/About">
+        <MenuItems
+          to="/About"
+          style={{ color: location.pathname === "/About" ? "blue" : "black" }}>
           <Text>Site Hakkında...</Text>
         </MenuItems>
-        <MenuItems to="/DiscoverMovies">
+        <MenuItems
+          to="/DiscoverMovies"
+          style={{
+            color: location.pathname === "/DiscoverMovies" ? "blue" : "black",
+          }}>
           <Text>Filmleri Keşfet</Text>
         </MenuItems>
-        <MenuItems to="/PopularPersons">
+        <MenuItems
+          to="/PopularPersons"
+          style={{
+            color: location.pathname === "/PopularPersons" ? "blue" : "black",
+          }}>
           <Text>Popüler Oyuncular</Text>
         </MenuItems>
-        <MenuItems to="/PopularSeries">
+        <MenuItems
+          to="/PopularSeries"
+          style={{
+            color: location.pathname === "/PopularSeries" ? "blue" : "black",
+          }}>
           <Text>Popüler Diziler</Text>
         </MenuItems>
-        <MenuItems to="/TopSeries">
+        <MenuItems
+          to="/TopSeries"
+          style={{
+            color: location.pathname === "/TopSeries" ? "blue" : "black",
+          }}>
           <Text>En İyi Diziler</Text>
         </MenuItems>
-        <MenuItems to="/">
+        <MenuItems
+          to="/"
+          style={{ color: location.pathname === "/" ? "blue" : "black" }}>
           <Text>En Yüksek Puan Alan Filmler</Text>
         </MenuItems>
-        <MenuItems to="/UpComingMovies">
-          <Text> Yaklaşan Filmler</Text>
+        <MenuItems
+          to="/UpComingMovies"
+          style={{
+            color: location.pathname === "/UpComingMovies" ? "blue" : "black",
+          }}>
+          <Text>Yaklaşan Filmler</Text>
         </MenuItems>
         {isAuth ? (
-          <div style={{ position: "relative" }}>
-            <Image
-              borderRadius="full"
-              src={`https://image.tmdb.org/t/p/original${accountInfo?.avatar_path}`}
-              boxSize="40px"
-              cursor="pointer"
-              onClick={toggleMenu}
-            />
-            {isMenuOpen && (
-              <div
+          <Menu>
+            <MenuButton
+              as={Button}
+              bg="transparent"
+              _hover={{ bg: "transparent" }}
+              position="relative">
+              <Avatar
+                src={`https://image.tmdb.org/t/p/original${accountInfo?.avatar_path}`}
+                size="sm"
+                cursor="pointer"
+              />
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                as={Link}
+                to="/MyFavoriteMovies"
+                _hover={{ bg: "gray.100" }}
                 style={{
-                  position: "absolute",
-                  top: "60px",
-                  right: "0",
-                  background: "white",
-                  boxShadow: "0px 0px 10px rgba(0,0,0,0.2)",
-                  zIndex: "1",
+                  color:
+                    location.pathname === "/MyFavoriteMovies"
+                      ? "blue"
+                      : "black",
                 }}>
-                <Link
-                  to="/MyFavoriteMovies"
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                    padding: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  onClick={closeMenu}>
-                  Favori Filmlerim
-                </Link>
-                <Link
-                  to="/WatchListMovies"
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                    padding: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  onClick={closeMenu}>
-                  İzleme Listemdeki Filmlerim
-                </Link>
-              </div>
-            )}
-          </div>
+                Favori Filmlerim
+              </MenuItem>
+              <MenuItem
+                as={Link}
+                to="/WatchListMovies"
+                _hover={{ bg: "gray.100" }}
+                style={{
+                  color:
+                    location.pathname === "/WatchListMovies" ? "blue" : "black",
+                }}>
+                İzleme Listemdeki Filmlerim
+              </MenuItem>
+              <MenuItem
+                as={Link}
+                to="/MyRatingMovies"
+                _hover={{ bg: "gray.100" }}
+                style={{
+                  color:
+                    location.pathname === "/MyRatingMovies" ? "blue" : "black",
+                }}>
+                Oyladığım Filmlerim
+              </MenuItem>
+            </MenuList>
+          </Menu>
         ) : (
           <Button
             onClick={() => navigate("/Auth/Login")}
             size="sm"
             bg="gray.100"
+            color="black"
             _hover={{ bg: "gray.300" }}>
             Giriş Yap
           </Button>
