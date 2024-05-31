@@ -6,101 +6,71 @@ const API_KEY = process.env.REACT_APP_APIKEY;
 const language = "tr-US";
 const region = "tr";
 
-const getSessionId = () =>
-  sessionStorage.getItem("session_id")
-    ? sessionStorage.getItem("session_id")
-    : null;
+const getSessionId = () => {
+  return sessionStorage.getItem("session_id") || null;
+};
 
-export const getPopularMovies = () => {
-  return axios
-    .get(
-      `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=${language}&page=1&region=${region}`
-    )
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
+const fetchData = async (endpoint, method = "get", params = {}) => {
+  try {
+    const config = {
+      method: method,
+      url: `${BASE_URL}${endpoint}`,
+      params: {
+        api_key: API_KEY,
+        language: language,
+        region: region,
+        ...params,
+      },
+    };
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    console.error(`An error occurred while fetching ${endpoint}:`, error);
+    throw error;
+  }
+};
+
+export const getPopularMovies = async (page = 1) => {
+  return fetchData("/movie/popular", "get", { page });
 };
 
 export const getTopRatedMovies = async (page = 1) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/movie/top_rated`, {
-      params: {
-        api_key: API_KEY,
-        language: language,
-        page: page,
-        region: region,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("An error occurred while fetching top rated movies:");
-    console.error(error);
-    throw error;
-  }
+  return fetchData("/movie/top_rated", "get", { page });
 };
 
 export const getUpcomingMovies = async (page = 1) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/movie/upcoming`, {
+  return fetchData("/movie/upcoming", "get", { page });
+};
+
+export const getMoviesDetails = async (id) => {
+  return fetchData(`/movie/${id}`);
+};
+
+export const getMoviesTrailer = async (id) => {
+  return fetchData(`/movie/${id}/videos`, "get", { language: "en-US" });
+};
+
+export const addMovieToFavorite = async (account_id, values) => {
+  const response = await axios.post(
+    `${BASE_URL}/account/${account_id}/favorite`,
+    values,
+    {
       params: {
         api_key: API_KEY,
-        language: language,
-        page: page,
-        region: region,
+        session_id: getSessionId(),
       },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("An error occurred while fetching upcoming movies:");
-    console.error(error);
-    throw error;
+    }
+  );
+  if (response.data.success) {
+    showSuccessMessage(response.data.status_message);
   }
-};
-
-export const getMoviesDetails = (id) => {
-  const requestURL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=${language}`;
-
-  // console.log("Request URL:", requestURL); // URL'yi konsola yazdır
-
-  return axios
-    .get(requestURL)
-    .then((res) => {
-      // console.log("Response Data:", res.data); // Veriyi konsola yazdır
-      return res.data; // Veriyi geri döndür
-    })
-    .catch((err) => {
-      console.error("Error:", err);
-      throw err;
-    });
-};
-
-export const getMoviesTrailer = (id) => {
-  return axios
-    .get(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=en-US`)
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-};
-
-export const addMovieToFavorite = (account_id, values) => {
-  return axios
-    .post(
-      `${BASE_URL}/account/${account_id}/favorite?api_key=${API_KEY}&session_id=${getSessionId()}`,
-      values
-    )
-    .then((res) => {
-      res.data.success && showSuccessMessage(res.data.status_message);
-    })
-    .catch((error) => console.log(error));
 };
 
 export const addToMovieRatings = async (movieId, rating) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/movie/${movieId}/rating`,
-      {
-        value: rating,
-      },
+      { value: rating },
       {
         params: {
           api_key: API_KEY,
@@ -110,13 +80,13 @@ export const addToMovieRatings = async (movieId, rating) => {
     );
     if (response.status === 200 || response.status === 201) {
       const data = response.data;
-      if (data.status_message === "The item/record was updated successfully.") {
+      if (data.success && (data.status_code === 1 || data.status_code === 12)) {
         showSuccessMessage("Film başarıyla derecelendirildi");
       } else {
         showErrorMessage("Film derecelendirme işlemi tamamlanamadı.");
       }
     } else {
-      showErrorMessage("Film Derecelendirilemedi.");
+      showErrorMessage("Film derecelendirilemedi.");
     }
   } catch (error) {
     console.error("Hata:", error);
@@ -149,45 +119,65 @@ export const removeFromMovieRatings = async (movie_id) => {
   }
 };
 
-export const addMovieToWatchList = (account_id, values) => {
-  return axios
-    .post(
-      `${BASE_URL}/account/${account_id}/watchlist?api_key=${API_KEY}&session_id=${getSessionId()}`,
-      values
-    )
-    .then((res) => {
-      if (res.data.success) {
-        showSuccessMessage(res.data.status_message);
+export const addMovieToWatchList = async (account_id, values) => {
+  const response = await axios.post(
+    `${BASE_URL}/account/${account_id}/watchlist`,
+    values,
+    {
+      params: {
+        api_key: API_KEY,
+        session_id: getSessionId(),
+      },
+    }
+  );
+  if (response.data.success) {
+    showSuccessMessage(response.data.status_message);
+  }
+};
+
+export const getFavoritesMovies = async (account_id, page = 1) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/account/${account_id}/favorite/movies`,
+      {
+        params: {
+          api_key: API_KEY,
+          session_id: getSessionId(),
+          language: language,
+          sort_by: "created_at.asc",
+          page: page,
+        },
       }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching favorite movies:", error);
+    throw error;
+  }
 };
 
-export const getFavoritesMovies = (account_id, page = 1) => {
-  return axios
-    .get(
-      `${BASE_URL}/account/${account_id}/favorite/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=${language}&sort_by=created_at.asc&page=${page}`
-    )
-    .then((res) => {
-      return res.data;
-    })
-    .catch((error) => console.log(error));
+export const getWatchListMovies = async (account_id, page = 1) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/account/${account_id}/watchlist/movies`,
+      {
+        params: {
+          api_key: API_KEY,
+          session_id: getSessionId(),
+          language: language,
+          sort_by: "created_at.asc",
+          page: page,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching watchlist movies:", error);
+    throw error;
+  }
 };
 
-export const getWatchListMovies = (account_id, page = 1) => {
-  return axios
-    .get(
-      `${BASE_URL}/account/${account_id}/watchlist/movies?api_key=${API_KEY}&session_id=${getSessionId()}&language=${language}&sort_by=created_at.asc&page=${page}`
-    )
-    .then((res) => {
-      return res.data;
-    })
-    .catch((error) => console.log(error));
-};
-
-export const getRatedMovies = async (account_id) => {
+export const getRatedMovies = async (account_id, page = 1) => {
   try {
     const response = await axios.get(
       `${BASE_URL}/account/${account_id}/rated/movies`,
@@ -195,14 +185,15 @@ export const getRatedMovies = async (account_id) => {
         params: {
           api_key: API_KEY,
           session_id: getSessionId(),
+          language: language,
+          page: page,
         },
       }
     );
-
     if (response.status === 200) {
       const data = response.data;
-      if (data.results) {
-        return data.results;
+      if (data) {
+        return data;
       } else {
         console.error("Derecelendirilmiş filmler alınamadı.");
         return [];
@@ -217,46 +208,16 @@ export const getRatedMovies = async (account_id) => {
   }
 };
 
-export const getMoviesCredit = (id) => {
-  return axios
-    .get(
-      `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=${language}`
-    )
-    .then((res) => {
-      // console.log("Response Data:", res.data);
-      return res.data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+export const getMoviesCredit = async (id) => {
+  return fetchData(`/movie/${id}/credits`);
 };
 
-export const getMovieExternalIds = (movieId) => {
-  return axios
-    .get(
-      `${BASE_URL}/movie/${movieId}/external_ids?api_key=${API_KEY}&language=${language}`
-    )
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("Film dış kimlikleri alınamadı: ", error);
-      throw error;
-    });
+export const getMovieExternalIds = async (movieId) => {
+  return fetchData(`/movie/${movieId}/external_ids`);
 };
 
-export const getSimilarMovies = (movieId) => {
-  return axios
-    .get(
-      `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=${language}`
-    )
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("Hata:", error);
-      throw error;
-    });
+export const getSimilarMovies = async (movieId) => {
+  return fetchData(`/movie/${movieId}/similar`);
 };
 
 export const searchMovies = async (query) => {
@@ -284,73 +245,106 @@ export const searchMovies = async (query) => {
 };
 
 export const discoverMovies = async (queryParams) => {
-  try {
-    const language = queryParams.language;
-    const region = queryParams.region;
-    const apiUrl = `${BASE_URL}/discover/movie`;
+  const genres = Array.isArray(queryParams.with_genres)
+    ? queryParams.with_genres
+    : [queryParams.with_genres];
 
-    const genres = Array.isArray(queryParams.with_genres)
-      ? queryParams.with_genres
-      : [queryParams.with_genres];
-
-    const response = await axios.get(apiUrl, {
-      params: {
-        api_key: API_KEY,
-        ...queryParams,
-        language: language,
-        region: region,
-        with_genres: genres.join(","),
-      },
-    });
-
-    if (response.status === 200) {
-      const data = response.data;
-
-      if (data.results) {
-        return data;
-      } else {
-        console.error("Filmler alınamadı.");
-        return [];
-      }
-    } else {
-      console.error("API isteği başarısız oldu. Durum Kodu:", response.status);
-      return [];
-    }
-  } catch (error) {
-    console.error("Hata:", error);
-    throw new Error("Filmler alınamadı.");
-  }
+  return fetchData("/discover/movie", "get", {
+    ...queryParams,
+    with_genres: genres.join(","),
+  });
 };
 
 export const fetchMovieCollection = async (collection_id) => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/collection/${collection_id}?api_key=${API_KEY}&language=${language}&region=${region}`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch movie collection");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching movie collection:", error);
-    throw error;
+  const response = await fetch(
+    `${BASE_URL}/collection/${collection_id}?api_key=${API_KEY}&language=${language}&region=${region}`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch movie collection");
   }
+  return response.json();
 };
 
 export const fetchCollectionImages = async (collectionId) => {
+  const response = await axios.get(
+    `${BASE_URL}/collection/${collectionId}/images`,
+    {
+      params: {
+        api_key: API_KEY,
+      },
+    }
+  );
+  return response.data;
+};
+
+export const fetchMovieReviews = async (movieId) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/collection/${collectionId}/images`,
-      {
-        params: {
-          api_key: API_KEY,
-        },
-      }
+    const response = await fetch(
+      `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}`
     );
-    return response.data;
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch movie reviews");
+    }
+
+    const data = await response.json();
+
+    const sortedData = data.results.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+
+    return sortedData;
   } catch (error) {
-    console.error("Error fetching collection images:", error);
-    throw error;
+    throw new Error("Failed to fetch movie reviews: " + error.message);
+  }
+};
+
+export const getMovieKeywords = async (movieId) => {
+  const url = `${BASE_URL}/movie/${movieId}/keywords?api_key=${API_KEY}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error fetching movie keywords: ${response.statusText}`);
+    }
+    const data = await response.json();
+
+    return data.keywords;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const getMovieImages = async (movieId) => {
+  const url = `${BASE_URL}/movie/${movieId}/images?api_key=${API_KEY}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error fetching movie images: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return {
+      backdrops: data.backdrops,
+      logos: data.logos,
+      posters: data.posters,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const getMovieProviders = async (movieId) => {
+  const url = `${BASE_URL}/movie/${movieId}/watch/providers?api_key=${API_KEY}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error fetching movie providers: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 };
