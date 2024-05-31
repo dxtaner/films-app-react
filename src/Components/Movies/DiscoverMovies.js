@@ -93,7 +93,7 @@ const DiscoverMovies = () => {
     };
   }, []);
 
-  const bg = useColorModeValue("gray.50", "gray.800");
+  const bg = useColorModeValue("gray.50", "gray.50");
 
   return (
     <Box p={4} bg={bg} borderRadius="md" boxShadow="md">
@@ -114,7 +114,7 @@ const DiscoverMovies = () => {
         </Flex>
 
         {isFilterOpen && (
-          <Box p={4} borderRadius="md" bg="gray.100" boxShadow="md">
+          <Box p={4} borderRadius="md" bg="gray.50" boxShadow="md">
             <FilterOptions
               queryParams={queryParams}
               onFilterChange={handleFilterChange}

@@ -13,14 +13,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   getFavorites,
-  favoritesList,
+  favoritesListMovies,
   favoritesLoading,
 } from "../../app/features/movies/favoritesSlice";
 import Title from "../Title/titles";
 
 const Favorites = () => {
   const dispatch = useDispatch();
-  const favorites = useSelector(favoritesList);
+  const favorites = useSelector(favoritesListMovies);
   const isLoading = useSelector(favoritesLoading);
   const token = sessionStorage.getItem("session_id");
 
@@ -38,11 +38,15 @@ const Favorites = () => {
     <VStack
       divider={<StackDivider borderColor="blue.800" />}
       justifyContent="center"
+      bg="gray.50"
       p={[2, 4, 6, 8]}
       spacing={4}>
       <Box>
         <Title text="Favori Filmlerim">
-          Buradaki filmler, hesabınızla ilişkilendirilmiş favori filmlerinizdir.
+          <Text fontSize="lg">
+            Buradaki filmler, hesabınızla ilişkilendirilmiş favori
+            filmlerinizdir.
+          </Text>
         </Title>
       </Box>
       {isLoading ? (
@@ -57,7 +61,9 @@ const Favorites = () => {
           {favorites.length > 0 ? (
             favorites.map((item) => <MovieCard key={item.id} movie={item} />)
           ) : (
-            <Text>Favori filminiz bulunmamaktadır.</Text>
+            <Center>
+              <Text>Favori filminiz bulunmamaktadır.</Text>
+            </Center>
           )}
         </SimpleGrid>
       )}
