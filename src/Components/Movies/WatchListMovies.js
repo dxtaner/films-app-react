@@ -38,11 +38,14 @@ const WatchListMovies = () => {
     <VStack
       divider={<StackDivider borderColor="blue.800" />}
       justifyContent="center"
+      bg="gray.50"
       p={[2, 4, 6, 8]}
       spacing={4}>
       <Box>
         <Title text="İzleme Listem">
-          Buradaki filmler, izleme listenize eklediğiniz filmlerdir.
+          <Text fontSize="lg">
+            Buradaki filmler, izleme listenize eklediğiniz filmlerdir.
+          </Text>
         </Title>
       </Box>
 
@@ -58,7 +61,9 @@ const WatchListMovies = () => {
           {watchList.length > 0 ? (
             watchList.map((item) => <MovieCard key={item.id} movie={item} />)
           ) : (
-            <Text>İzleme listeniz boş</Text>
+            <Center>
+              <Text>İzleme listeniz boş</Text>
+            </Center>
           )}
         </SimpleGrid>
       )}

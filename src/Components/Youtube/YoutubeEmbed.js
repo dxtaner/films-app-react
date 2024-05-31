@@ -6,7 +6,7 @@ import {
 } from "../../app/features/movies/details/trailerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 const YoutubeEmbed = () => {
   const { id } = useParams();
@@ -32,22 +32,33 @@ const YoutubeEmbed = () => {
   }
 
   return (
-    <div className="video-container">
+    <Box
+      className="video-responsive"
+      position="relative"
+      overflow="hidden"
+      paddingTop="56.25%">
       {embedId ? (
         <iframe
           className="video-iframe"
-          width="853"
-          height="480"
+          width="100%"
+          height="100%"
           src={`https://www.youtube-nocookie.com/embed/${embedId}`}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           title="Embedded youtube"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
         />
       ) : (
         <p>No trailer available</p>
       )}
-    </div>
+    </Box>
   );
 };
 
