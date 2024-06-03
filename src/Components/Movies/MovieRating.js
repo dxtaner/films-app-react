@@ -1,40 +1,53 @@
-import React from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import StarRating from "./StarRating";
+import React, { useEffect } from "react";
+import { VStack, HStack, Box } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  getDetails,
+  detailsList,
+} from "../../app/features/movies/details/detailsSlice";
+import FavoriteButton from "./FavoriteButton";
+import WatchlistButton from "./WatchlistButton";
+import RatingButtons from "./RatingButtons";
 
-const MovieRating = ({ isAuth, rating, setRating, movieId }) => (
-  <Flex
-    justifyContent="space-between"
-    wrap={"wrap"}
-    alignItems="center"
-    w="100%">
-    <Box>
-      {isAuth && (
-        <StarRating
-          value={rating}
-          movieDetailsId={movieId}
-          onRatingChange={setRating}
-        />
+const MovieRating = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const token = sessionStorage.getItem("session_id");
+  const movieDetails = useSelector(detailsList);
+  const movieId = movieDetails?.id;
+  const isAuth = !!token;
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getDetails(id));
+    }
+  }, [dispatch, id]);
+
+  return (
+    <VStack
+      spacing={6}
+      p={6}
+      borderRadius="md"
+      boxShadow="xl"
+      maxW="lg"
+      wrap="wrap"
+      mx="auto"
+      alignItems="stretch"
+      justifyContent="center">
+      {isAuth && movieId && (
+        <>
+          <HStack spacing={4} wrap="wrap" justifyContent="center">
+            <FavoriteButton movieId={movieId} />
+            <WatchlistButton movieId={movieId} />
+          </HStack>
+          <Box textAlign="center">
+            <RatingButtons movieId={movieId} />
+          </Box>
+        </>
       )}
-    </Box>
-    <Box textAlign="right">
-      {isAuth ? (
-        rating > 0 ? (
-          <Text fontSize="lg" fontWeight="bold" color="gray.600">
-            Puanım: {"★".repeat(rating)}
-          </Text>
-        ) : (
-          <Text fontSize="lg" fontWeight="bold" color="gray.600">
-            Henüz derecelendirmem yok
-          </Text>
-        )
-      ) : (
-        <Text fontSize="lg" fontWeight="bold" color="gray.600">
-          Giriş yaparak puan verebilirsiniz
-        </Text>
-      )}
-    </Box>
-  </Flex>
-);
+    </VStack>
+  );
+};
 
 export default MovieRating;
