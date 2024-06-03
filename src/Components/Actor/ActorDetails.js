@@ -33,44 +33,47 @@ const ActorDetails = () => {
     }
   }, [dispatch, id]);
 
-  if (!person || !person.biography) {
-    return null;
-  }
-
   const renderContent = () => {
-    switch (status) {
-      case "loading":
-        return (
-          <VStack justify="center" align="center" spacing={4}>
-            <Spinner size="xl" color="teal.500" />
-            <Text>Loading...</Text>
-          </VStack>
-        );
-      case "failed":
-        return (
-          <Box justify="center" align="center">
-            <Text fontSize="xl" color="red.500">
-              Failed to load actor details.
-            </Text>
-          </Box>
-        );
-      default:
-        return (
-          <Container maxW="container.xl">
-            <Box py={8}>
-              <ActorHeader person={person} />
-              <Divider my={8} />
-              <Biography biography={person.biography} />
-              <Divider my={8} />
-              <PersonImages />
-              <Divider my={8} />
-              <PersonMovieCredits />
-              <Divider my={8} />
-              <PersonTvCredits />
-            </Box>
-          </Container>
-        );
+    if (status === "loading") {
+      return (
+        <VStack justify="center" align="center" spacing={4} py={10}>
+          <Spinner size="xl" color="teal.500" />
+          <Text fontSize="xl" color="teal.500">
+            Loading...
+          </Text>
+        </VStack>
+      );
     }
+
+    if (status === "failed") {
+      return (
+        <Box textAlign="center" py={10}>
+          <Text fontSize="xl" color="red.500">
+            Failed to load actor details.
+          </Text>
+        </Box>
+      );
+    }
+
+    if (!person) {
+      return null;
+    }
+
+    return (
+      <Container maxW="container.xl" py={10}>
+        <Box bg="gray.50" p={8} borderRadius="md" boxShadow="md">
+          <ActorHeader person={person} />
+          <Divider my={8} borderColor="teal.500" />
+          <Biography biography={person.biography} />
+          <Divider my={8} borderColor="teal.500" />
+          <PersonImages />
+          <Divider my={8} borderColor="teal.500" />
+          <PersonMovieCredits />
+          <Divider my={8} borderColor="teal.500" />
+          <PersonTvCredits />
+        </Box>
+      </Container>
+    );
   };
 
   return renderContent();
