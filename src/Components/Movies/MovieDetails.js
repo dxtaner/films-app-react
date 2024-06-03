@@ -1,151 +1,82 @@
 import React, { useEffect, useState } from "react";
-import { VStack, Button, Text, Flex, Box } from "@chakra-ui/react";
-import { AiOutlineHeart } from "react-icons/ai";
-import { MdPlaylistAdd } from "react-icons/md";
-import MovieImage from "./MovieImage";
-import MovieGenres from "./MovieGenres";
-import MovieOverview from "./MovieOverview";
-import MovieExternalIds from "./MovieExternalIds";
-import StarRating from "./StarRating";
-import nullImage from "../NullImage/null.png";
+import {
+  VStack,
+  Text,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import MovieHeader from "./MovieHeader";
+import MovieInfo from "./MovieInfo";
+import {
+  detailsList,
+  getDetails,
+} from "../../app/features/movies/details/detailsSlice";
+import MovieRating from "./MovieRating";
 
-const MovieDetails = ({
-  movieDetails,
-  isAuth,
-  handleFavoriteClick,
-  handleWatchListClick,
-  movieExternalIds,
-  ratedMovies,
-}) => {
-  const [rating, setRating] = useState(0);
-  const movieDetailsIDs = movieDetails.id;
+const MovieDetails = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const movieDetails = useSelector(detailsList);
+  const { backdrop_path, original_title, overview, release_date } =
+    movieDetails || {};
+  const token = sessionStorage.getItem("session_id");
+  const isAuth = !!token;
+
   useEffect(() => {
-    // Eğer kullanıcı oturum açmışsa işlemi yap
-    if (isAuth) {
-      // Her film değiştiğinde, yeni filmi değerlendirmek için başlangıç ​​değerini sıfırla
-      setRating(0);
-      // ratedMovies dizisini döngüye alarak eşleşen filmleri kontrol et
-      ratedMovies.forEach((ratedMovie) => {
-        if (ratedMovie.id === movieDetailsIDs) {
-          // Eşleşen bir film bulundu
-          // console.log("Eşleşen film bulundu:", ratedMovie);
-          // console.log("Eşleşen film bulundu:", ratedMovie.rating);
-          // Eşleşen filmdeki rating değerini alarak rating'i güncelle
-          setRating(ratedMovie.rating);
-        }
-      });
+    if (id) {
+      dispatch(getDetails(id));
     }
-  }, [ratedMovies, movieDetailsIDs, isAuth]);
+  }, [dispatch, id]);
 
-  const handleRatingChange = (newRating) => {
-    setRating(newRating);
+  const hasHeaderData = backdrop_path && original_title;
+  const hasInfoData = overview && release_date;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
-  if (!movieExternalIds) {
-    return (
-      <Box p={6} borderWidth={2} borderColor="gray.300">
-        <Text>No external IDs available for this movie.</Text>
-      </Box>
-    );
-  }
-
   if (!movieDetails) {
-    return (
-      <VStack
-        p={[4, 4, 6, 6]}
-        fontSize={["md", "lg", "xl", "2xl"]}
-        textAlign="center"
-        maxW="1800px"
-        mx="auto"
-        alignItems="stretch">
-        <Text fontSize="xl">Film bilgileri yükleniyor...</Text>
-      </VStack>
-    );
-  }
-
-  const { backdrop_path, original_title, genres } = movieDetails;
-  let backdropImageUrl = "";
-
-  if (backdrop_path && backdrop_path !== "null") {
-    backdropImageUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
-  } else {
-    backdropImageUrl = nullImage;
+    return <Text>Loading...</Text>;
   }
 
   return (
     <VStack
-      p={[4, 4, 6, 6]}
       fontSize={["md", "lg", "xl", "2xl"]}
       textAlign="center"
-      maxW="1820px"
-      mx="auto"
-      alignItems="stretch">
-      <MovieImage imageUrl={backdropImageUrl} altText={original_title} />
-      <Flex justifyContent="space-between" alignItems="center">
-        <MovieGenres genres={genres} />
-        {isAuth && (
-          <Box>
-            <StarRating
-              value={rating}
-              movieDetailsId={movieDetails.id}
-              onRatingChange={handleRatingChange}
-            />
-            <div style={{ float: "right" }}>
-              <Text>
-                Puanım{" "}
-                {rating > 0 ? (
-                  <>
-                    {[...Array(rating)].map((_, index) => (
-                      <span
-                        key={index}
-                        style={{ color: "gold", fontSize: "1.5rem" }}>
-                        ★
-                      </span>
-                    ))}
-                  </>
-                ) : (
-                  ": Henüz derecelendirmem yok"
-                )}
-              </Text>
-            </div>
-          </Box>
-        )}
-      </Flex>
-
-      <MovieOverview title={original_title} movieDetails={movieDetails} />
-      <MovieExternalIds movieExternalIds={movieExternalIds} />
-      {isAuth && (
-        <>
-          <Button
-            leftIcon={<AiOutlineHeart />}
-            colorScheme="red"
-            size="lg"
-            onClick={handleFavoriteClick}
-            width="100%"
-            borderRadius="md"
-            _hover={{
-              bgColor: "red.600",
-              color: "white",
-            }}
-            mb={4}>
-            Favori Filmlere Ekle
-          </Button>
-
-          <Button
-            leftIcon={<MdPlaylistAdd />}
-            colorScheme="blue"
-            size="lg"
-            onClick={handleWatchListClick}
-            width="100%"
-            borderRadius="md"
-            _hover={{
-              bgColor: "blue.600",
-              color: "white",
-            }}>
-            İzleme Listeme Ekle
-          </Button>
-        </>
+      alignItems="stretch"
+      p={2}
+      spacing={6}>
+      {hasHeaderData ? <MovieHeader /> : <Text>No header data available.</Text>}
+      {isAuth ? (
+        <Button onClick={() => setIsOpen(true)}>Film Reaksiyonları</Button>
+      ) : (
+        <Text>Please log in to rate the movie.</Text>
       )}
+      {hasInfoData ? <MovieInfo /> : <Text>No information available.</Text>}
+      <Modal isOpen={isOpen} onClose={handleClose}>
+        <ModalOverlay />
+        <ModalContent backgroundColor="rgba(255, 255, 255, 0.8)">
+          <ModalHeader>Film Reaksiyonları</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <MovieRating />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </VStack>
   );
 };
