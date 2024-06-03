@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Text,
@@ -8,15 +8,40 @@ import {
   Badge,
   Tooltip,
   Link as ChakraLink,
-  Divider,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {
+  detailsList,
+  getDetails,
+} from "../../app/features/movies/details/detailsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-const MovieOverview = ({ movieDetails }) => {
-  if (!movieDetails) return null;
+const MovieOverview = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  useEffect(() => {
+    dispatch(getDetails(id));
+  }, [dispatch, id]);
+
+  const movieDetails = useSelector(detailsList);
+  if (!movieDetails) {
+    return (
+      <Box
+        p={8}
+        borderRadius="lg"
+        bg="white"
+        mx="auto"
+        borderWidth={1}
+        borderColor="gray.200"
+        textAlign="left"
+        boxShadow="xl">
+        <Text fontSize="xl">Film detayları bulunamadı.</Text>
+      </Box>
+    );
+  }
 
   const {
-    id,
     title,
     original_title,
     overview,
@@ -58,7 +83,7 @@ const MovieOverview = ({ movieDetails }) => {
         </Text>
       )}
 
-      <VStack spacing={6} align="start">
+      <VStack spacing={6} align="start" wrap="wrap">
         <Text fontSize="lg">
           <strong>Orijinal Başlık:</strong> {original_title}
         </Text>
@@ -107,7 +132,7 @@ const MovieOverview = ({ movieDetails }) => {
           </Box>
         )}
 
-        <Text fontSize="lg" mt={4}>
+        <Text fontSize="lg">
           <strong>Yapım Şirketleri:</strong>{" "}
           {production_companies &&
             production_companies.map((company) => company.name).join(", ")}
