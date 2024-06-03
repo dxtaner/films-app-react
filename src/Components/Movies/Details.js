@@ -1,129 +1,79 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Box, Text, VStack, Heading } from "@chakra-ui/react";
-import {
-  addToFavorites,
-  addToWatchList,
-  detailsList,
-  getDetails,
-} from "../../app/features/movies/details/detailsSlice.js";
-import {
-  fetchRatedMovies,
-  selectRatedMovies,
-} from "../../app/features/movies/ratedMovieSlice.js";
-import MovieCredits from "./MovieCredits";
+import React from "react";
+import { VStack, Box, Divider, Heading } from "@chakra-ui/react";
 import MovieDetails from "./MovieDetails";
-import Title from "../Title/titles.js";
-import YoutubeEmbed from "../Youtube/YoutubeEmbed.js";
-import SimiliarMovies from "./SimiliarMovies.js";
-import {
-  getTrailer,
-  trailerList,
-} from "../../app/features/movies/details/trailerSlice.js";
-import {
-  fetchSimilarMovies,
-  selectSimilarMovies,
-} from "../../app/features/movies/details/similarSlice.js";
-import {
-  creditList,
-  getCredit,
-} from "../../app/features/movies/details/creditSlice.js";
-import {
-  fetchMovieExternalIds,
-  selectMovieExternalIds,
-} from "../../app/features/movies/details/movieExternalIdsSlice.js";
-import PagePopularMovies from "./PopularMovies.js";
-import {
-  popularList,
-  getPopular,
-} from "../../app/features/movies/popularSlice.js";
+import Title from "../Title/titles";
+import PagePopularMovies from "./PopularMovies";
+import MovieCredits from "./MovieCredits";
+import SimilarMovies from "./SimiliarMovies";
+import ReviewsMovies from "./ReviewsMovies";
+import KeywordMovies from "./KeywordMovies";
+import MovieImages from "./MovieImages";
+import MovieProviders from "./MovieProviders";
 
 const Details = () => {
-  const dispatch = useDispatch();
-  const movieDetails = useSelector(detailsList);
-  const movieTrailer = useSelector(trailerList);
-  const movieCredits = useSelector(creditList);
-  const popularMovies = useSelector(popularList);
-  const movieSimilar = useSelector(selectSimilarMovies);
-  const ratedMovies = useSelector(selectRatedMovies);
-  const movieExternalIds = useSelector(selectMovieExternalIds);
-  const location = useLocation();
-  const isAuth = sessionStorage.getItem("session_id");
-  const token = sessionStorage.getItem("session_id");
-
-  useEffect(() => {
-    dispatch(getDetails(location.state.id));
-    dispatch(getTrailer(location.state.id));
-    dispatch(getCredit(location.state.id));
-    dispatch(getPopular(location.state.id));
-    dispatch(fetchMovieExternalIds(location.state.id));
-    dispatch(fetchSimilarMovies(location.state.id));
-  }, [dispatch, location.state.id]);
-
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchRatedMovies());
-    }
-  }, [dispatch, token]);
-
-  const handleFavoriteClick = () => {
-    dispatch(addToFavorites(location.state.id, true));
-  };
-
-  const handleWatchListClick = () => {
-    dispatch(addToWatchList(location.state.id, true));
-  };
-
   return (
     <VStack
-      spacing={4}
-      p={["4", "4", "6", "6"]}
+      spacing={10}
+      p={["4", "6", "8"]}
       fontSize={["md", "lg", "xl", "2xl"]}
-      textAlign="center"
-      maxW="1200px"
+      maxW="90%"
       mx="auto"
-      alignItems="stretch">
-      {/* Üst Taraf: Popüler Filmler */}
-      <VStack spacing={4} w="100%">
-        <Heading as="h2" fontSize="2xl">
+      alignItems="stretch"
+      bg="gray.50"
+      borderRadius="md"
+      boxShadow="lg">
+      <Box p={4} bg="white" borderRadius="md" boxShadow="md">
+        <Heading size="lg" mb={4} borderBottom="3px solid gold">
           Popüler Filmler
         </Heading>
-        <PagePopularMovies popularMovies={popularMovies} />
-      </VStack>
+        <PagePopularMovies />
+      </Box>
 
-      {/* Alt Taraf: Film Detayları */}
-      <VStack spacing={4} w="100%">
-        {movieDetails ? (
-          <>
-            <MovieDetails
-              movieDetails={movieDetails}
-              isAuth={isAuth}
-              movieExternalIds={movieExternalIds}
-              handleFavoriteClick={handleFavoriteClick}
-              handleWatchListClick={handleWatchListClick}
-              ratedMovies={ratedMovies}
-            />
-            <MovieCredits credits={movieCredits} />
-            <Box width="full">
-              <Title text="Trailer" />
-              {movieTrailer.length > 0 ? (
-                <YoutubeEmbed embedId={movieTrailer[0].key} />
-              ) : (
-                <Box fontSize="lg">Bu filmin fragmanı yok</Box>
-              )}
-            </Box>
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <Title text="İzleme Sağlayıcıları" />
+        <MovieProviders />
+      </Box>
 
-            {movieSimilar.length > 0 ? (
-              <SimiliarMovies movieSimilar={movieSimilar} />
-            ) : (
-              <Text fontWeight="bold">Benzer filmler bulunamadı.</Text>
-            )}
-          </>
-        ) : (
-          <Text fontSize="lg">Veriler yükleniyor...</Text>
-        )}
-      </VStack>
+      <Divider borderColor="gray.300" />
+
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <MovieDetails />
+      </Box>
+
+      <Divider borderColor="gray.300" />
+
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <Title text="Film Ekibi" />
+        <MovieCredits />
+      </Box>
+
+      <Divider borderColor="gray.300" />
+
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <Title text="Filmden Kareler" />
+        <MovieImages />
+      </Box>
+
+      <Divider borderColor="gray.300" />
+
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <Title text="Filmin Yorumları" />
+        <ReviewsMovies />
+      </Box>
+
+      <Divider borderColor="gray.300" />
+
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <Title text="Etiketler" />
+        <KeywordMovies />
+      </Box>
+
+      <Divider borderColor="gray.300" />
+
+      <Box w="100%" p={2} bg="white" borderRadius="md" boxShadow="md">
+        <Title text="Benzer Filmler" />
+        <SimilarMovies />
+      </Box>
     </VStack>
   );
 };
