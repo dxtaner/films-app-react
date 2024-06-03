@@ -14,14 +14,16 @@ const CastItem = ({ credit, showDetails }) => {
     <Tooltip label="Detayları görmek için tıklayın" fontSize="md">
       <Box
         textAlign="center"
-        boxShadow="md"
         borderRadius="lg"
-        bg="gray.50"
+        bg="white"
         p={4}
         cursor="pointer"
         onClick={() => showDetails(credit)}
         transition="transform 0.3s ease-in-out"
-        _hover={{ transform: "scale(1.03)" }}>
+        _hover={{ transform: "scale(1.03)" }}
+        boxShadow="lg"
+        maxW="300px"
+        mx="auto">
         <Image
           src={
             credit.profile_path
@@ -36,7 +38,8 @@ const CastItem = ({ credit, showDetails }) => {
         <VStack spacing={2} mt={4}>
           <Heading
             fontSize={["sm", "md", "lg", "xl", "2xl"]}
-            fontWeight="semibold">
+            fontWeight="semibold"
+            color="gray.800">
             {credit.name}
           </Heading>
           {credit.character && (
