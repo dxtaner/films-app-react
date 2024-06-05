@@ -1,48 +1,64 @@
 import React from "react";
-import { Flex, IconButton, Box } from "@chakra-ui/react";
-import { FaHeart, FaEye } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import MovieGenres from "./MovieGenres";
 import MovieImage from "./MovieImage";
+import { detailsList } from "../../app/features/movies/details/detailsSlice";
+import MovieExternalIds from "./MovieExternalIds";
 
-const MovieHeader = ({
-  imageUrl,
-  originalTitle,
-  genres,
-  isAuth,
-  handleFavoriteClick,
-  handleWatchListClick,
-}) => (
-  <>
-    <MovieImage imageUrl={imageUrl} altText={originalTitle} />
-    <Box py={4}>
-      <Flex
-        wrap={"wrap"}
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%">
-        <MovieGenres genres={genres} />
-        <Flex wrap={"wrap"}>
-          {isAuth && (
-            <IconButton
-              icon={<FaHeart />}
-              colorScheme="red"
-              mr={2}
-              aria-label="Favorilere Ekle"
-              onClick={handleFavoriteClick}
-            />
-          )}
-          {isAuth && (
-            <IconButton
-              icon={<FaEye />}
-              colorScheme="blue"
-              aria-label="İzlemek İstiyorum"
-              onClick={handleWatchListClick}
-            />
-          )}
-        </Flex>
-      </Flex>
+const MovieHeader = () => {
+  const movieDetails = useSelector(detailsList);
+
+  const imageUrlBase = "https://image.tmdb.org/t/p/original";
+  const fullImageUrl = movieDetails.backdrop_path
+    ? `${imageUrlBase}${movieDetails.backdrop_path}`
+    : null;
+
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false });
+
+  return (
+    <Box position="relative">
+      <MovieImage
+        imageUrl={fullImageUrl}
+        altText={movieDetails.original_title}
+      />
+      {isSmallScreen ? (
+        <Box p={2} fontSize={["xs", "sm", "md"]}>
+          <Flex direction="column" alignItems="center">
+            <MovieGenres genres={movieDetails.genres} />
+          </Flex>
+          <Flex direction="column" alignItems="flex-start">
+            <Box bg="" p={[1, 2]}>
+              <MovieExternalIds />
+            </Box>
+          </Flex>
+        </Box>
+      ) : (
+        <>
+          <Box
+            position="absolute"
+            bottom={[0, 0]}
+            left={[0, 0]}
+            bg=""
+            borderRadius="md"
+            p={[1, 2]}
+            fontSize={["xxs", "xs", "sm", "md"]}>
+            <MovieExternalIds />
+          </Box>
+          <Box
+            position="absolute"
+            top={[1, 2]}
+            right={[1, 2]}
+            bg=""
+            borderRadius="md"
+            p={[1, 2]}
+            fontSize={["xxs", "xs", "sm", "md"]}>
+            <MovieGenres genres={movieDetails.genres} />
+          </Box>
+        </>
+      )}
     </Box>
-  </>
-);
+  );
+};
 
 export default MovieHeader;
