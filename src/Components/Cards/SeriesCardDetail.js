@@ -22,29 +22,34 @@ const SeriesCard = ({ series }) => {
     vote_average,
     vote_count,
     origin_country,
-    popularity, // popularity ekledik
+    popularity,
   } = series;
 
   const [genreData, setGenreData] = useState({});
 
   useEffect(() => {
-    axios
-      .get("https://api.themoviedb.org/3/genre/tv/list", {
-        params: {
-          api_key: YOUR_API_KEY,
-          language: "tr-US",
-        },
-      })
-      .then((response) => {
+    const fetchGenreData = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.themoviedb.org/3/genre/tv/list",
+          {
+            params: {
+              api_key: YOUR_API_KEY,
+              language: "tr-US",
+            },
+          }
+        );
         const genres = {};
         response.data.genres.forEach((genre) => {
           genres[genre.id] = genre.name;
         });
         setGenreData(genres);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Genre data fetch error:", error);
-      });
+      }
+    };
+
+    fetchGenreData();
   }, []);
 
   return (
@@ -53,7 +58,13 @@ const SeriesCard = ({ series }) => {
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
-      boxShadow="md">
+      boxShadow="md"
+      transition="all 0.2s"
+      _hover={{
+        transform: "scale(1.02)",
+        shadow: "xl",
+      }}
+      bg="gray.100">
       <Image
         src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
         alt={name}
@@ -62,37 +73,46 @@ const SeriesCard = ({ series }) => {
         objectFit="cover"
       />
       <Box p={4}>
-        <Heading as="h2" size="md" mb={2}>
+        <Heading as="h2" size="md" mb={2} color="blackAlpha.800">
           {name}
         </Heading>
-        <Text fontSize="sm" mb={2}>
+        <Text fontSize="sm" mb={2} color="gray.600">
           {first_air_date}
         </Text>
-        <Text fontSize="sm" mb={2}>
+        <Flex flexWrap="wrap" mb={2}>
           {genre_ids.map((genreId) => (
-            <Badge key={genreId} colorScheme="green" ml={1}>
+            <Badge
+              key={genreId}
+              colorScheme="green"
+              ml={1}
+              mb={1}
+              variant="outline">
               {genreData[genreId]}
             </Badge>
           ))}
-        </Text>
-        <Text fontSize="sm" mb={2}>
+        </Flex>
+        <Text fontSize="sm" mb={2} color="gray.600">
           Ana Ülke: {origin_country}
         </Text>
-        <Text fontSize="sm" mb={2}>
-          Popületisi: {popularity.toFixed(2)}
+        <Text fontSize="sm" mb={2} color="gray.600">
+          Popülerlik: {popularity.toFixed(2)}
         </Text>
-        <Text fontSize="sm" mb={2}>
-          {overview.length > 150
-            ? `${overview.substring(0, 150)}...`
-            : overview}
+        <Text fontSize="sm" mb={2} color="gray.600">
+          {overview}
         </Text>
-
-        <Flex justifyContent="space-between" alignItems="center">
-          <Tooltip label={`Vote Average: ${vote_average}`}>
-            <Badge colorScheme="blue">Oy Oranı: {vote_average}</Badge>
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap">
+          <Tooltip label={`Vote Average: ${vote_average}`} m={2}>
+            <Badge colorScheme="blue" variant="solid" m={2}>
+              Oy Oranı: {vote_average}
+            </Badge>
           </Tooltip>
-          <Tooltip label={`Vote Count: ${vote_count}`}>
-            <Badge colorScheme="orange">Oy Sayısı: {vote_count}</Badge>
+          <Tooltip label={`Vote Count: ${vote_count}`} m={2}>
+            <Badge colorScheme="orange" variant="solid" m={2}>
+              Oy Sayısı: {vote_count}
+            </Badge>
           </Tooltip>
         </Flex>
       </Box>
