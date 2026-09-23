@@ -5,15 +5,14 @@ function AboutText() {
   return (
     <Text
       fontSize={{ base: "md", md: "lg" }}
-      mb={8}
-      color="gray.700"
-      lineHeight="1.6"
-      textAlign="center">
-      Bu sayfa, sitemizde yer alan filmler hakkında bilgileri içermektedir.
-      Sitemizde en yeni ve en popüler filmleri bulabilir, inceleyebilir ve
-      hakkında daha fazla bilgi alabilirsiniz. Ayrıca, filmlerin türleri ve daha
-      fazlası hakkında detayları bu sayfada bulabilirsiniz. Film dünyasının en
-      güncel gelişmelerini takip etmek için bu sayfayı ziyaret edebilirsiniz.
+      color="gray.300"
+      lineHeight="relaxed"
+      textAlign={{ base: "center", md: "left" }}
+    >
+      Sitemiz, sinema dünyasının kalbine giden kapınızdır. En yeni vizyon
+      filmlerinden popüler dizilere ve kült yapımlara kadar geniş bir arşivde
+      gezinebilir, türleri keşfedebilir ve favori içerikleriniz hakkında detaylı
+      bilgilere ulaşabilirsiniz. Sinema tutkunuzu bizimle yaşayın.
     </Text>
   );
 }
