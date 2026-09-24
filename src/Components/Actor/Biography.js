@@ -10,9 +10,17 @@ import { useParams } from "react-router-dom";
 
 function Biography({ biography }) {
   const [expanded, setExpanded] = useState(false);
-  const previewLength = 255;
+  const previewLength = 300;
   const dispatch = useDispatch();
   const { id } = useParams();
+
+  const externalIds = useSelector(selectPersonExternalIds);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchPersonExternalIds(id));
+    }
+  }, [dispatch, id]);
 
   const shortenBiography = (text) => {
     return text.length > previewLength
@@ -20,44 +28,48 @@ function Biography({ biography }) {
       : text;
   };
 
-  const externalIds = useSelector(selectPersonExternalIds);
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchPersonExternalIds(id));
-    }
-  }, [dispatch, id]);
-
-  const handleExpand = () => {
-    setExpanded(!expanded);
-  };
-
   return (
-    <Box p={6} borderRadius="lg" bg="white" boxShadow="md">
+    <Box
+      p={6}
+      borderRadius="xl"
+      bg="gray.800"
+      border="1px solid"
+      borderColor="gray.700"
+    >
       <Flex
-        justify={{ base: "center", md: "space-between" }}
-        align={{ base: "center", md: "center" }}
+        justify="space-between"
+        align={{ base: "start", md: "center" }}
         direction={{ base: "column", md: "row" }}
-        mb={4}>
-        <Heading as="h2" size="lg" mb={{ base: 2, md: 0 }}>
+        mb={4}
+        gap={4}
+      >
+        <Heading as="h2" size="lg" color="white" fontWeight="bold">
           Biyografi
         </Heading>
         <SocialIdentityLinks externalIds={externalIds} />
       </Flex>
-      <VStack spacing={4} align="start">
+
+      <VStack spacing={3} align="start">
         {biography ? (
           <>
-            <Text fontSize="lg" color="gray.700" overflowWrap="break-word">
+            <Text fontSize="md" color="gray.300" lineHeight="relaxed">
               {expanded ? biography : shortenBiography(biography)}
             </Text>
             {biography.length > previewLength && (
-              <Link color="blue.500" onClick={handleExpand} cursor="pointer">
+              <Link
+                color="red.400"
+                fontWeight="bold"
+                onClick={() => setExpanded(!expanded)}
+                cursor="pointer"
+                _hover={{ color: "red.300", textDecoration: "underline" }}
+              >
                 {expanded ? "Daha az göster" : "Daha fazla göster"}
               </Link>
             )}
           </>
         ) : (
-          <Text fontSize="lg" color="gray.700">
-            Biyografi mevcut değil.
+          <Text fontSize="md" color="gray.500">
+            Biyografi bilgisi mevcut değil.
           </Text>
         )}
       </VStack>
