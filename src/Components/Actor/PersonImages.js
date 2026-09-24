@@ -13,6 +13,7 @@ import {
   Center,
   CloseButton,
   useToast,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import {
   fetchPersonImagesAsync,
@@ -32,84 +33,103 @@ const PersonImages = () => {
   const toast = useToast();
 
   useEffect(() => {
-    dispatch(fetchPersonImagesAsync(id));
+    if (id) {
+      dispatch(fetchPersonImagesAsync(id));
+    }
   }, [dispatch, id]);
 
   useEffect(() => {
     if (error) {
       toast({
-        title: "Error",
+        title: "Hata",
         description: error,
         status: "error",
-        duration: 5000,
+        duration: 4000,
         isClosable: true,
       });
     }
   }, [error, toast]);
 
-  const handleImageClick = (index) => {
-    setSelectedImage(images.profiles[index]);
-  };
-
-  const closeModal = () => {
-    setSelectedImage(null);
-  };
-
   return (
-    <Box>
-      <Box display="flex" flexWrap="wrap" justifyContent="center">
-        {status === "loading" && (
-          <Center mt={4}>
-            <Spinner size="xl" color="blue.500" />
-          </Center>
-        )}
-        {status === "idle" && error && (
-          <Center mt={4}>
-            <Alert status="error" variant="solid" borderRadius="md">
-              <AlertIcon />
-              {error}
-            </Alert>
-          </Center>
-        )}
-        {images &&
-          images.profiles &&
-          images.profiles.map((profile, index) => (
+    <Box
+      bg="gray.800"
+      p={6}
+      borderRadius="xl"
+      border="1px solid"
+      borderColor="gray.700"
+    >
+      {status === "loading" && (
+        <Center py={6}>
+          <Spinner size="lg" color="red.500" />
+        </Center>
+      )}
+
+      {status === "idle" && error && (
+        <Alert
+          status="error"
+          variant="subtle"
+          borderRadius="md"
+          bg="red.900"
+          color="red.200"
+        >
+          <AlertIcon color="red.400" />
+          {error}
+        </Alert>
+      )}
+
+      {images && images.profiles && images.profiles.length > 0 && (
+        <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 6 }} spacing={4}>
+          {images.profiles.map((profile, index) => (
             <Image
               key={index}
-              src={`https://image.tmdb.org/t/p/w200${profile.file_path}`}
+              src={`https://image.tmdb.org/t/p/w185${profile.file_path}`}
               alt={`Profile ${index}`}
-              m={2}
-              bg={"black"}
+              borderRadius="lg"
+              objectFit="cover"
+              h="200px"
+              w="100%"
               cursor="pointer"
-              borderRadius="md"
-              boxShadow="lg"
-              transition="transform 0.2s"
-              _hover={{ transform: "scale(1.05)" }}
-              onClick={() => handleImageClick(index)}
+              transition="transform 0.2s, border-color 0.2s"
+              border="2px solid transparent"
+              _hover={{ transform: "scale(1.05)", borderColor: "red.500" }}
+              onClick={() => setSelectedImage(profile)}
             />
           ))}
-      </Box>
+        </SimpleGrid>
+      )}
+
       {selectedImage && (
-        <Modal isOpen={true} onClose={closeModal} size="2xl">
-          <ModalOverlay bg="blackAlpha.800" />
-          <ModalContent bg="black" color="white">
-            <ModalBody p={4}>
+        <Modal
+          isOpen={true}
+          onClose={() => setSelectedImage(null)}
+          size="xl"
+          isCentered
+        >
+          <ModalOverlay bg="blackAlpha.850" backdropFilter="blur(5px)" />
+          <ModalContent
+            bg="gray.900"
+            color="white"
+            border="1px solid"
+            borderColor="gray.700"
+          >
+            <ModalBody p={2} position="relative">
               <CloseButton
                 position="absolute"
-                top={2}
-                right={2}
-                onClick={closeModal}
+                top={3}
+                right={3}
+                onClick={() => setSelectedImage(null)}
                 color="white"
-                size="lg"
+                bg="blackAlpha.600"
+                _hover={{ bg: "red.600" }}
+                zIndex={10}
               />
-              <Center>
+              <Center p={2}>
                 <Image
                   src={`https://image.tmdb.org/t/p/original${selectedImage.file_path}`}
-                  alt="Selected"
-                  w="full"
-                  h="full"
-                  objectFit="contain"
+                  alt="Full size"
+                  maxH="80vh"
                   borderRadius="md"
+                  objectFit="contain"
                 />
               </Center>
             </ModalBody>
