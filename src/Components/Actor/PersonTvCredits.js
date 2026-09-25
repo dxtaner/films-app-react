@@ -11,6 +11,7 @@ import {
   Button,
   VStack,
   HStack,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import CastCard from "./CastCard";
 import CrewCard from "./CrewCard";
@@ -20,128 +21,144 @@ const PersonTvCredits = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { tvCredits, status, error } = useSelector(
-    (state) => state.personTvCredits
+    (state) => state.personTvCredits,
   );
   const [showCast, setShowCast] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getPersonTvCredits(id));
-    setCurrentPage(1);
-  }, [dispatch, id, showCast]);
+    if (id) {
+      dispatch(getPersonTvCredits(id));
+      setCurrentPage(1);
+    }
+  }, [dispatch, id]);
 
   const handleShowCastChange = (value) => {
     setShowCast(value);
     setCurrentPage(1);
   };
 
-  const renderLoading = () => (
-    <Center h="100vh">
-      <Spinner size="xl" />
-    </Center>
+  const itemsPerPage = 10;
+  const currentList = showCast ? tvCredits?.cast || [] : tvCredits?.crew || [];
+  const totalPages = Math.ceil(currentList.length / itemsPerPage);
+  const currentItems = currentList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   );
 
-  const renderError = () => (
-    <Center h="100vh">
-      <Text fontSize="xl" color="red.500">
-        Hata: {error}
-      </Text>
-    </Center>
-  );
+  return (
+    <Box
+      p={6}
+      borderRadius="xl"
+      bg="gray.800"
+      border="1px solid"
+      borderColor="gray.700"
+    >
+      <VStack spacing={6} align="stretch">
+        <Title text="Dizi Yapımları" />
 
-  const renderTvCredits = () => {
-    const itemsPerPage = 20;
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = showCast
-      ? tvCredits.cast?.slice(indexOfFirstItem, indexOfLastItem)
-      : tvCredits.crew?.slice(indexOfFirstItem, indexOfLastItem);
+        <HStack justify="center">
+          <ButtonGroup isAttached variant="outline">
+            <Button
+              bg={showCast ? "red.600" : "transparent"}
+              color="white"
+              borderColor="gray.600"
+              _hover={{ bg: showCast ? "red.700" : "gray.700" }}
+              onClick={() => handleShowCastChange(true)}
+            >
+              Oyuncu ({tvCredits?.cast?.length || 0})
+            </Button>
+            <Button
+              bg={!showCast ? "red.600" : "transparent"}
+              color="white"
+              borderColor="gray.600"
+              _hover={{ bg: !showCast ? "red.700" : "gray.700" }}
+              onClick={() => handleShowCastChange(false)}
+            >
+              Ekip ({tvCredits?.crew?.length || 0})
+            </Button>
+          </ButtonGroup>
+        </HStack>
 
-    const totalPages = Math.ceil(
-      (showCast ? tvCredits.cast?.length : tvCredits.crew?.length) /
-        itemsPerPage
-    );
+        {status === "loading" && (
+          <Center py={8}>
+            <Spinner size="xl" color="red.500" />
+          </Center>
+        )}
 
-    return (
-      <Box p="4">
-        <VStack spacing="6" align="center">
-          <Title text="Tv Serilerindeki Yapımları" />
-          <HStack>
-            {tvCredits.cast && (
-              <Button
-                colorScheme={showCast ? "blue" : "gray"}
-                onClick={() => handleShowCastChange(true)}
-                mr="2">
-                Oyuncu
-              </Button>
-            )}
-            {tvCredits.crew && (
-              <Button
-                colorScheme={!showCast ? "blue" : "gray"}
-                onClick={() => handleShowCastChange(false)}>
-                Ekip
-              </Button>
-            )}
-          </HStack>
-        </VStack>
-        <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
-            lg: "repeat(4, 1fr)",
-            xl: "repeat(5, 1fr)",
-          }}
-          gap="6"
-          mt="4">
-          {currentItems &&
-            currentItems.map((credit) => {
-              if (showCast) {
-                return (
+        {status === "failed" && (
+          <Center py={6}>
+            <Text fontSize="md" color="red.400">
+              Hata: {error}
+            </Text>
+          </Center>
+        )}
+
+        {status === "succeeded" && (
+          <>
+            <Grid
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(5, 1fr)",
+              }}
+              gap={4}
+            >
+              {currentItems.map((credit) =>
+                showCast ? (
                   <CastCard
                     key={credit.credit_id || credit.id}
                     credit={credit}
                   />
-                );
-              } else {
-                return (
+                ) : (
                   <CrewCard
                     key={credit.credit_id || credit.id}
                     credit={credit}
                   />
-                );
-              }
-            })}
-        </Grid>
-        <HStack mt="4" spacing="2" justify="center" wrap="wrap">
-          <Button
-            colorScheme="blue"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}>
-            Önceki Sayfa
-          </Button>
-          <Text>
-            Sayfa {currentPage} / {totalPages}
-          </Text>
-          <Button
-            colorScheme="blue"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}>
-            Sonraki Sayfa
-          </Button>
-        </HStack>
-      </Box>
-    );
-  };
+                ),
+              )}
+            </Grid>
 
-  return (
-    <>
-      {status === "loading" && renderLoading()}
-      {status === "failed" && renderError()}
-      {status === "succeeded" && renderTvCredits()}
-    </>
+            {totalPages > 1 && (
+              <HStack mt={4} spacing={3} justify="center">
+                <Button
+                  size="sm"
+                  bg="gray.900"
+                  color="white"
+                  borderColor="gray.700"
+                  border="1px solid"
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  isDisabled={currentPage === 1}
+                  _hover={{ bg: "red.600" }}
+                >
+                  Önceki
+                </Button>
+                <Text fontSize="sm" color="gray.300">
+                  {currentPage} / {totalPages}
+                </Text>
+                <Button
+                  size="sm"
+                  bg="gray.900"
+                  color="white"
+                  borderColor="gray.700"
+                  border="1px solid"
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  isDisabled={currentPage === totalPages}
+                  _hover={{ bg: "red.600" }}
+                >
+                  Sonraki
+                </Button>
+              </HStack>
+            )}
+          </>
+        )}
+      </VStack>
+    </Box>
   );
 };
 
