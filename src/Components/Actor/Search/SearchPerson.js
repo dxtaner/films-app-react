@@ -8,7 +8,7 @@ import {
   Flex,
   Center,
   Box,
-  StackDivider,
+  VStack,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,62 +29,84 @@ const SearchPerson = () => {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-    dispatch(searchPersonsAsync(value));
+    if (value.trim()) {
+      dispatch(searchPersonsAsync(value));
+    }
   };
 
   return (
     <Stack
       spacing={6}
       mx="auto"
-      bg={"gray.50"}
-      p={6}
-      divider={<StackDivider borderColor="blue.800" />}
-      borderWidth="1px"
-      borderRadius="md">
+      bg="gray.900"
+      p={{ base: 4, md: 8 }}
+      borderRadius="2xl"
+      border="1px solid"
+      borderColor="gray.800"
+      boxShadow="2xl"
+    >
       <Box textAlign="center">
-        <Title text="Oyuncu Arama" textAlign="center" />
-        <Text fontSize="lg" color="gray.600">
-          Aranan oyuncular ve kişilerin listesi
+        <Title text="Oyuncu Arama" />
+        <Text fontSize="md" color="gray.400" mt={2}>
+          Sinema ve dizi dünyasından oyuncu veya ekip üyesi arayın
         </Text>
       </Box>
-      <Flex justify="center">
+
+      <Flex justify="center" maxW="600px" mx="auto" w="100%">
         <Input
           type="text"
-          placeholder="Kişi adı girin..."
+          placeholder="Kişi adı girin (Örn: Keanu Reeves)..."
           value={searchTerm}
           onChange={handleSearchChange}
-          borderRadius="md"
-          borderColor="gray.300"
-          boxShadow="md"
-          _focus={{ borderColor: "blue.500" }}
+          borderRadius="xl"
+          bg="gray.800"
+          borderColor="gray.700"
+          color="white"
           size="lg"
+          _placeholder={{ color: "gray.500" }}
+          _focus={{ borderColor: "red.500", boxShadow: "0 0 0 1px #E53E3E" }}
         />
       </Flex>
 
       {searchStatus === "loading" ? (
-        <Center>
-          <Spinner size="xl" color="blue.500" />
+        <Center py={12}>
+          <Spinner size="xl" color="red.500" thickness="4px" />
         </Center>
-      ) : searchResults.length === 0 ? (
-        <Center>
-          <Box bg="gray.100" p={4} borderRadius="md" boxShadow="md">
+      ) : searchTerm.trim() && searchResults.length === 0 ? (
+        <Center py={8}>
+          <Box
+            bg="gray.800"
+            p={6}
+            borderRadius="xl"
+            border="1px solid"
+            borderColor="red.900"
+          >
             <Text
-              fontSize="lg"
-              fontWeight="bold"
-              color="red.500"
-              textAlign="center">
-              Aradığınız kişi bulunamadı.
+              fontSize="md"
+              color="red.400"
+              textAlign="center"
+              fontWeight="semibold"
+            >
+              "{searchTerm}" ile eşleşen bir oyuncu bulunamadı.
             </Text>
           </Box>
         </Center>
-      ) : (
+      ) : searchResults.length > 0 ? (
         <SimpleGrid
           columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-          spacing={4}>
+          spacing={6}
+          pt={4}
+        >
           {searchResults.map((person) => (
             <SearchPersonCard key={person.id} person={person} />
           ))}
         </SimpleGrid>
+      ) : (
+        <VStack py={12} color="gray.500" spacing={2}>
+          <Text fontSize="md">
+            Sonuçları görmek için yukarıdaki alana bir oyuncu adı yazın.
+          </Text>
+        </VStack>
       )}
     </Stack>
   );
