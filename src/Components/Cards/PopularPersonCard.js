@@ -1,80 +1,92 @@
 import React from "react";
-import { Box, Image, Text, Button, Badge } from "@chakra-ui/react";
+import { Box, Image, Text, Button, Badge, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const PopularPersonCard = ({ person }) => {
   const imageUrl = person.profile_path
-    ? `https://image.tmdb.org/t/p/original${person.profile_path}`
+    ? `https://image.tmdb.org/t/p/w500${person.profile_path}`
     : null;
 
   return (
     <Box
-      borderWidth="1px"
-      borderRadius="lg"
+      borderRadius="xl"
       overflow="hidden"
-      boxShadow="md"
-      transition="ease-in-out 0.2s"
+      bg="gray.800"
+      border="1px solid"
+      borderColor="gray.700"
+      boxShadow="lg"
+      transition="all 0.3s cubic-bezier(.25,.8,.25,1)"
       _hover={{
-        boxShadow: "lg",
-        transform: "scale(1.02)",
+        transform: "translateY(-6px)",
+        borderColor: "red.600",
+        boxShadow: "0 12px 24px -10px rgba(229, 62, 62, 0.3)",
       }}
       width="100%"
       maxWidth="250px"
       margin="auto"
-      marginBottom="4">
-      <Box position="relative">
+      marginBottom="6"
+    >
+      <Box position="relative" h="320px" bg="gray.900">
         {imageUrl ? (
           <Image
             src={imageUrl}
             alt={person.name}
-            borderRadius="lg"
             objectFit="cover"
             width="100%"
-            minHeight="200px"
+            height="100%"
           />
         ) : (
-          <Box
-            minHeight="300px"
-            display="flex"
+          <Flex
+            height="100%"
             alignItems="center"
             justifyContent="center"
-            backgroundColor="gray.200">
-            <Text fontSize="lg" fontWeight="bold" color="gray.600">
-              Resim Yok
+            bg="gray.800"
+            color="gray.500"
+          >
+            <Text fontSize="sm" fontWeight="semibold">
+              Görsel Yok
             </Text>
-          </Box>
+          </Flex>
         )}
+
+        {/* Hover overlay katmanı */}
         <Box
           position="absolute"
-          bottom="0"
-          left="0"
-          right="0"
-          bg="rgba(0, 0, 0, 0.7)"
+          inset={0}
+          bg="rgba(15, 23, 42, 0.9)"
           color="white"
           p={4}
           textAlign="center"
-          transition="background-color 0.3s ease-in-out"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
           opacity={0}
+          transition="all 0.3s ease-in-out"
+          backdropFilter="blur(2px)"
           _hover={{
             opacity: 1,
-            bg: "rgba(0, 0, 0, 0.8)",
-          }}>
-          <Text fontSize="lg" fontWeight="bold" mb="2">
+          }}
+        >
+          <Text fontSize="lg" fontWeight="extrabold" mb={2} color="white">
             {person.name}
           </Text>
-          <Badge colorScheme="yellow" variant="solid" fontSize="sm" mb="2">
+          <Badge colorScheme="red" variant="subtle" fontSize="xs" mb={2}>
             Popüler
           </Badge>
-          <Text fontSize="sm" mb="2">
+          <Text fontSize="xs" color="gray.300" mb={4}>
             {person.known_for_department}
           </Text>
           <Button
             as={Link}
             to={`/ActorDetails/${person.id}`}
-            colorScheme="yellow"
-            variant="outline"
+            colorScheme="red"
+            variant="solid"
             size="sm"
-            width="100%">
+            width="100%"
+            borderRadius="lg"
+            _hover={{ bg: "red.600" }}
+          >
             Detayları Görüntüle
           </Button>
         </Box>
