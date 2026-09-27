@@ -34,4 +34,40 @@ films-app-react/
 ├── .env               # Environment variables (API Keys)
 └── package.json       # Project dependencies and scripts
 ```
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up and run the project locally on your machine.
+
+### Installation & Setup
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com
+    cd films-app-react
+    ```
+
+2.  **Install Dependencies:**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Configure Environment Variables:**
+    Create a `.env` file in the root directory and add your [The Movie Database (TMDB)](https://themoviedb.org) API key:
+    ```env
+    REACT_APP_TMDB_API_KEY=your_actual_api_key_here
+    ```
+
+4.  **Run the Application:**
+    ```bash
+    npm start
+    # or
+    yarn start
+    ```
+    Open `http://localhost:3000` in your browser to view the application.
+
 ---
