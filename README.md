@@ -14,3 +14,24 @@ A modern, responsive, and feature-rich **Movie Discovery Application** built wit
 *   **Fast Search & Filters:** Dynamic filtering options powered by efficient TMDB API endpoints.
 
 ---
+
+## 🛠️ Project Structure
+
+```text
+films-app-react/
+├── public/            # Static assets and favicon
+├── src/
+│   ├── Components/    # Reusable UI components
+│   ├── app/
+│   │   ├── features/  # Feature-based state modules
+│   │   │   ├── account/   # User authentication and account state
+│   │   │   ├── actors/    # Actor profiles, details, and logic
+│   │   │   ├── movies/    # Movie discovery, filters, and lists
+│   │   │   └── series/    # TV series content and details
+│   │   └── store.js       # Redux global store configuration
+│   ├── App.css        # Main application styles
+│   └── App.js         # Root application component
+├── .env               # Environment variables (API Keys)
+└── package.json       # Project dependencies and scripts
+```
+---
