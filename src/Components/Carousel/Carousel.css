@@ -1,59 +1,36 @@
 .carousel-item {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-    transition: transform 0.3s ease-in-out;
-}
-
-.carousel-item:hover {
-    transform: scale(1.02);
-    cursor: pointer;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-bottom: 24px;
 }
 
 .carousel-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease-in-out;
 }
 
 .carousel-item:hover .carousel-image {
-    transform: scale(1.05);
+  transform: scale(1.03);
 }
 
-.carousel-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    color: antiquewhite;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    transition: background-color 0.3s ease-in-out;
+/* React Responsive Carousel Stil Aşırı Yüklemeleri (Override) */
+.carousel .control-dots {
+  bottom: 20px !important;
 }
 
-.carousel-title {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+.carousel .control-arrow {
+  padding: 20px !important;
+  opacity: 0.7 !important;
+  transition: opacity 0.2s ease !important;
 }
 
-.carousel-description {
-    display: none;
-}
-
-@media (min-width: 768px) {
-    .carousel-description {
-        display: block;
-        font-size: 1rem;
-    }
+.carousel .control-arrow:hover {
+  opacity: 1 !important;
+  background: rgba(0, 0, 0, 0.4) !important;
 }
