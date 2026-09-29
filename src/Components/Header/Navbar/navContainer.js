@@ -1,17 +1,24 @@
+import React from "react";
 import { Flex } from "@chakra-ui/react";
-export const NavContainer = ({ children }) => {
+
+export const NavContainer = ({ children, ...props }) => {
   return (
     <Flex
       as="nav"
       align="center"
       justify="space-between"
-      wrap="wrap"
+      wrap="wrap" // Mobil menü açıldığında alt satıra geçebilmesi için şart
       w="100%"
-      p="5"
-      bg="gray.800"
+      px={8}
+      py={4}
+      bg="gray.900"
       color="white"
-      borderBottom="5px"
-      borderColor="red.800">
+      borderBottom="3px solid"
+      borderColor="red.600"
+      position="relative"
+      zIndex={100}
+      {...props}
+    >
       {children}
     </Flex>
   );
