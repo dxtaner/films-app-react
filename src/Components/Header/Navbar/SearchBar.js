@@ -10,85 +10,87 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import { searchMoviesAsync } from "../../../app/features/movies/searchSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SearchResults from "./SearchResults";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
-
   const [query, setQuery] = useState("");
   const searchResults = useSelector((state) => state.search.results);
 
+  // Debouncing: Kullanıcı yazmayı bıraktıktan 400ms sonra Redux isteği atılır
   useEffect(() => {
-    if (location.state && location.state.id) {
-      dispatch(searchMoviesAsync(location.state.id));
-    }
-  }, [dispatch, location]);
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
 
-  useEffect(() => {
-    setQuery("");
-  }, [location.key]);
+    const timer = setTimeout(() => {
+      dispatch(searchMoviesAsync(trimmedQuery));
+    }, 400);
 
-  useEffect(() => {
-    if (query.trim() !== "") {
-      dispatch(searchMoviesAsync(query));
-    }
-  }, [dispatch, query]);
+    return () => clearTimeout(timer);
+  }, [query, dispatch]);
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-      navigate(`/SearchMovies?query=${query}`);
+    if (e.key === "Enter" && query.trim()) {
+      navigate(`/SearchMovies?query=${encodeURIComponent(query)}`);
     }
   };
 
-  const handleResultClick = (result) => {
-    // console.log("Selected Movie:", result);
-  };
-
-  const handleSearch = () => {
-    if (query.trim() !== "") {
-      dispatch(searchMoviesAsync(query));
+  const handleSearchSubmit = () => {
+    if (query.trim()) {
+      navigate(`/SearchMovies?query=${encodeURIComponent(query)}`);
     }
   };
 
   return (
-    <Flex justifyContent="center" mt={6} mb={6} width="full">
+    <Flex justifyContent="center" my={6} width="full" px={4}>
       <Box
         position="relative"
-        width={{ base: "full", md: "800px" }}
-        bg="white"
-        borderRadius="xl"
-        boxShadow="md"
-        p={4}>
-        <InputGroup>
+        width={{ base: "full", md: "700px" }}
+        bg="gray.800"
+        borderRadius="full"
+        boxShadow="xl"
+        p={1}
+      >
+        <InputGroup size="lg">
           <Input
-            placeholder="Film Arayın.."
+            placeholder="Film veya dizi arayın..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={handleKeyPress}
-            borderRadius="xl"
-            borderColor="blue.300"
-            _hover={{ borderColor: "blue.500" }}
-            _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
+            borderRadius="full"
+            bg="transparent"
+            border="none"
+            color="white"
+            _placeholder={{ color: "gray.400" }}
+            _focus={{ boxShadow: "none" }}
+            px={6}
           />
-          <InputRightElement>
+          <InputRightElement pr={2} h="100%" display="flex" alignItems="center">
             <IconButton
               aria-label="Search Movies"
               icon={<SearchIcon />}
-              onClick={handleSearch}
-              colorScheme="blue"
-              borderRadius="xl"
+              onClick={handleSearchSubmit}
+              colorScheme="red"
+              borderRadius="full"
+              size="sm"
             />
           </InputRightElement>
         </InputGroup>
-        {query && (
-          <Box position="absolute" top="60px" width="full" zIndex={10}>
+
+        {query.trim() && (
+          <Box
+            position="absolute"
+            top="100%"
+            left={0}
+            right={0}
+            mt={2}
+            zIndex={150}
+          >
             <SearchResults
               results={searchResults}
-              handleResultClick={handleResultClick}
+              handleResultClick={() => setQuery("")}
             />
           </Box>
         )}
