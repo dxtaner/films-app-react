@@ -30,14 +30,21 @@ const FavoriteButton = ({ movieId }) => {
   const isFavorite = favorites.some((item) => item.id === movieId);
 
   return (
-    <Tooltip label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}>
+    <Tooltip label={isFavorite ? "Favorilerden Çıkar" : "Favorilere Ekle"}>
       <Button
         onClick={isFavorite ? handleRemoveFromFavorites : handleAddToFavorites}
-        colorScheme={isFavorite ? "red" : "gray"}
-        variant="outline"
-        size="lg"
-        leftIcon={<FaHeart />}>
-        {isFavorite ? "Favorited" : "Add to Favorites"}
+        colorScheme="red"
+        variant={isFavorite ? "solid" : "outline"}
+        bg={isFavorite ? "red.600" : "transparent"}
+        borderColor="red.600"
+        color="white"
+        _hover={{ bg: isFavorite ? "red.700" : "rgba(229, 62, 62, 0.2)" }}
+        size="md"
+        width="100%"
+        leftIcon={<FaHeart />}
+        borderRadius="lg"
+      >
+        {isFavorite ? "Favorilerde" : "Favorilere Ekle"}
       </Button>
     </Tooltip>
   );
