@@ -4,14 +4,7 @@ import {
   fetchDiscoverMovies,
   setPage,
 } from "../../app/features/movies/discoverMoviesSlice.js";
-import {
-  Box,
-  Flex,
-  Stack,
-  Divider,
-  Button,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Flex, Stack, Divider, Button } from "@chakra-ui/react";
 import MoviesList from "./MoviesList";
 import FilterOptions from "./FilterOptions";
 import LoadMoreButton from "./LoadMoreButton";
@@ -93,28 +86,46 @@ const DiscoverMovies = () => {
     };
   }, []);
 
-  const bg = useColorModeValue("gray.50", "gray.50");
-
   return (
-    <Box p={4} bg={bg} borderRadius="md" boxShadow="md">
-      <Box mb={4}>
+    <Box
+      p={6}
+      bg="gray.900"
+      borderRadius="xl"
+      border="1px solid"
+      borderColor="gray.800"
+      boxShadow="2xl"
+    >
+      <Box mb={6}>
         <Title text="Filmleri Keşfet" />
-        <Divider mt={2} borderColor="teal.500" />
+        <Divider mt={3} borderColor="red.600" borderBottomWidth="2px" />
       </Box>
 
-      <Stack spacing={4}>
+      <Stack spacing={6}>
         <Flex justify="space-between" align="center">
           <Button
             onClick={toggleFilter}
-            colorScheme="teal"
+            colorScheme="red"
+            bg="red.600"
+            _hover={{ bg: "red.700" }}
             width="100%"
-            height="50px">
+            height="50px"
+            fontSize="md"
+            borderRadius="lg"
+            fontWeight="bold"
+          >
             {isFilterOpen ? "Filtreyi Kapat" : "Filtrele"}
           </Button>
         </Flex>
 
         {isFilterOpen && (
-          <Box p={4} borderRadius="md" bg="gray.50" boxShadow="md">
+          <Box
+            p={6}
+            borderRadius="xl"
+            bg="gray.950"
+            border="1px solid"
+            borderColor="gray.800"
+            boxShadow="inner"
+          >
             <FilterOptions
               queryParams={queryParams}
               onFilterChange={handleFilterChange}
@@ -140,15 +151,22 @@ const DiscoverMovies = () => {
       {showSearchButton && isFilterOpen && (
         <Button
           onClick={() => handleSearch(queryParams)}
-          colorScheme="teal"
+          colorScheme="red"
+          bg="red.600"
+          _hover={{ bg: "red.700" }}
           position="fixed"
-          bottom="0"
-          left="0"
-          margin="10px"
-          borderRadius="8px"
-          width="100%"
-          height="60px"
-          boxShadow="lg">
+          bottom="20px"
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex="100"
+          borderRadius="xl"
+          width="90%"
+          maxW="600px"
+          height="55px"
+          boxShadow="0 10px 25px -5px rgba(229, 62, 62, 0.6)"
+          fontWeight="bold"
+          fontSize="lg"
+        >
           Arama Yap
         </Button>
       )}
