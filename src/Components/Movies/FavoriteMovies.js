@@ -36,36 +36,46 @@ const Favorites = () => {
 
   return (
     <VStack
-      divider={<StackDivider borderColor="blue.800" />}
+      divider={<StackDivider borderColor="gray.800" />}
       justifyContent="center"
-      bg="gray.50"
-      p={[2, 4, 6, 8]}
-      spacing={4}>
-      <Box>
+      bg="gray.900"
+      p={[4, 6, 8]}
+      spacing={6}
+      borderRadius="xl"
+      minH="80vh"
+    >
+      <Box w="100%">
         <Title text="Favori Filmlerim">
-          <Text fontSize="lg">
+          <Text fontSize="sm" color="gray.400" mt={1}>
             Buradaki filmler, hesabınızla ilişkilendirilmiş favori
             filmlerinizdir.
           </Text>
         </Title>
       </Box>
       {isLoading ? (
-        <Center>
-          <Spinner size="xl" />
+        <Center py={10}>
+          <Spinner size="xl" color="red.600" thickness="4px" />
         </Center>
       ) : (
-        <SimpleGrid
-          mt="4"
-          columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-          spacing={4}>
+        <Box w="100%">
           {favorites.length > 0 ? (
-            favorites.map((item) => <MovieCard key={item.id} movie={item} />)
+            <SimpleGrid
+              mt="4"
+              columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+              spacing={6}
+            >
+              {favorites.map((item) => (
+                <MovieCard key={item.id} movie={item} />
+              ))}
+            </SimpleGrid>
           ) : (
-            <Center>
-              <Text>Favori filminiz bulunmamaktadır.</Text>
+            <Center py={16}>
+              <Text color="gray.400" fontSize="lg">
+                Henüz favori filminiz bulunmamaktadır.
+              </Text>
             </Center>
           )}
-        </SimpleGrid>
+        </Box>
       )}
     </VStack>
   );
