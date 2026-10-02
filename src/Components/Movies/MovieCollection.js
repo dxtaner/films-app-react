@@ -14,6 +14,12 @@ import {
   SimpleGrid,
   Badge,
   StackDivider,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Title from "../Title/titles";
@@ -22,26 +28,27 @@ const MovieCollection = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { movieCollection, isLoading, error } = useSelector(
-    (state) => state.movieCollection
+    (state) => state.movieCollection,
   );
-
   const { images } = useSelector((state) => state.movieCollectionImages);
 
-  useEffect(() => {
-    dispatch(fetchCollectionById(id));
-    dispatch(fetchCollectionImagesAsync(id));
-  }, [dispatch, id]);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const bg = useColorModeValue("white", "gray.800");
   const overviewBg = useColorModeValue("gray.50", "gray.700");
-  const overviewTextBg = useColorModeValue("white", "gray.800");
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchCollectionById(id));
+      dispatch(fetchCollectionImagesAsync(id));
+    }
+  }, [dispatch, id]);
 
   if (isLoading) {
     return (
       <Center h="100vh">
-        <Spinner size="xl" />
+        <Spinner size="xl" color="blue.500" />
       </Center>
     );
   }
@@ -49,7 +56,7 @@ const MovieCollection = () => {
   if (error) {
     return (
       <Center h="100vh">
-        <Text color="red.500">Error fetching data: {error}</Text>
+        <Text color="red.500">Veri yüklenirken hata oluştu: {error}</Text>
       </Center>
     );
   }
@@ -57,13 +64,14 @@ const MovieCollection = () => {
   if (!movieCollection) {
     return (
       <Center h="100vh">
-        <Text>No collection data available</Text>
+        <Text color="gray.500">Koleksiyon verisi bulunamadı.</Text>
       </Center>
     );
   }
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
+  const handleImageClick = (imageObj) => {
+    setSelectedImage(imageObj);
+    onOpen();
   };
 
   return (
@@ -76,69 +84,63 @@ const MovieCollection = () => {
       p={4}
       bg={bg}
       boxShadow="lg"
-      borderRadius="lg">
+      borderRadius="lg"
+    >
       <Box textAlign="center" m={4}>
         <Title text={`${movieCollection.name} Filmleri`} />
       </Box>
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mb={4}>
-        <Image
-          src={`https://image.tmdb.org/t/p/original${movieCollection.poster_path}`}
-          alt="Poster"
-          maxHeight="500px"
-          borderRadius="lg"
-          mx={2}
-          boxShadow="md"
-        />
-      </Box>
+      {movieCollection.poster_path && (
+        <Box display="flex" justifyContent="center" mb={4}>
+          <Image
+            src={`https://image.tmdb.org/t/p/original${movieCollection.poster_path}`}
+            alt={movieCollection.name}
+            maxH="400px"
+            borderRadius="lg"
+            boxShadow="md"
+          />
+        </Box>
+      )}
 
-      <Box
-        p={4}
-        borderLeft="5px solid gold"
-        borderBottom="5px solid gold"
-        borderRadius="lg"
-        boxShadow="md"
-        bg={overviewBg}>
-        <Text
-          fontSize="lg"
-          fontStyle="italic"
-          color="gray.600"
-          mb={6}
-          p={4}
-          bg={overviewTextBg}
-          borderRadius="md"
-          boxShadow="inner">
-          {movieCollection.overview}
-        </Text>
+      <Box p={6} borderRadius="lg" boxShadow="md" bg={overviewBg}>
+        {movieCollection.overview && (
+          <Text fontSize="lg" fontStyle="italic" color="gray.600" mb={6}>
+            {movieCollection.overview}
+          </Text>
+        )}
 
-        <SimpleGrid
-          columns={[1, 2, 3]}
-          spacing={[4, 6, 8]}
-          mx="auto"
-          maxW="90%">
-          {movieCollection.parts.map((movie) => (
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={6}>
+          {movieCollection.parts?.map((movie) => (
             <Link key={movie.id} to={`/MovieDetails/${movie.id}`}>
               <Box
-                maxW="100%"
                 borderWidth="1px"
                 borderRadius="lg"
                 overflow="hidden"
-                m={2}
-                _hover={{ boxShadow: "xl", transform: "scale(1.03)" }}
-                transition="0.3s ease-in-out">
+                bg="white"
+                _hover={{ boxShadow: "xl", transform: "translateY(-4px)" }}
+                transition="0.3s ease-in-out"
+                h="100%"
+              >
                 <Image
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
-                  p={4}
-                  borderRadius="lg"
+                  w="100%"
+                  h="350px"
+                  objectFit="cover"
                 />
-                <Box p={3}>
-                  <Heading as="h4" size="md" mb={2}>
-                    {movie.title} ({movie.release_date.substring(0, 4)})
+                <Box p={4}>
+                  <Heading as="h4" size="md" mb={2} noOfLines={1}>
+                    {movie.title} (
+                    {movie.release_date
+                      ? movie.release_date.substring(0, 4)
+                      : "N/A"}
+                    )
                   </Heading>
-                  <Badge colorScheme="teal" mb={2}>
-                    {movie.vote_average.toFixed(2)} / 10
-                  </Badge>
+                  {movie.vote_average > 0 && (
+                    <Badge colorScheme="teal" mb={2}>
+                      {movie.vote_average.toFixed(1)} / 10
+                    </Badge>
+                  )}
                   <Text fontSize="sm" color="gray.600" noOfLines={3}>
                     {movie.overview}
                   </Text>
@@ -149,92 +151,48 @@ const MovieCollection = () => {
         </SimpleGrid>
       </Box>
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mb={4}>
-        <Image
-          src={`https://image.tmdb.org/t/p/original${movieCollection.backdrop_path}`}
-          alt="Backdrop"
-          maxHeight="500px"
-          borderRadius="lg"
-          mx={2}
-          boxShadow="md"
-        />
-      </Box>
-
-      <Title text={`${movieCollection.name} Filminden Fotoğraflar`} />
-
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mb={4}>
-        {images && images.backdrops && images.backdrops.length > 0 ? (
-          images.backdrops.map((backdrop) => (
-            <Box key={backdrop.file_path} mx={2} mb={4} textAlign="center">
+      {images?.backdrops?.length > 0 && (
+        <>
+          <Title text={`${movieCollection.name} - Arka Planlar`} />
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={4}>
+            {images.backdrops.map((backdrop) => (
               <Image
                 key={backdrop.file_path}
-                src={`https://image.tmdb.org/t/p/original${backdrop.file_path}`}
+                src={`https://image.tmdb.org/t/p/w500${backdrop.file_path}`}
                 alt="Backdrop"
-                maxHeight="200px"
                 borderRadius="md"
-                mx={2}
+                cursor="pointer"
+                _hover={{ transform: "scale(1.03)" }}
+                transition="0.3s"
                 onClick={() => handleImageClick(backdrop)}
-                cursor="pointer"
-                _hover={{ transform: "scale(1.05)" }}
-                transition="0.3s ease-in-out"
               />
-            </Box>
-          ))
-        ) : (
-          <Text>No backdrop images available</Text>
-        )}
-      </Box>
-
-      <Title text={`${movieCollection.name} Filminin Afişleri`} />
-
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mb={4}>
-        {images && images.posters && images.posters.length > 0 ? (
-          images.posters.map((poster) => (
-            <Box key={poster.file_path} mx={2} mb={4} textAlign="center">
-              <Image
-                key={poster.file_path}
-                src={`https://image.tmdb.org/t/p/original${poster.file_path}`}
-                alt="Poster"
-                maxHeight="200px"
-                borderRadius="md"
-                mx={2}
-                onClick={() => handleImageClick(poster)}
-                cursor="pointer"
-                _hover={{ transform: "scale(1.05)" }}
-                transition="0.3s ease-in-out"
-              />
-            </Box>
-          ))
-        ) : (
-          <Text>No poster images available</Text>
-        )}
-      </Box>
-
-      {selectedImage && (
-        <Box
-          pos="fixed"
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-          bg="rgba(0, 0, 0, 0.8)"
-          borderRadius="md"
-          p={4}
-          zIndex="modal"
-          onClick={() => setSelectedImage(null)}>
-          <Box textAlign="right" mb={4}>
-            <Text fontWeight={800} fontSize="md" color="white">
-              {selectedImage.vote_average.toFixed(1)} / 10
-            </Text>
-          </Box>
-          <Image
-            src={`https://image.tmdb.org/t/p/original${selectedImage.file_path}`}
-            alt="Selected Image"
-            borderRadius="md"
-            maxW="90vw"
-            maxH="90vh"
-          />
-        </Box>
+            ))}
+          </SimpleGrid>
+        </>
       )}
+
+      <Modal isOpen={isOpen} onClose={onClose} size="4xl" isCentered>
+        <ModalOverlay />
+        <ModalContent bg="transparent" boxShadow="none">
+          <ModalCloseButton color="white" zIndex={2} />
+          <ModalBody
+            p={0}
+            display="flex"
+            justifyContent="center"
+            position="relative"
+          >
+            {selectedImage && (
+              <Image
+                src={`https://image.tmdb.org/t/p/original${selectedImage.file_path}`}
+                alt="Büyük Görsel"
+                borderRadius="lg"
+                maxH="85vh"
+                objectFit="contain"
+              />
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </VStack>
   );
 };
