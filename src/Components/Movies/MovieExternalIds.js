@@ -20,7 +20,9 @@ const MovieExternalIds = () => {
   const movieExternalIds = useSelector(selectMovieExternalIds);
 
   useEffect(() => {
-    dispatch(fetchMovieExternalIds(id));
+    if (id) {
+      dispatch(fetchMovieExternalIds(id));
+    }
   }, [dispatch, id]);
 
   if (!movieExternalIds) {
@@ -31,13 +33,7 @@ const MovieExternalIds = () => {
     movieExternalIds;
 
   return (
-    <Box
-      p={3}
-      boxShadow="lg"
-      borderRadius="lg"
-      mx="auto"
-      border="none"
-      textAlign="center">
+    <Box p={3} mx="auto" textAlign="center">
       <Wrap justify="center" spacing={4}>
         {imdb_id && (
           <WrapItem>
@@ -45,60 +41,61 @@ const MovieExternalIds = () => {
               <Link
                 href={`https://www.imdb.com/title/${imdb_id}`}
                 target="_blank"
-                rel="noopener noreferrer">
-                <Icon as={FaImdb} fontSize="3xl" color="yellow.400" />
+                rel="noopener noreferrer"
+              >
+                <Icon as={FaImdb} fontSize="2.5rem" color="yellow.400" />
               </Link>
             </Tooltip>
           </WrapItem>
         )}
-
         {wikidata_id && (
           <WrapItem>
             <Tooltip label="WikiData" hasArrow>
               <Link
                 href={`https://www.wikidata.org/wiki/${wikidata_id}`}
                 target="_blank"
-                rel="noopener noreferrer">
-                <Icon as={FaWikipediaW} fontSize="3xl" color="black" />
+                rel="noopener noreferrer"
+              >
+                <Icon as={FaWikipediaW} fontSize="2.5rem" color="gray.800" />
               </Link>
             </Tooltip>
           </WrapItem>
         )}
-
         {facebook_id && (
           <WrapItem>
             <Tooltip label="Facebook" hasArrow>
               <Link
                 href={`https://www.facebook.com/${facebook_id}`}
                 target="_blank"
-                rel="noopener noreferrer">
-                <Icon as={FaFacebook} fontSize="3xl" color="blue.600" />
+                rel="noopener noreferrer"
+              >
+                <Icon as={FaFacebook} fontSize="2.5rem" color="blue.600" />
               </Link>
             </Tooltip>
           </WrapItem>
         )}
-
         {twitter_id && (
           <WrapItem>
             <Tooltip label="Twitter" hasArrow>
               <Link
                 href={`https://www.twitter.com/${twitter_id}`}
                 target="_blank"
-                rel="noopener noreferrer">
-                <Icon as={FaTwitter} fontSize="3xl" color="blue.400" />
+                rel="noopener noreferrer"
+              >
+                <Icon as={FaTwitter} fontSize="2.5rem" color="blue.400" />
               </Link>
             </Tooltip>
           </WrapItem>
         )}
-
         {instagram_id && (
           <WrapItem>
             <Tooltip label="Instagram" hasArrow>
               <Link
                 href={`https://www.instagram.com/${instagram_id}`}
                 target="_blank"
-                rel="noopener noreferrer">
-                <Icon as={FaInstagram} fontSize="3xl" color="pink.400" />
+                rel="noopener noreferrer"
+              >
+                <Icon as={FaInstagram} fontSize="2.5rem" color="pink.400" />
               </Link>
             </Tooltip>
           </WrapItem>
