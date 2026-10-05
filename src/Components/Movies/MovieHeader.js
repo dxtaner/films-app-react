@@ -9,50 +9,32 @@ import MovieExternalIds from "./MovieExternalIds";
 const MovieHeader = () => {
   const movieDetails = useSelector(detailsList);
 
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+
+  if (!movieDetails) return null;
+
   const imageUrlBase = "https://image.tmdb.org/t/p/original";
   const fullImageUrl = movieDetails.backdrop_path
     ? `${imageUrlBase}${movieDetails.backdrop_path}`
     : null;
 
-  const isSmallScreen = useBreakpointValue({ base: true, sm: false });
-
   return (
-    <Box position="relative">
+    <Box position="relative" w="100%">
       <MovieImage
         imageUrl={fullImageUrl}
         altText={movieDetails.original_title}
       />
       {isSmallScreen ? (
-        <Box p={2} fontSize={["xs", "sm", "md"]}>
-          <Flex direction="column" alignItems="center">
-            <MovieGenres genres={movieDetails.genres} />
-          </Flex>
-          <Flex direction="column" alignItems="flex-start">
-            <Box bg="" p={[1, 2]}>
-              <MovieExternalIds />
-            </Box>
-          </Flex>
-        </Box>
+        <Flex direction="column" align="center" mt={4} gap={2}>
+          <MovieGenres genres={movieDetails.genres} />
+          <MovieExternalIds />
+        </Flex>
       ) : (
         <>
-          <Box
-            position="absolute"
-            bottom={[0, 0]}
-            left={[0, 0]}
-            bg=""
-            borderRadius="md"
-            p={[1, 2]}
-            fontSize={["xxs", "xs", "sm", "md"]}>
+          <Box position="absolute" bottom={4} left={4} zIndex={2}>
             <MovieExternalIds />
           </Box>
-          <Box
-            position="absolute"
-            top={[1, 2]}
-            right={[1, 2]}
-            bg=""
-            borderRadius="md"
-            p={[1, 2]}
-            fontSize={["xxs", "xs", "sm", "md"]}>
+          <Box position="absolute" top={4} right={4} zIndex={2}>
             <MovieGenres genres={movieDetails.genres} />
           </Box>
         </>
