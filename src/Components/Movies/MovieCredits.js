@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, useColorModeValue, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  useColorModeValue,
+  SimpleGrid,
+  Center,
+  Spinner,
+} from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,26 +33,26 @@ const MovieCredits = () => {
   const textColor = useColorModeValue("gray.800", "gray.50");
 
   useEffect(() => {
-    dispatch(getCredit(id));
-    setCurrentPage(1);
+    if (id) {
+      dispatch(getCredit(id));
+      setCurrentPage(1);
+    }
   }, [dispatch, id]);
 
   if (!movieCredits) {
     return (
-      <Text m={2} align="center">
-        Yükleniyor...
-      </Text>
+      <Center py={6}>
+        <Spinner size="xl" color="blue.500" />
+      </Center>
     );
   }
-  if (
-    !movieCredits ||
-    !movieCredits.cast ||
-    movieCredits.cast.length === 0 ||
-    !movieCredits.crew ||
-    movieCredits.crew.length === 0
-  ) {
+
+  const cast = movieCredits.cast || [];
+  const crew = movieCredits.crew || [];
+
+  if (cast.length === 0 && crew.length === 0) {
     return (
-      <Text m={2} align="center">
+      <Text m={4} align="center" color="gray.500">
         Oyuncu veya ekip üyesi bulunamadı.
       </Text>
     );
@@ -56,64 +63,49 @@ const MovieCredits = () => {
   };
 
   const handleTogglePage = () => {
-    setIsCastPage((prevIsCastPage) => !prevIsCastPage);
+    setIsCastPage((prev) => !prev);
     setCurrentPage(1);
   };
 
-  const goToPreviousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const goToNextPage = () => {
-    const totalItems = isCastPage
-      ? movieCredits.cast.length
-      : movieCredits.crew.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  };
-
+  const currentItems = isCastPage ? cast : crew;
+  const totalPages = Math.max(1, Math.ceil(currentItems.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const visibleItems = isCastPage
-    ? movieCredits.cast.slice(startIndex, endIndex)
-    : movieCredits.crew.slice(startIndex, endIndex);
-
-  const totalItems = isCastPage
-    ? movieCredits.cast.length
-    : movieCredits.crew.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const visibleItems = currentItems.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   return (
     <Box
-      p={[1, 2, 2, 4, 4]}
-      fontSize={["xs", "sm", "md", "lg", "xl"]}
-      textAlign="center"
+      p={4}
       mx="auto"
       boxShadow="md"
       bg={bgColor}
       color={textColor}
-      borderRadius="lg">
-      <Title text={isCastPage ? "Oyuncu Kadrosu" : "Ekip Üyeleri"}></Title>
+      borderRadius="lg"
+      my={4}
+    >
+      <Title text={isCastPage ? "Oyuncu Kadrosu" : "Ekip Üyeleri"} />
       <SimpleGrid
-        columns={[1, 2, 3, 4]}
+        columns={{ base: 1, sm: 2, md: 4 }}
         spacing={4}
-        m={2}
-        p={2}
-        justifyItems="center">
-        {visibleItems.map((credit) =>
+        my={4}
+        justifyItems="center"
+      >
+        {visibleItems.map((credit, index) =>
           isCastPage ? (
             <CastItem
-              key={`cast-${credit.credit_id}`}
+              key={`cast-${credit.credit_id || index}`}
               credit={credit}
               showDetails={showDetails}
             />
           ) : (
             <CrewItem
-              key={`crew-${credit.credit_id}`}
+              key={`crew-${credit.credit_id || index}`}
               credit={credit}
               showDetails={showDetails}
             />
-          )
+          ),
         )}
       </SimpleGrid>
       <ToggleButton
@@ -121,15 +113,17 @@ const MovieCredits = () => {
         handleTogglePage={handleTogglePage}
       />
       <Box mt={4} textAlign="center">
-        <Text fontSize="sm" color="gray.500">
-          Toplam {isCastPage ? "Oyuncu Sayısı" : "Ekip Üyesi Sayısı"}:{" "}
-          {totalItems}, Şu Anki Sayfa: {currentPage} / {totalPages}
+        <Text fontSize="sm" color="gray.500" mb={2}>
+          Toplam {isCastPage ? "Oyuncu" : "Ekip"}: {currentItems.length} |
+          Sayfa: {currentPage} / {totalPages}
         </Text>
         <PaginationButton
           currentPage={currentPage}
           totalPages={totalPages}
-          goToPreviousPage={goToPreviousPage}
-          goToNextPage={goToNextPage}
+          goToPreviousPage={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+          goToNextPage={() =>
+            setCurrentPage((p) => Math.min(p + 1, totalPages))
+          }
         />
       </Box>
     </Box>
