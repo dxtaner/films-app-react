@@ -10,6 +10,8 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Center,
+  Spinner,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -25,10 +27,10 @@ const MovieDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const movieDetails = useSelector(detailsList);
-  const { backdrop_path, original_title, overview, release_date } =
-    movieDetails || {};
   const token = sessionStorage.getItem("session_id");
   const isAuth = !!token;
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -36,43 +38,54 @@ const MovieDetails = () => {
     }
   }, [dispatch, id]);
 
-  const hasHeaderData = backdrop_path && original_title;
-  const hasInfoData = overview && release_date;
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
   if (!movieDetails) {
-    return <Text>Loading...</Text>;
+    return (
+      <Center h="50vh">
+        <Spinner size="xl" color="blue.500" />
+      </Center>
+    );
   }
 
   return (
     <VStack
-      fontSize={["md", "lg", "xl", "2xl"]}
       textAlign="center"
       alignItems="stretch"
-      p={2}
-      spacing={6}>
-      {hasHeaderData ? <MovieHeader /> : <Text>No header data available.</Text>}
+      p={4}
+      spacing={6}
+      maxW="1400px"
+      mx="auto"
+    >
+      <MovieHeader />
       {isAuth ? (
-        <Button onClick={() => setIsOpen(true)}>Film Reaksiyonları</Button>
+        <Button
+          colorScheme="blue"
+          size="lg"
+          onClick={() => setIsOpen(true)}
+          mx="auto"
+        >
+          Film Reaksiyonları
+        </Button>
       ) : (
-        <Text>Please log in to rate the movie.</Text>
+        <Text color="gray.500">Filmi oylamak için lütfen giriş yapın.</Text>
       )}
-      {hasInfoData ? <MovieInfo /> : <Text>No information available.</Text>}
-      <Modal isOpen={isOpen} onClose={handleClose}>
+      <MovieInfo />
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        isCentered
+        size="lg"
+      >
         <ModalOverlay />
-        <ModalContent backgroundColor="rgba(255, 255, 255, 0.8)">
+        <ModalContent>
           <ModalHeader>Film Reaksiyonları</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <MovieRating />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleClose}>
-              Close
+            <Button colorScheme="blue" onClick={() => setIsOpen(false)}>
+              Kapat
             </Button>
           </ModalFooter>
         </ModalContent>
