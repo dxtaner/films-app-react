@@ -19,40 +19,34 @@ import { FaYoutube } from "react-icons/fa";
 const MovieInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
-    <Box w="100%" maxW="1500px" mx="auto" p={2}>
-      <Divider my={4} bg="teal.100" />
+    <Box w="100%" maxW="1400px" mx="auto" p={2}>
+      <Divider my={4} borderColor="teal.200" />
       <MovieOverview />
-      <Flex justify="flex-end" align="flex-start" w="100%" p={2}>
+      <Flex justify="flex-end" align="center" w="100%" mt={4}>
         <Button
-          onClick={handleOpenModal}
+          onClick={() => setIsModalOpen(true)}
           leftIcon={<Icon as={FaYoutube} />}
           colorScheme="red"
-          variant="solid"
           size="lg"
           _hover={{ bg: "red.600" }}
-          _active={{ bg: "red.700" }}>
+        >
           Fragmanı Oynat
         </Button>
       </Flex>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="5xl">
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        size="4xl"
+        isCentered
+      >
         <ModalOverlay />
-        <ModalContent bg="black" borderRadius="md">
-          <ModalHeader color="white">Movie Trailer</ModalHeader>
-          <ModalCloseButton color="red" />
-          <ModalBody>
-            <Box width="100%" height="100%">
-              <YoutubeEmbed />
-            </Box>
+        <ModalContent bg="black" borderRadius="md" p={2}>
+          <ModalHeader color="white">Film Fragmanı</ModalHeader>
+          <ModalCloseButton color="white" />
+          <ModalBody pb={6}>
+            <YoutubeEmbed />
           </ModalBody>
         </ModalContent>
       </Modal>
