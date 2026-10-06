@@ -2,12 +2,22 @@ import React from "react";
 import { Text, Center, Grid } from "@chakra-ui/react";
 import MovieCard from "../Cards/MovieCards.js";
 
-const MoviesList = ({ movies, status, error }) => {
+const MoviesList = ({ movies = [], status, error }) => {
   if (status === "failed") {
     return (
       <Center mt={6}>
         <Text color="red.500" fontSize="lg" fontWeight="bold">
           Hata: {error}
+        </Text>
+      </Center>
+    );
+  }
+
+  if (movies.length === 0) {
+    return (
+      <Center mt={6}>
+        <Text color="gray.500" fontSize="lg">
+          Gösterilecek film bulunamadı.
         </Text>
       </Center>
     );
@@ -23,7 +33,8 @@ const MoviesList = ({ movies, status, error }) => {
       }}
       gap={6}
       mt={6}
-      px={4}>
+      px={4}
+    >
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
