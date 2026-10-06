@@ -24,6 +24,8 @@ const MovieRating = () => {
     }
   }, [dispatch, id]);
 
+  if (!isAuth || !movieId) return null;
+
   return (
     <VStack
       spacing={6}
@@ -31,21 +33,17 @@ const MovieRating = () => {
       borderRadius="md"
       boxShadow="xl"
       maxW="lg"
-      wrap="wrap"
       mx="auto"
       alignItems="stretch"
-      justifyContent="center">
-      {isAuth && movieId && (
-        <>
-          <HStack spacing={4} wrap="wrap" justifyContent="center">
-            <FavoriteButton movieId={movieId} />
-            <WatchlistButton movieId={movieId} />
-          </HStack>
-          <Box textAlign="center">
-            <RatingButtons movieId={movieId} />
-          </Box>
-        </>
-      )}
+      justifyContent="center"
+    >
+      <HStack spacing={4} wrap="wrap" justifyContent="center">
+        <FavoriteButton movieId={movieId} />
+        <WatchlistButton movieId={movieId} />
+      </HStack>
+      <Box textAlign="center">
+        <RatingButtons movieId={movieId} />
+      </Box>
     </VStack>
   );
 };
