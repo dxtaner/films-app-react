@@ -22,11 +22,13 @@ const MovieProviders = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { providers, status, error } = useSelector(
-    (state) => state.movieProviders
+    (state) => state.movieProviders,
   );
 
   useEffect(() => {
-    dispatch(fetchMovieProviders(id));
+    if (id) {
+      dispatch(fetchMovieProviders(id));
+    }
   }, [dispatch, id]);
 
   if (status === "loading") {
@@ -51,15 +53,16 @@ const MovieProviders = () => {
     );
   }
 
-  const renderProviders = (providers) => (
+  const renderProviders = (providerList = []) => (
     <SimpleGrid columns={{ base: 3, sm: 4, md: 6, lg: 8 }} spacing={4}>
-      {providers.map((provider) => (
+      {providerList.map((provider) => (
         <Box
           key={provider.provider_id}
           textAlign="center"
           maxW="80px"
-          mx="auto">
-          <Tooltip label={provider.provider_name} fontSize="md">
+          mx="auto"
+        >
+          <Tooltip label={provider.provider_name} fontSize="md" hasArrow>
             <Image
               src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
               alt={provider.provider_name}
@@ -76,8 +79,14 @@ const MovieProviders = () => {
   );
 
   const renderProviderSection = (countryCode, countryName) => {
-    const countryProviders = providers[countryCode];
-    if (!countryProviders) return null;
+    const countryProviders = providers?.[countryCode];
+    if (!countryProviders) {
+      return (
+        <Text py={4} color="gray.500">
+          Bu ülke için sağlayıcı bilgisi bulunamadı.
+        </Text>
+      );
+    }
 
     const { flatrate, rent, buy } = countryProviders;
     return (
@@ -88,17 +97,17 @@ const MovieProviders = () => {
         <Tabs variant="enclosed-colored" colorScheme="blue">
           <TabList mb="1em" flexWrap="wrap">
             {flatrate && (
-              <Tab w="auto" flexShrink={0} px={4} py={2}>
+              <Tab px={4} py={2}>
                 Abonelik
               </Tab>
             )}
             {rent && (
-              <Tab w="auto" flexShrink={0} px={4} py={2}>
+              <Tab px={4} py={2}>
                 Kiralama
               </Tab>
             )}
             {buy && (
-              <Tab w="auto" flexShrink={0} px={4} py={2}>
+              <Tab px={4} py={2}>
                 Satın Alma
               </Tab>
             )}
@@ -115,13 +124,13 @@ const MovieProviders = () => {
 
   return (
     <Box p={4} bg="gray.50" borderRadius="md" boxShadow="lg" m={4}>
-      {providers && (
+      {providers ? (
         <Tabs variant="enclosed-colored" colorScheme="blue">
           <TabList mb="1em" flexWrap="wrap">
-            <Tab w="auto" flexShrink={0} px={4} py={2}>
+            <Tab px={4} py={2}>
               ABD
             </Tab>
-            <Tab w="auto" flexShrink={0} px={4} py={2}>
+            <Tab px={4} py={2}>
               Türkiye
             </Tab>
           </TabList>
@@ -132,8 +141,7 @@ const MovieProviders = () => {
             <TabPanel>{renderProviderSection("TR", "Türkiye")}</TabPanel>
           </TabPanels>
         </Tabs>
-      )}
-      {!providers && (
+      ) : (
         <Center py={6}>
           <Text fontSize="lg" color="gray.500">
             Sağlayıcı bulunamadı.
