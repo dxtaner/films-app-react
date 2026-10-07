@@ -13,11 +13,7 @@ import {
 
 const RatingButtons = ({ movieId }) => {
   const dispatch = useDispatch();
-  const ratedMovies = useSelector(selectRatedMovies);
-
-  useEffect(() => {
-    dispatch(fetchRatedMovies());
-  }, [dispatch]);
+  const ratedMovies = useSelector(selectRatedMovies) || [];
 
   useEffect(() => {
     dispatch(fetchRatedMovies());
@@ -35,12 +31,13 @@ const RatingButtons = ({ movieId }) => {
 
   return (
     <Box textAlign="center" mt={4}>
-      <HStack spacing={4} justify="center" mb={4} wrap={"wrap"}>
+      <HStack spacing={4} justify="center" mb={4} wrap="wrap">
         {[1, 2, 3, 4, 5].map((ratingValue) => (
           <Tooltip
             key={ratingValue}
             label={`Rate ${ratingValue} stars`}
-            hasArrow>
+            hasArrow
+          >
             <IconButton
               icon={
                 <StarIcon
@@ -68,7 +65,8 @@ const RatingButtons = ({ movieId }) => {
             onClick={handleRemoveRating}
             leftIcon={<DeleteIcon />}
             mx="auto"
-            display="block">
+            display="block"
+          >
             Remove Rating
           </Button>
         </Tooltip>
