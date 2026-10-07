@@ -12,7 +12,7 @@ import PopularMoviesCard from "../Cards/PopularMoviesCard";
 
 const PopularMovies = () => {
   const dispatch = useDispatch();
-  const movies = useSelector(popularList);
+  const movies = useSelector(popularList) || [];
   const page = useSelector(currentPage);
   const total = useSelector(totalPages);
 
@@ -24,7 +24,7 @@ const PopularMovies = () => {
   }, [dispatch, page]);
 
   useEffect(() => {
-    if (prevMoviesLength.current < movies.length) {
+    if (movies.length > 0 && prevMoviesLength.current <= movies.length) {
       const intervalId = setInterval(() => {
         setActiveIndex((prevIndex) => {
           const nextIndex = (prevIndex + 1) % movies.length;
@@ -42,20 +42,21 @@ const PopularMovies = () => {
     prevMoviesLength.current = movies.length;
   }, [movies, page, total, dispatch]);
 
+  if (movies.length === 0) return null;
+
   return (
-    <Box>
-      <Box overflowX="hidden" position="relative" m={2} p={2}>
-        <Box
-          display="flex"
-          transition="transform 0.5s ease-in-out"
-          transform={`translateX(-${activeIndex * 200}px)`}
-          width={`${movies.length * 200}px`}>
-          {movies.map((movie, index) => (
-            <Box key={index} m={2} width="200px">
-              <PopularMoviesCard movie={movie} />
-            </Box>
-          ))}
-        </Box>
+    <Box overflowX="hidden" position="relative" m={2} p={2}>
+      <Box
+        display="flex"
+        transition="transform 0.5s ease-in-out"
+        transform={`translateX(-${activeIndex * 200}px)`}
+        width={`${movies.length * 200}px`}
+      >
+        {movies.map((movie) => (
+          <Box key={movie.id} m={2} width="200px">
+            <PopularMoviesCard movie={movie} />
+          </Box>
+        ))}
       </Box>
     </Box>
   );
