@@ -13,7 +13,7 @@ const PaginationButton = ({
       <IconButton
         colorScheme="pink"
         onClick={goToPreviousPage}
-        disabled={currentPage === 1}
+        isDisabled={currentPage === 1}
         aria-label="Previous Page"
         icon={<ArrowBackIcon />}
         mr={2}
@@ -21,8 +21,9 @@ const PaginationButton = ({
       <Button
         colorScheme="green"
         onClick={goToNextPage}
-        disabled={currentPage === totalPages}
-        rightIcon={<ArrowForwardIcon />}>
+        isDisabled={currentPage === totalPages}
+        rightIcon={<ArrowForwardIcon />}
+      >
         Sonraki
       </Button>
     </Flex>
