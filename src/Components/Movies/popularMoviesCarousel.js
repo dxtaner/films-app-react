@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import AppCarousel from "../Carousel/Carousel.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,7 +6,7 @@ import {
   getPopular,
 } from "../../app/features/movies/popularSlice.js";
 
-const PopularMovies = () => {
+const PopularMoviesCarousel = () => {
   const dispatch = useDispatch();
   const popularMovies = useSelector(popularList);
 
@@ -16,4 +16,5 @@ const PopularMovies = () => {
 
   return <AppCarousel data={popularMovies} />;
 };
-export default PopularMovies;
+
+export default PopularMoviesCarousel;
