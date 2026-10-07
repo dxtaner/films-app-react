@@ -18,9 +18,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 const ReviewsMovie = () => {
   const dispatch = useDispatch();
-  const { movieReviews, status, error } = useSelector(
-    (state) => state.movieReviews
-  );
+  const {
+    movieReviews = [],
+    status,
+    error,
+  } = useSelector((state) => state.movieReviews);
   const { id } = useParams();
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 3;
@@ -32,28 +34,30 @@ const ReviewsMovie = () => {
   const cardTextColor = useColorModeValue("gray.800", "gray.200");
 
   useEffect(() => {
-    dispatch(fetchReviews(id));
-    setPageNumber(1);
+    if (id) {
+      dispatch(fetchReviews(id));
+      setPageNumber(1);
+    }
   }, [dispatch, id]);
 
   const formatDate = (dateString) => {
+    if (!dateString) return "";
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const truncateContent = (content, maxLength) => {
+    if (!content) return "";
     if (content.length > maxLength) {
       return content.substring(0, maxLength) + "...";
     }
     return content;
   };
 
-  const paginate = (array, pageSize, pageNumber) => {
-    if (!array) return [];
-    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
-  };
-
-  const paginatedReviews = paginate(movieReviews, pageSize, pageNumber);
+  const paginatedReviews = movieReviews.slice(
+    (pageNumber - 1) * pageSize,
+    pageNumber * pageSize,
+  );
 
   const renderReviews = () => {
     if (status === "loading") {
@@ -74,14 +78,14 @@ const ReviewsMovie = () => {
 
     if (!movieReviews || movieReviews.length === 0) {
       return (
-        <VStack align="center" mt="20">
-          <Text>No reviews available.</Text>
+        <VStack align="center" mt="20" py={6}>
+          <Text color="gray.500">No reviews available.</Text>
         </VStack>
       );
     }
 
     return (
-      <VStack align="flex-start" spacing="4" m={2}>
+      <VStack align="stretch" spacing="4" m={2}>
         {paginatedReviews.map((review) => (
           <Box
             key={review.id}
@@ -91,54 +95,53 @@ const ReviewsMovie = () => {
             bg={cardBg}
             _hover={{ bg: cardHoverBg }}
             boxShadow="md"
-            transition="background-color 0.3s">
-            <Flex align="center" mb="2" wrap={"wrap"}>
+            transition="background-color 0.3s"
+          >
+            <Flex align="center" mb="2" wrap="wrap">
               <Avatar
                 name={review.author}
-                src={review.author_details.avatar_path}
+                src={
+                  review.author_details?.avatar_path
+                    ? `https://image.tmdb.org/t/p/w45${review.author_details.avatar_path}`
+                    : undefined
+                }
                 mr="2"
               />
-              <VStack align="flex-start">
-                <Text fontSize="xl" color={cardTextColor}>
+              <VStack align="flex-start" spacing={0}>
+                <Text fontSize="xl" color={cardTextColor} fontWeight="bold">
                   {review.author}
                 </Text>
-                {review.author_details.rating && (
+                {review.author_details?.rating && (
                   <Badge colorScheme="green" fontSize="sm">
                     {review.author_details.rating.toFixed(1)}
                   </Badge>
                 )}
               </VStack>
             </Flex>
-            <Text fontSize="sm" color="gray.500">
+            <Text fontSize="sm" color="gray.500" mb={2}>
               {formatDate(review.created_at)}
             </Text>
-            <Text color={cardTextColor}>
+            <Text color={cardTextColor} mb={2}>
               {truncateContent(review.content, 200)}
             </Text>
-            <Link
-              href={review.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              color="blue.500">
-              Read more
-            </Link>
+            {review.url && (
+              <Link
+                href={review.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="blue.500"
+                fontWeight="semibold"
+              >
+                Read more
+              </Link>
+            )}
           </Box>
         ))}
       </VStack>
     );
   };
 
-  const handlePrevPage = () => {
-    setPageNumber((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    if (movieReviews) {
-      setPageNumber((prev) =>
-        Math.min(prev + 1, Math.ceil(movieReviews.length / pageSize))
-      );
-    }
-  };
+  const totalPages = Math.ceil((movieReviews?.length || 0) / pageSize);
 
   return (
     <Box
@@ -148,26 +151,27 @@ const ReviewsMovie = () => {
       mt="2"
       borderRadius="lg"
       boxShadow="xl"
-      overflowX="hidden">
+      overflowX="hidden"
+    >
       {renderReviews()}
       {movieReviews && movieReviews.length > 0 && (
-        <Flex justify="space-between" mt="2" alignItems="center">
+        <Flex justify="space-between" mt="4" alignItems="center">
           <IconButton
-            onClick={handlePrevPage}
+            onClick={() => setPageNumber((prev) => Math.max(prev - 1, 1))}
             icon={<ChevronLeftIcon />}
             isDisabled={pageNumber === 1}
             aria-label="Previous Page"
             colorScheme="blue"
           />
           <Text color={textColor}>
-            Page: {pageNumber} of {Math.ceil(movieReviews.length / pageSize)}
+            Page: {pageNumber} of {totalPages || 1}
           </Text>
           <IconButton
-            onClick={handleNextPage}
-            icon={<ChevronRightIcon />}
-            isDisabled={
-              pageNumber === Math.ceil(movieReviews.length / pageSize)
+            onClick={() =>
+              setPageNumber((prev) => Math.min(prev + 1, totalPages))
             }
+            icon={<ChevronRightIcon />}
+            isDisabled={pageNumber >= totalPages}
             aria-label="Next Page"
             colorScheme="blue"
           />
