@@ -12,7 +12,10 @@ const ToggleButton = ({ isCastPage, handleTogglePage }) => {
       rightIcon={isCastPage ? <ArrowForwardIcon /> : <ArrowBackIcon />}
       fontWeight="bold"
       textTransform="uppercase"
-      _hover={{ opacity: 0.8 }}>
+      boxShadow="md"
+      _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}
+      transition="all 0.2s"
+    >
       {isCastPage ? "Ekip" : "Oyuncular"}
     </Button>
   );
