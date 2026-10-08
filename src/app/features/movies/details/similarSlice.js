@@ -9,35 +9,53 @@ const initialState = {
 
 export const fetchSimilarMovies = createAsyncThunk(
   "movies/fetchSimilarMovies",
-  async (movieId) => {
+
+  async (movieId, { rejectWithValue }) => {
     try {
       const response = await getSimilarMovies(movieId);
-      return response.results;
+
+      return response?.results || [];
     } catch (error) {
-      throw Error("Benzer filmleri alırken bir hata oluştu.");
+      return rejectWithValue(
+        error.response?.data?.status_message ||
+          error.message ||
+          "No similar films were found.",
+      );
     }
-  }
+  },
 );
 
 const similarSlice = createSlice({
   name: "similar",
+
   initialState,
+
   reducers: {},
+
   extraReducers: (builder) => {
     builder
+
       .addCase(fetchSimilarMovies.pending, (state) => {
         state.status = "loading";
+        state.error = null;
       })
+
       .addCase(fetchSimilarMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.similar = action.payload;
+
+        state.similar = action.payload || [];
       })
+
       .addCase(fetchSimilarMovies.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message;
+
+        state.error = action.payload || action.error.message;
+
+        state.similar = [];
       });
   },
 });
 
 export default similarSlice.reducer;
+
 export const selectSimilarMovies = (state) => state.similar.similar;
