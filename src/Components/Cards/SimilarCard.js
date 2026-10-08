@@ -1,98 +1,106 @@
-import React from "react";
-import { Box, Text, Image, Flex, Link, Badge } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, Image, Text, Badge, VStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 const SimilarCard = ({ movie }) => {
+  const navigate = useNavigate();
+
+  if (!movie) {
+    return null;
+  }
+
   const { id, title, poster_path, release_date, vote_average } = movie;
 
-  const getVoteColorScheme = (vote) => {
-    if (vote >= 7) return "green";
-    if (vote >= 5) return "yellow";
+  const handleClick = () => {
+    navigate(`/MovieDetails/${id}`);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const getRatingColor = (rating) => {
+    if (rating >= 7) {
+      return "green";
+    }
+
+    if (rating >= 5) {
+      return "yellow";
+    }
+
     return "red";
   };
 
   return (
-    <Flex
+    <Box
+      minW="180px"
+      maxW="180px"
       bg="gray.800"
-      borderWidth="1px"
-      borderColor="gray.700"
-      borderRadius="xl"
+      borderRadius="lg"
       overflow="hidden"
-      maxW="150px"
-      minW="150px"
-      m={2}
-      flex="1"
-      flexDirection="column"
-      transition="all 0.2s ease-in-out"
+      cursor="pointer"
+      transition="all 0.3s ease"
       _hover={{
-        transform: "scale(1.04)",
-        borderColor: "red.600",
-        boxShadow: "0 8px 20px -6px rgba(229, 62, 62, 0.4)",
+        transform: "translateY(-8px)",
+        boxShadow: "2xl",
       }}
-      boxShadow="md"
+      onClick={handleClick}
     >
-      <Link
-        as={RouterLink}
-        to={`/MovieDetails/${id}`}
-        _hover={{ textDecoration: "none" }}
-      >
-        <Box position="relative" h="215px" bg="gray.900">
-          {poster_path ? (
-            <Image
-              src={`https://image.tmdb.org/t/p/w200${poster_path}`}
-              alt={title}
-              w="100%"
-              h="100%"
-              objectFit="cover"
-            />
-          ) : (
-            <Flex
-              h="100%"
-              alignItems="center"
-              justifyContent="center"
-              bg="gray.800"
-              color="gray.500"
-            >
-              <Text fontSize="xs" fontWeight="semibold">
-                Afiş Yok
-              </Text>
-            </Flex>
-          )}
+      <Box position="relative" w="100%" h="270px" bg="gray.700">
+        {poster_path ? (
+          <Image
+            src={`${IMAGE_BASE_URL}${poster_path}`}
+            alt={title || "Film posteri"}
+            w="100%"
+            h="100%"
+            objectFit="cover"
+            loading="lazy"
+          />
+        ) : (
           <Box
-            position="absolute"
-            bottom={0}
-            left={0}
-            right={0}
-            bgGradient="linear(to-t, gray.900 80%, transparent)"
-            p={2}
-            textAlign="center"
+            w="100%"
+            h="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bg="gray.700"
           >
-            <Badge
-              colorScheme={getVoteColorScheme(vote_average)}
-              fontSize="10px"
-              px={2}
-              borderRadius="md"
-            >
-              {vote_average ? vote_average.toFixed(1) : "N/A"}
-            </Badge>
+            <Text color="gray.400" fontSize="sm" textAlign="center" px={3}>
+              Poster not found
+            </Text>
           </Box>
-        </Box>
-        <Box p={3}>
-          <Text
-            fontWeight="bold"
+        )}
+
+        {vote_average !== undefined && (
+          <Badge
+            position="absolute"
+            top={2}
+            right={2}
+            colorScheme={getRatingColor(vote_average)}
+            borderRadius="md"
+            px={2}
+            py={1}
             fontSize="sm"
-            color="white"
-            mb={1}
-            noOfLines={1}
           >
-            {title}
+            {Number(vote_average).toFixed(1)}
+          </Badge>
+        )}
+      </Box>
+
+      <VStack align="stretch" spacing={1} p={3}>
+        <Text color="white" fontWeight="bold" fontSize="md" noOfLines={2}>
+          {title || "The movie title could not be found"}
+        </Text>
+
+        {release_date && (
+          <Text color="gray.400" fontSize="sm">
+            {release_date.substring(0, 4)}
           </Text>
-          <Text fontSize="xs" color="gray.400">
-            {release_date ? release_date.split("-")[0] : ""}
-          </Text>
-        </Box>
-      </Link>
-    </Flex>
+        )}
+      </VStack>
+    </Box>
   );
 };
 
