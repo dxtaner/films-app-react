@@ -26,7 +26,7 @@ const UpcomingMovies = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const upcomingMovies = useSelector(upcomingList);
+  const upcomingMovies = useSelector(upcomingList) || [];
   const isLoading = useSelector(upcomingLoading);
   const currentPageNumber = useSelector(currentPage);
   const totalPageCount = useSelector(totalPages);
@@ -46,34 +46,46 @@ const UpcomingMovies = () => {
   return (
     <VStack
       divider={<StackDivider borderColor="blue.800" />}
-      spacing={4}
-      p={[2, 4, 6, 8]}>
-      <Box>
+      spacing={6}
+      p={[2, 4, 6, 8]}
+      align="stretch"
+      bg="gray.50"
+      borderRadius="xl"
+      boxShadow="lg"
+      mt={4}
+    >
+      <Box textAlign="center">
         <Title text="Yaklaşan ve Vizyondaki Filmler">
-          <Text>Yaklaşan ve Vizyondaki tüm Filmlerin listesi</Text>
+          <Text color="gray.600" fontSize="md">
+            Yaklaşan ve Vizyondaki tüm Filmlerin listesi
+          </Text>
         </Title>
       </Box>
       {isLoading && currentPageNumber === 1 ? (
-        <Center>
-          <Spinner size="xl" />
+        <Center py={10}>
+          <Spinner size="xl" color="blue.500" />
         </Center>
       ) : (
         <>
           <SimpleGrid
             justifyItems="center"
             columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-            spacing={4}>
+            spacing={6}
+          >
             {upcomingMovies.map((item) => (
               <MovieCard key={item.id} movie={item} />
             ))}
           </SimpleGrid>
           {currentPageNumber < totalPageCount && (
-            <Box mt={4} w="100%" display="flex" justifyContent="center">
+            <Box mt={6} w="100%" display="flex" justifyContent="center">
               <Button
                 onClick={handleLoadMore}
                 colorScheme="blue"
-                disabled={isLoading}>
-                Daha Fazla Yükle
+                size="lg"
+                isDisabled={isLoading}
+                boxShadow="md"
+              >
+                {isLoading ? <Spinner size="sm" /> : "Daha Fazla Yükle"}
               </Button>
             </Box>
           )}
