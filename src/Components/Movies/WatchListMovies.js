@@ -20,7 +20,7 @@ import Title from "../Title/titles";
 
 const WatchListMovies = () => {
   const dispatch = useDispatch();
-  const watchList = useSelector(watchListMovies);
+  const watchList = useSelector(watchListMovies) || [];
   const isLoading = useSelector(watchListLoading);
   const token = sessionStorage.getItem("session_id");
 
@@ -40,29 +40,38 @@ const WatchListMovies = () => {
       justifyContent="center"
       bg="gray.50"
       p={[2, 4, 6, 8]}
-      spacing={4}>
-      <Box>
+      spacing={6}
+      align="stretch"
+      borderRadius="xl"
+      boxShadow="lg"
+      mt={4}
+    >
+      <Box textAlign="center">
         <Title text="İzleme Listem">
-          <Text fontSize="lg">
+          <Text fontSize="lg" color="gray.600">
             Buradaki filmler, izleme listenize eklediğiniz filmlerdir.
           </Text>
         </Title>
       </Box>
 
       {isLoading ? (
-        <Center>
-          <Spinner size="xl" />
+        <Center py={10}>
+          <Spinner size="xl" color="blue.500" />
         </Center>
       ) : (
         <SimpleGrid
           mt="4"
           columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-          spacing={4}>
+          spacing={6}
+          justifyContent="center"
+        >
           {watchList.length > 0 ? (
             watchList.map((item) => <MovieCard key={item.id} movie={item} />)
           ) : (
-            <Center>
-              <Text>İzleme listeniz boş</Text>
+            <Center gridColumn="1 / -1" py={12}>
+              <Text fontSize="lg" color="gray.500">
+                İzleme listeniz boş.
+              </Text>
             </Center>
           )}
         </SimpleGrid>
