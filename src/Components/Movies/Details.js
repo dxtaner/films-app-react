@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { VStack, Box, Divider, Heading } from "@chakra-ui/react";
+
 import MovieDetails from "./MovieDetails";
 import Title from "../Title/titles";
 import PagePopularMovies from "./PopularMovies";
@@ -11,12 +12,12 @@ import MovieImages from "./MovieImages";
 import MovieProviders from "./MovieProviders";
 
 import { detailsList } from "../../app/features/movies/details/detailsSlice";
-import { selectSimilarMovies } from "../../app/features/movies/details/similarSlice";
 
 const Details = () => {
   const movieDetails = useSelector(detailsList);
-  const similarMovies = useSelector(selectSimilarMovies);
+
   const { providers } = useSelector((state) => state.movieProviders || {});
+
   const { movieReviews } = useSelector((state) => state.movieReviews || {});
 
   return (
@@ -44,14 +45,16 @@ const Details = () => {
           borderColor="red.600"
           pb={2}
         >
-          Popüler Filmler
+          Popular Movies
         </Heading>
+
         <PagePopularMovies />
       </Box>
 
       {providers && Object.keys(providers).length > 0 && (
         <>
           <Divider borderColor="gray.800" />
+
           <Box
             w="100%"
             p={5}
@@ -61,7 +64,8 @@ const Details = () => {
             borderColor="gray.800"
             boxShadow="xl"
           >
-            <Title text="İzleme Sağlayıcıları" />
+            <Title text="Watch Providers" />
+
             <MovieProviders />
           </Box>
         </>
@@ -70,6 +74,7 @@ const Details = () => {
       {movieDetails && (
         <>
           <Divider borderColor="gray.800" />
+
           <Box
             w="100%"
             p={5}
@@ -85,6 +90,7 @@ const Details = () => {
       )}
 
       <Divider borderColor="gray.800" />
+
       <Box
         w="100%"
         p={5}
@@ -94,11 +100,13 @@ const Details = () => {
         borderColor="gray.800"
         boxShadow="xl"
       >
-        <Title text="Film Ekibi" />
+        <Title text="Film Crew" />
+
         <MovieCredits />
       </Box>
 
       <Divider borderColor="gray.800" />
+
       <Box
         w="100%"
         p={5}
@@ -108,13 +116,15 @@ const Details = () => {
         borderColor="gray.800"
         boxShadow="xl"
       >
-        <Title text="Filmden Kareler" />
+        <Title text="Film Snapshots" />
+
         <MovieImages />
       </Box>
 
       {movieReviews && movieReviews.length > 0 && (
         <>
           <Divider borderColor="gray.800" />
+
           <Box
             w="100%"
             p={5}
@@ -124,13 +134,15 @@ const Details = () => {
             borderColor="gray.800"
             boxShadow="xl"
           >
-            <Title text="Filmin Yorumları" />
+            <Title text="Film Reviews" />
+
             <ReviewsMovies />
           </Box>
         </>
       )}
 
       <Divider borderColor="gray.800" />
+
       <Box
         w="100%"
         p={5}
@@ -140,29 +152,30 @@ const Details = () => {
         borderColor="gray.800"
         boxShadow="xl"
       >
-        <Title text="Etiketler" />
+        <Title text="Tags" />
+
         <KeywordMovies />
       </Box>
 
-      {similarMovies && similarMovies.length > 0 && (
-        <>
-          <Divider borderColor="gray.800" />
-          <Box
-            w="100%"
-            p={5}
-            bg="gray.900"
-            borderRadius="xl"
-            border="1px solid"
-            borderColor="gray.800"
-            boxShadow="xl"
-          >
-            <Title text="Benzer Filmler" />
-            <SimilarMovies />
-          </Box>
-        </>
-      )}
+      <Divider borderColor="gray.800" />
+
+      <Box
+        w="100%"
+        p={5}
+        bg="gray.900"
+        borderRadius="xl"
+        border="1px solid"
+        borderColor="gray.800"
+        boxShadow="xl"
+      >
+        <Title text="Similar Movies" />
+
+        <SimilarMovies />
+      </Box>
     </VStack>
   );
 };
+
+Details.displayName = "Details";
 
 export default Details;
