@@ -13,7 +13,7 @@ import {
 
 const WatchlistButton = ({ movieId }) => {
   const dispatch = useDispatch();
-  const watchlist = useSelector(watchListMovies);
+  const watchlist = useSelector(watchListMovies) || [];
 
   useEffect(() => {
     dispatch(getWatchList());
@@ -31,16 +31,24 @@ const WatchlistButton = ({ movieId }) => {
 
   return (
     <Tooltip
-      label={isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}>
+      label={
+        isInWatchlist ? "İzleme listesinden çıkar" : "İzleme listesine ekle"
+      }
+      hasArrow
+    >
       <Button
         onClick={
           isInWatchlist ? handleRemoveFromWatchlist : handleAddToWatchlist
         }
         colorScheme={isInWatchlist ? "blue" : "gray"}
-        variant="outline"
+        variant={isInWatchlist ? "solid" : "outline"}
         size="lg"
-        leftIcon={<FaEye />}>
-        {isInWatchlist ? "In Watchlist" : "Add to Watchlist"}
+        leftIcon={<FaEye />}
+        boxShadow="md"
+        _hover={{ transform: "translateY(-1px)", boxShadow: "lg" }}
+        transition="all 0.2s"
+      >
+        {isInWatchlist ? "Listede" : "Listeye Ekle"}
       </Button>
     </Tooltip>
   );
