@@ -13,18 +13,19 @@ const OriginalLanguageFilter = ({ queryParams, onFilterChange }) => {
   return (
     <Box
       p={4}
-      borderWidth={1}
-      borderRadius="md"
-      boxShadow="md"
-      bg="white"
-      borderColor="gray.200"
-      _hover={{ boxShadow: "lg", borderColor: "gray.300" }}>
-      <Text fontSize="md" fontWeight="bold" mb={2} color="teal.600">
+      borderWidth="1px"
+      borderRadius="xl"
+      bg="gray.900"
+      borderColor="gray.800"
+      boxShadow="lg"
+      _hover={{ borderColor: "gray.700" }}
+    >
+      <Text fontSize="sm" fontWeight="bold" mb={1} color="gray.200">
         Orijinal Film Dili
       </Text>
-      <Divider my={2} borderColor="teal.500" />
-      <InputGroup size="md" alignItems="center">
-        <InputLeftElement pointerEvents="none" color="gray.400">
+      <Divider my={2} borderColor="gray.800" />
+      <InputGroup size="sm">
+        <InputLeftElement pointerEvents="none" color="gray.500">
           <FaLanguage />
         </InputLeftElement>
         <Input
@@ -33,11 +34,14 @@ const OriginalLanguageFilter = ({ queryParams, onFilterChange }) => {
           onChange={(e) =>
             onFilterChange("with_original_language", e.target.value)
           }
-          placeholder="Orijinal Dil"
-          size="md"
-          borderRadius="md"
-          borderColor="gray.300"
-          _focus={{ borderColor: "teal.400", boxShadow: "0 0 0 1px teal.400" }}
+          placeholder="Örn: tr, en, ja"
+          borderRadius="lg"
+          borderColor="gray.700"
+          bg="gray.800"
+          color="white"
+          _placeholder={{ color: "gray.500" }}
+          _focus={{ borderColor: "red.500", boxShadow: "0 0 0 1px #E53E3E" }}
+          _hover={{ borderColor: "gray.600" }}
         />
       </InputGroup>
     </Box>
