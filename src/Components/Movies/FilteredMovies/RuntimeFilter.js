@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
@@ -10,6 +10,7 @@ import {
   Text,
   VStack,
   Divider,
+  HStack,
 } from "@chakra-ui/react";
 
 const RuntimeFilter = ({ queryParams, onFilterChange }) => {
@@ -17,13 +18,6 @@ const RuntimeFilter = ({ queryParams, onFilterChange }) => {
     queryParams["with_runtime.gte"] || 0,
     queryParams["with_runtime.lte"] || 360,
   ]);
-
-  useEffect(() => {
-    onFilterChange({
-      "with_runtime.gte": runtimeRange[0],
-      "with_runtime.lte": runtimeRange[1],
-    });
-  }, [runtimeRange, onFilterChange]);
 
   const handleSliderChange = (value) => {
     setRuntimeRange(value);
@@ -34,42 +28,54 @@ const RuntimeFilter = ({ queryParams, onFilterChange }) => {
   return (
     <Box
       p={4}
-      borderWidth={1}
-      borderRadius="md"
-      boxShadow="md"
-      bg="white"
-      borderColor="gray.200"
-      _hover={{ boxShadow: "lg", borderColor: "gray.300" }}>
-      <VStack spacing={4}>
+      borderWidth="1px"
+      borderRadius="xl"
+      bg="gray.900"
+      borderColor="gray.800"
+      boxShadow="lg"
+      _hover={{ borderColor: "gray.700" }}
+    >
+      <VStack spacing={3} align="start">
         <FormControl>
-          <FormLabel fontSize="md" fontWeight="bold" color="teal.600">
+          <FormLabel fontSize="sm" fontWeight="bold" color="gray.200" mb={1}>
             Süre (Dakika)
           </FormLabel>
-          <Divider my={2} borderColor="teal.500" />
+          <Divider my={2} borderColor="gray.800" />
           <RangeSlider
             min={0}
-            max={300}
-            step={1}
+            max={360}
+            step={5}
             value={runtimeRange}
             onChange={handleSliderChange}
-            colorScheme="teal">
-            <RangeSliderTrack>
-              <RangeSliderFilledTrack />
+            mt={4}
+          >
+            <RangeSliderTrack bg="gray.800">
+              <RangeSliderFilledTrack bg="red.600" />
             </RangeSliderTrack>
-            <RangeSliderThumb boxSize={6} index={0}>
-              <Box color="teal.400" />
-            </RangeSliderThumb>
-            <RangeSliderThumb boxSize={6} index={1}>
-              <Box color="teal.400" />
-            </RangeSliderThumb>
+            <RangeSliderThumb
+              boxSize={5}
+              index={0}
+              bg="white"
+              borderColor="red.600"
+              borderWidth={2}
+            />
+            <RangeSliderThumb
+              boxSize={5}
+              index={1}
+              bg="white"
+              borderColor="red.600"
+              borderWidth={2}
+            />
           </RangeSlider>
-          <Text mt={2} fontWeight="bold" color="teal.600">
-            Min: {runtimeRange[0]} dakika
-          </Text>
-          <Text fontWeight="bold" color="teal.600">
-            Max: {runtimeRange[1]} dakika
-          </Text>
         </FormControl>
+        <HStack justifyContent="space-between" width="100%" pt={2}>
+          <Text fontWeight="bold" color="red.400" fontSize="sm">
+            Min: {runtimeRange[0]} dk
+          </Text>
+          <Text fontWeight="bold" color="red.400" fontSize="sm">
+            Max: {runtimeRange[1]} dk
+          </Text>
+        </HStack>
       </VStack>
     </Box>
   );
