@@ -2,36 +2,35 @@ import React from "react";
 import { Input, FormControl, FormLabel, Box, Divider } from "@chakra-ui/react";
 
 const StartDateFilter = ({ queryParams, onFilterChange }) => {
-  const handleStartDateChange = (e) => {
-    onFilterChange("primary_release_date.gte", e.target.value);
-  };
-
   return (
     <Box
       p={4}
-      borderWidth={1}
-      borderRadius="md"
-      boxShadow="md"
-      bg="white"
-      borderColor="gray.200"
-      _hover={{ boxShadow: "lg", borderColor: "gray.300" }}>
+      borderWidth="1px"
+      borderRadius="xl"
+      bg="gray.900"
+      borderColor="gray.800"
+      boxShadow="lg"
+      _hover={{ borderColor: "gray.700" }}
+    >
       <FormControl>
-        <FormLabel fontSize="md" fontWeight="semibold" mb={1} color="teal.600">
+        <FormLabel fontSize="sm" fontWeight="bold" mb={1} color="gray.200">
           Başlangıç Tarihi
         </FormLabel>
-        <Divider my={2} borderColor="teal.500" />
+        <Divider my={2} borderColor="gray.800" />
 
         <Input
           type="date"
           value={queryParams["primary_release_date.gte"] || ""}
-          onChange={handleStartDateChange}
+          onChange={(e) =>
+            onFilterChange("primary_release_date.gte", e.target.value)
+          }
           size="sm"
-          borderRadius="md"
-          borderColor="gray.300"
-          _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
-          _hover={{ borderColor: "gray.400" }}
-          backgroundColor="white"
-          color="gray.800"
+          borderRadius="lg"
+          borderColor="gray.700"
+          bg="gray.800"
+          color="white"
+          _focus={{ borderColor: "red.500", boxShadow: "0 0 0 1px #E53E3E" }}
+          _hover={{ borderColor: "gray.600" }}
         />
       </FormControl>
     </Box>
