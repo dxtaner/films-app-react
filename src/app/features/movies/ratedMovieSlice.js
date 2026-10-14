@@ -19,7 +19,7 @@ export const fetchRatedMovies = createAsyncThunk(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 export const ratedMovieSlice = createSlice({
