@@ -21,7 +21,7 @@ export const getFavorites = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const favoritesSlice = createSlice({
