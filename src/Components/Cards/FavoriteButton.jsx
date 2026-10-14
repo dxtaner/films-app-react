@@ -19,6 +19,8 @@ const FavoriteButton = ({ movieId }) => {
     dispatch(getFavorites());
   }, [dispatch]);
 
+  const isFavorite = favorites.some((item) => item.id === movieId);
+
   const handleToggleFavorite = () => {
     if (isFavorite) {
       dispatch(removeFromFavorites(movieId));
@@ -27,16 +29,24 @@ const FavoriteButton = ({ movieId }) => {
     }
   };
 
-  const isFavorite = favorites.some((item) => item.id === movieId);
-
   return (
-    <Box onClick={handleToggleFavorite} m={2}>
+    <Box onClick={handleToggleFavorite} m={1}>
       <Tooltip
-        label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}>
+        label={isFavorite ? "Favorilerden Çıkar" : "Favorilere Ekle"}
+        hasArrow
+      >
         <IconButton
           icon={isFavorite ? <FaHeart /> : <FaRegHeart />}
-          size="md"
-          colorScheme={isFavorite ? "red" : "gray"}
+          size="sm"
+          bg={isFavorite ? "red.500" : "gray.800"}
+          color={isFavorite ? "white" : "gray.300"}
+          _hover={{
+            bg: isFavorite ? "red.600" : "gray.700",
+            transform: "scale(1.05)",
+          }}
+          transition="all 0.2s"
+          aria-label="Favorite toggle"
+          borderRadius="full"
         />
       </Tooltip>
     </Box>
