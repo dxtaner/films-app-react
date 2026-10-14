@@ -20,7 +20,7 @@ export const getWatchList = createAsyncThunk(
       console.error("İzleme listesi alınırken hata oluştu:", error);
       throw error;
     }
-  }
+  },
 );
 
 export const watchListSlice = createSlice({
