@@ -23,7 +23,7 @@ export const createSessionToken = (values) => {
   return axios
     .post(
       `${BASE_URL}/authentication/token/validate_with_login?api_key=${API_KEY}`,
-      values
+      values,
     )
     .then((res) => res.data)
     .catch((error) => {
@@ -44,7 +44,7 @@ export const authenticateUser = (request_token) => {
   return axios
     .post(
       `${BASE_URL}/authentication/session/new?api_key=${API_KEY}`,
-      request_token
+      request_token,
     )
     .then((res) => {
       showSuccessMessage("User authenticated successfully.");
