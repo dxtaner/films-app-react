@@ -1,31 +1,36 @@
 import React from "react";
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Button, VStack, Icon } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { WarningTwoIcon } from "@chakra-ui/icons";
 
 const NotFound = () => {
   return (
-    <Box textAlign="center" mt={20} mx="auto" maxW="400px">
-      <Text fontSize="3xl" fontWeight="bold" mb={4}>
-        Sayfa Bulunamadı
-      </Text>
-      <Text fontSize="lg" mb={8} color="gray.500">
-        Üzgünüz, aradığınız sayfayı bulamadık.
-      </Text>
-      <Button
-        colorScheme="blue"
-        as={Link}
-        to="/"
-        px={8}
-        py={4}
-        mb={4}
-        fontSize="xl"
-        fontWeight="bold"
-        rounded="full"
-        _hover={{ bg: "blue.600" }}
-        _focus={{ outline: "none" }}>
-        Anasayfa'ya Git
-      </Button>
-    </Box>
+    <VStack textAlign="center" justify="center" minH="60vh" px={4} spacing={6}>
+      <Icon as={WarningTwoIcon} boxSize={16} color="blue.500" />
+      <Box maxW="500px">
+        <Text fontSize="4xl" fontWeight="bold" mb={2} color="white">
+          404 - Sayfa Bulunamadı
+        </Text>
+        <Text fontSize="lg" color="gray.400" mb={6}>
+          Üzgünüz, aradığınız sayfa kaldırılmış, adı değiştirilmiş veya geçici
+          olarak kullanılamıyor olabilir.
+        </Text>
+        <Button
+          colorScheme="blue"
+          as={Link}
+          to="/"
+          size="lg"
+          px={8}
+          fontWeight="bold"
+          rounded="full"
+          boxShadow="lg"
+          _hover={{ transform: "translateY(-2px)", boxShadow: "xl" }}
+          transition="all 0.2s"
+        >
+          Anasayfa'ya Dön
+        </Button>
+      </Box>
+    </VStack>
   );
 };
 
