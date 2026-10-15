@@ -59,7 +59,7 @@ export const addMovieToFavorite = async (account_id, values) => {
         api_key: API_KEY,
         session_id: getSessionId(),
       },
-    }
+    },
   );
   if (response.data.success) {
     showSuccessMessage(response.data.status_message);
@@ -76,7 +76,7 @@ export const addToMovieRatings = async (movieId, rating) => {
           api_key: API_KEY,
           session_id: getSessionId(),
         },
-      }
+      },
     );
     if (response.status === 200 || response.status === 201) {
       const data = response.data;
@@ -104,7 +104,7 @@ export const removeFromMovieRatings = async (movie_id) => {
           api_key: API_KEY,
           session_id: getSessionId(),
         },
-      }
+      },
     );
 
     if (response.status === 200 || response.status === 204) {
@@ -128,7 +128,7 @@ export const addMovieToWatchList = async (account_id, values) => {
         api_key: API_KEY,
         session_id: getSessionId(),
       },
-    }
+    },
   );
   if (response.data.success) {
     showSuccessMessage(response.data.status_message);
@@ -147,7 +147,7 @@ export const getFavoritesMovies = async (account_id, page = 1) => {
           sort_by: "created_at.asc",
           page: page,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -168,7 +168,7 @@ export const getWatchListMovies = async (account_id, page = 1) => {
           sort_by: "created_at.asc",
           page: page,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -188,7 +188,7 @@ export const getRatedMovies = async (account_id, page = 1) => {
           language: language,
           page: page,
         },
-      }
+      },
     );
     if (response.status === 200) {
       const data = response.data;
@@ -257,7 +257,7 @@ export const discoverMovies = async (queryParams) => {
 
 export const fetchMovieCollection = async (collection_id) => {
   const response = await fetch(
-    `${BASE_URL}/collection/${collection_id}?api_key=${API_KEY}&language=${language}&region=${region}`
+    `${BASE_URL}/collection/${collection_id}?api_key=${API_KEY}&language=${language}&region=${region}`,
   );
   if (!response.ok) {
     throw new Error("Failed to fetch movie collection");
@@ -272,7 +272,7 @@ export const fetchCollectionImages = async (collectionId) => {
       params: {
         api_key: API_KEY,
       },
-    }
+    },
   );
   return response.data;
 };
@@ -280,7 +280,7 @@ export const fetchCollectionImages = async (collectionId) => {
 export const fetchMovieReviews = async (movieId) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}`
+      `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}`,
     );
 
     if (!response.ok) {
