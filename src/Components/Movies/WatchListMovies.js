@@ -36,45 +36,49 @@ const WatchListMovies = () => {
 
   return (
     <VStack
-      divider={<StackDivider borderColor="blue.800" />}
+      divider={<StackDivider borderColor="gray.800" />}
       justifyContent="center"
-      bg="gray.50"
-      p={[2, 4, 6, 8]}
+      bg="gray.950"
+      p={[4, 6, 8]}
       spacing={6}
-      align="stretch"
       borderRadius="xl"
-      boxShadow="lg"
-      mt={4}
+      minH="80vh"
+      maxW="1400px"
+      mx="auto"
+      align="stretch"
     >
-      <Box textAlign="center">
+      <Box w="100%">
         <Title text="İzleme Listem">
-          <Text fontSize="lg" color="gray.600">
-            Buradaki filmler, izleme listenize eklediğiniz filmlerdir.
+          <Text fontSize="sm" color="gray.400" mt={1}>
+            İzleme listenize eklediğiniz filmler.
           </Text>
         </Title>
       </Box>
 
       {isLoading ? (
-        <Center py={10}>
-          <Spinner size="xl" color="blue.500" />
+        <Center py={20}>
+          <Spinner size="xl" color="teal.500" thickness="4px" />
         </Center>
       ) : (
-        <SimpleGrid
-          mt="4"
-          columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-          spacing={6}
-          justifyContent="center"
-        >
+        <Box w="100%">
           {watchList.length > 0 ? (
-            watchList.map((item) => <MovieCard key={item.id} movie={item} />)
+            <SimpleGrid
+              mt="4"
+              columns={{ base: 2, sm: 3, md: 4, lg: 5 }}
+              spacing={6}
+            >
+              {watchList.map((item) => (
+                <MovieCard key={item.id} movie={item} />
+              ))}
+            </SimpleGrid>
           ) : (
-            <Center gridColumn="1 / -1" py={12}>
-              <Text fontSize="lg" color="gray.500">
+            <Center py={20}>
+              <Text fontSize="lg" color="gray.400">
                 İzleme listeniz boş.
               </Text>
             </Center>
           )}
-        </SimpleGrid>
+        </Box>
       )}
     </VStack>
   );
