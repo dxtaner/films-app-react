@@ -20,7 +20,7 @@ import Title from "../Title/titles";
 
 const Favorites = () => {
   const dispatch = useDispatch();
-  const favorites = useSelector(favoritesListMovies);
+  const favorites = useSelector(favoritesListMovies) || [];
   const isLoading = useSelector(favoritesLoading);
   const token = sessionStorage.getItem("session_id");
 
@@ -38,30 +38,32 @@ const Favorites = () => {
     <VStack
       divider={<StackDivider borderColor="gray.800" />}
       justifyContent="center"
-      bg="gray.900"
+      bg="gray.950"
       p={[4, 6, 8]}
       spacing={6}
       borderRadius="xl"
       minH="80vh"
+      maxW="1400px"
+      mx="auto"
+      align="stretch"
     >
       <Box w="100%">
         <Title text="Favori Filmlerim">
           <Text fontSize="sm" color="gray.400" mt={1}>
-            Buradaki filmler, hesabınızla ilişkilendirilmiş favori
-            filmlerinizdir.
+            Hesabınızla ilişkilendirilmiş favori filmleriniz.
           </Text>
         </Title>
       </Box>
       {isLoading ? (
-        <Center py={10}>
-          <Spinner size="xl" color="red.600" thickness="4px" />
+        <Center py={20}>
+          <Spinner size="xl" color="red.500" thickness="4px" />
         </Center>
       ) : (
         <Box w="100%">
           {favorites.length > 0 ? (
             <SimpleGrid
               mt="4"
-              columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+              columns={{ base: 2, sm: 3, md: 4, lg: 5 }}
               spacing={6}
             >
               {favorites.map((item) => (
@@ -69,7 +71,7 @@ const Favorites = () => {
               ))}
             </SimpleGrid>
           ) : (
-            <Center py={16}>
+            <Center py={20}>
               <Text color="gray.400" fontSize="lg">
                 Henüz favori filminiz bulunmamaktadır.
               </Text>
