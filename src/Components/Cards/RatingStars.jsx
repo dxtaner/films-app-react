@@ -13,50 +13,43 @@ const RatingStars = ({ handleRateMovie }) => {
     dispatch(fetchRatedMovies());
   }, [dispatch]);
 
-  const handleHover = (rating) => {
-    setHoverRating(rating);
-  };
-
-  const handleLeave = () => {
-    setHoverRating(0);
-  };
-
-  const handleClick = (rating) => {
-    setSelectedRating(rating);
-    handleRateMovie(rating);
-  };
-
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     const isFilled = i <= (hoverRating || selectedRating);
     stars.push(
-      <Tooltip key={i} label={`${i} Star`} aria-label={`${i} Star Rating`}>
+      <Tooltip
+        key={i}
+        label={`${i} Yıldız`}
+        aria-label={`${i} Star Rating`}
+        hasArrow
+      >
         <Box
           as="button"
-          sx={{
-            border: "none",
-            background: "none",
-            cursor: "pointer",
-            outline: "none",
-            transition: "transform 0.2s",
-            _hover: {
-              transform: "scale(1.1)",
-            },
+          bg="transparent"
+          border="none"
+          cursor="pointer"
+          outline="none"
+          p={1}
+          transition="transform 0.2s"
+          _hover={{ transform: "scale(1.2)" }}
+          onMouseEnter={() => setHoverRating(i)}
+          onMouseLeave={() => setHoverRating(0)}
+          onClick={() => {
+            setSelectedRating(i);
+            handleRateMovie(i);
           }}
-          onMouseEnter={() => handleHover(i)}
-          onMouseLeave={handleLeave}
-          onClick={() => handleClick(i)}>
+        >
           <Icon
             as={StarIcon}
-            color={isFilled ? "yellow.400" : "gray.300"}
-            boxSize={8}
+            color={isFilled ? "yellow.400" : "gray.600"}
+            boxSize={6}
           />
         </Box>
-      </Tooltip>
+      </Tooltip>,
     );
   }
 
-  return <Flex>{stars}</Flex>;
+  return <Flex gap={1}>{stars}</Flex>;
 };
 
 export default RatingStars;
