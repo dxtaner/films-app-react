@@ -5,22 +5,23 @@ import { StarIcon } from "@chakra-ui/icons";
 const RatedBadge = ({ rating }) => {
   const stars = [];
   for (let i = 0; i < rating / 2; i++) {
-    stars.push(<Icon key={i} as={StarIcon} color="yellow.400" boxSize={4} />);
+    stars.push(<Icon key={i} as={StarIcon} color="yellow.400" boxSize={3.5} />);
   }
 
   return (
-    <Flex mt="2" alignItems="center">
+    <Flex mt={2} alignItems="center" gap={2}>
       <Badge
-        variant="solid"
+        variant="subtle"
         colorScheme="yellow"
-        fontSize="sm"
-        textAlign="center"
+        fontSize="xs"
         px={2}
-        opacity={"0.7"}
-        py={1}>
-        Your Rating
+        py={0.5}
+        borderRadius="md"
+        fontWeight="semibold"
+      >
+        Puanınız
       </Badge>
-      <Flex ml="2" alignItems="center">
+      <Flex alignItems="center" gap={0.5}>
         {stars}
       </Flex>
     </Flex>
