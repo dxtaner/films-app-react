@@ -24,7 +24,7 @@ const YoutubeEmbed = () => {
   }
 
   const embedId = movieTrailer?.find(
-    (trailer) => trailer.type === "Trailer"
+    (trailer) => trailer.type === "Trailer",
   )?.key;
 
   if (!embedId) {
@@ -36,7 +36,8 @@ const YoutubeEmbed = () => {
       className="video-responsive"
       position="relative"
       overflow="hidden"
-      paddingTop="56.25%">
+      paddingTop="56.25%"
+    >
       {embedId ? (
         <iframe
           className="video-iframe"
