@@ -19,6 +19,8 @@ const WatchlistButton = ({ movieId }) => {
     dispatch(getWatchList());
   }, [dispatch]);
 
+  const isInWatchlist = watchlist.some((item) => item.id === movieId);
+
   const handleToggleWatchlist = () => {
     if (isInWatchlist) {
       dispatch(removeFromWatchList(movieId));
@@ -27,16 +29,26 @@ const WatchlistButton = ({ movieId }) => {
     }
   };
 
-  const isInWatchlist = watchlist.some((item) => item.id === movieId);
-
   return (
-    <Box onClick={handleToggleWatchlist} m={2}>
+    <Box onClick={handleToggleWatchlist} m={1}>
       <Tooltip
-        label={isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}>
+        label={
+          isInWatchlist ? "İzleme Listesinden Çıkar" : "İzleme Listesine Ekle"
+        }
+        hasArrow
+      >
         <IconButton
           icon={isInWatchlist ? <FaEye /> : <FaRegEye />}
-          size="md"
-          colorScheme={isInWatchlist ? "teal" : "gray"}
+          size="sm"
+          bg={isInWatchlist ? "teal.500" : "gray.800"}
+          color={isInWatchlist ? "white" : "gray.300"}
+          _hover={{
+            bg: isInWatchlist ? "teal.600" : "gray.700",
+            transform: "scale(1.05)",
+          }}
+          transition="all 0.2s"
+          aria-label="Watchlist toggle"
+          borderRadius="full"
         />
       </Tooltip>
     </Box>
