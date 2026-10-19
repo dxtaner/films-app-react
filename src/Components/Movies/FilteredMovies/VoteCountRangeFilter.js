@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
@@ -9,11 +9,12 @@ import {
   SliderThumb,
   Text,
   Divider,
+  HStack,
 } from "@chakra-ui/react";
 
 const MinVoteCountFilter = ({ queryParams, onFilterChange }) => {
   const [minVoteCount, setMinVoteCount] = useState(
-    parseInt(queryParams["vote_count.gte"]) || 0
+    parseInt(queryParams["vote_count.gte"]) || 0,
   );
 
   const handleSliderChange = (value) => {
@@ -21,40 +22,50 @@ const MinVoteCountFilter = ({ queryParams, onFilterChange }) => {
     onFilterChange("vote_count.gte", value);
   };
 
-  useEffect(() => {
-    onFilterChange("vote_count.gte", minVoteCount);
-  }, [minVoteCount, onFilterChange]);
-
   return (
     <Box
       p={4}
-      borderWidth={1}
-      borderRadius="lg"
-      boxShadow="sm"
-      bg="gray.50"
-      borderColor="gray.200"
-      _hover={{ boxShadow: "md", borderColor: "gray.300" }}>
+      borderWidth="1px"
+      borderRadius="xl"
+      bg="gray.900"
+      borderColor="gray.800"
+      boxShadow="lg"
+      _hover={{ borderColor: "gray.700" }}
+    >
       <FormControl>
-        <FormLabel fontWeight="bold" color="teal.600">
+        <FormLabel fontSize="sm" fontWeight="bold" color="gray.200" mb={1}>
           Minimum Kullanıcı Oyları
         </FormLabel>
-        <Divider my={2} borderColor="teal.500" />
+        <Divider my={2} borderColor="gray.800" />
         <Slider
           min={0}
           max={1000}
-          step={5}
+          step={10}
           value={minVoteCount}
           onChange={handleSliderChange}
-          colorScheme="teal"
-          mt={4}>
-          <SliderTrack bg="teal.100">
-            <SliderFilledTrack bg="teal.500" />
+          mt={4}
+        >
+          <SliderTrack bg="gray.800">
+            <SliderFilledTrack bg="red.600" />
           </SliderTrack>
-          <SliderThumb boxSize={6} color="teal.600" />
+          <SliderThumb
+            boxSize={5}
+            bg="white"
+            borderColor="red.600"
+            borderWidth={2}
+          />
         </Slider>
-        <Text mt={2} fontWeight="bold" color="teal.600">
-          Min: {minVoteCount}
-        </Text>
+        <HStack justify="space-between" mt={2}>
+          <Text fontSize="xs" color="gray.400">
+            0
+          </Text>
+          <Text fontWeight="bold" color="red.400" fontSize="sm">
+            Min: {minVoteCount} Oy
+          </Text>
+          <Text fontSize="xs" color="gray.400">
+            1000+
+          </Text>
+        </HStack>
       </FormControl>
     </Box>
   );
